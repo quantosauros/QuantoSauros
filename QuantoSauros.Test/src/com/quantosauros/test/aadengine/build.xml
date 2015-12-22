@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= -->
+<!-- AAD ENGINE				   Build File                                    -->
+<!-- Author: JIHOON LEE                                                      -->
+<!-- Since: 2015.11.15                                                       -->
+<!-- Last Edited: 2015.11.15  												 -->
+<!-- ======================================================================= -->
+<project name="QuantoSauros.Common" default="jar" basedir=".">
+
+  <property file="build.properties"/>
+
+  <!-- Product name and version properties -->
+  <property name="name" 			value="QuantoSauros Common"/>
+  <property name="project" 			value="QuantoSauros.Common"/>
+  <property name="version" 			value="1.0"/>
+  <tstamp>
+    <format property="today" pattern="yyyyMMdd" />
+  </tstamp>
+	
+  <!-- Directory Setting -->
+  <property name="src.dir" value="${basedir}/src"/>
+  <property name="lib.dir" value="${basedir}/lib"/>
+  <property name="build.dir" value="${basedir}/build"/>
+  <property name="build.src.dir" value="${build.dir}/src"/>
+  <property name="build.classes.dir" value="${build.dir}/classes"/>
+  <property name="build.deploy.dir" value="${build.dir}/deploy"/>
+  <property name="pkg.base.dir" value="com/quantosauros/common"/>
+  
+  
+  <!-- These four directories should be set in build.properties file -->
+  <property name="common.classes.dir" value=""/>
+  <property name="common.lib.dir" value=""/>
+  
+  <!-- Target version of JDK -->
+  <property name="target.jdk.version" value="1.7"/>
+
+  <!-- Target JAR Files -->
+  <property name="jar" value="${project}-${version}-${today}.jar"/>
+
+  <!-- ===================================================================== -->
+  <!-- Build Classpath													     -->
+  <!-- ===================================================================== -->
+  <path id="classpath">
+  	<fileset dir="${lib.dir}">
+  		<include name="*.jar" />
+  	</fileset>
+  	<pathelement location="${build.classes.dir}" />
+  </path>
+  <property name="build.classpath" refid="classpath" />
+
+  <!-- ===================================================================== -->
+  <!-- Build Information                                                     -->
+  <!-- ===================================================================== -->
+  <target name="splash">
+  	<echo message=""/>
+  	<echo message="------------------------------------------------------------------"/>
+  	<echo message=" ${name} "/>
+  	<echo message="------------------------------------------------------------------"/>
+  	<echo message="Building with..."/>
+  	<echo message=" ${ant.version}"/>
+  	<echo message=" Java ${java.version} located at ${java.home} "/>
+  	<echo message="------------------------------------------------------------------"/>
+  	<echo message=""/>
+  </target>
+	
+  <!-- ===================================================================== -->
+  <!-- Prepares the build directory                                          -->
+  <!-- ===================================================================== -->
+  <target name="prepare" depends="splash, clean.all">
+  	<mkdir dir="${build.dir}"/>
+  	<mkdir dir="${build.classes.dir}"/>
+  	<mkdir dir="${build.src.dir}"/>
+  	<mkdir dir="${build.resource.dir}"/>  	
+  	<mkdir dir="${build.deploy.dir}"/>
+  </target>
+	
+  <!-- ===================================================================== -->
+  <!-- Copies & compiles the source code                                     -->
+  <!-- ===================================================================== -->
+  <target name="copy" depends="prepare">
+	<copy todir="${build.src.dir}">
+	  <fileset dir="${src.dir}">
+		<include name="${pkg.base.dir}/**/*.java"/>		
+  	  </fileset>  	  
+  	</copy>
+  </target>
+
+  <target name="compile" depends="prepare, copy">
+  	<javac srcdir="${build.src.dir}"
+  		destdir="${build.classes.dir}"
+  		debug="on"
+  		deprecation="on"
+  		optimize="off"
+  		classpath="${build.classpath}"
+  		target="${target.jdk.version}">
+  		<include name="${pkg.base.dir}/**/*.java"/>
+	</javac>
+  </target>
+
+  <!-- ===================================================================== -->
+  <!-- Create jar file										                 -->
+  <!-- ===================================================================== -->
+  <target name="jar" depends="compile">
+  	<echo message=""/>
+  	<echo message="------------------------------------------------------------------"/>
+  	<echo message="----- Creating ${jar} -----"/>
+  	<echo message="----- SRC-DIR ... ${build.src.dir}"/>
+  	<echo message="----- TO -DIR ... ${build.classes.dir}"/>
+  	<echo message="------------------------------------------------------------------"/>
+  	<echo message=""/>
+  	<tstamp>
+  	  <format property="todaytime" pattern="yyyy-MM-dd HH:mm:ss" />
+  	</tstamp>
+  	<manifest file="MANIFEST.MF">
+  	  <attribute name="Implementation-Version" 
+  	           value="${version}"/>   
+  	  <attribute name="Built-Date" value="${todaytime}"/>                 
+  	</manifest>
+  	<jar jarfile="${build.deploy.dir}/${jar}" manifest="MANIFEST.MF">
+  		<fileset dir="${build.classes.dir}">
+  			<include name="${pkg.base.dir}/**/*.class"/>  			
+  		</fileset>
+  		<fileset dir="${build.src.dir}">
+  			<include name="resource/**/*.*"/> 			
+  		</fileset>
+  	</jar>
+  </target>
+	
+	<!--property name="classesdir" value="bin"/-->
+	<!--target name="jar">
+		<jar jarfile="R3-common.jar" includes="com/**" basedir="${classesdir}"/>
+	</target-->
+
+  <!-- =================================================================== -->
+  <!-- Cleans up all the generated stuffs                                  -->
+  <!-- =================================================================== -->
+  <target name="clean.all">
+  	<delete dir="${build.dir}"/>
+  </target>
+	
+</project>
