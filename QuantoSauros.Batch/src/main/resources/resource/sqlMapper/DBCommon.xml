@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "DBCommon">
+	   
+<!-- RESULT MAP -->
+
+	<resultMap id = "instrumentInfo" type = "com.kirudabatch.dao.InstrumentInfoDao">
+	    <result property="instrumentCd" column="INSTRUMENT_CD" />
+	    <result property="ccyCd" column="CCY_CD" />
+	    <result property="instrumentTypeCd" column="INSTRUMENT_TYPE_CD" />
+	    <result property="payLegTypeCd" column="PAY_LEG_TYPE_CD" />
+	    <result property="rcvLegTypeCd" column="RCV_LEG_TYPE_CD" />
+	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />
+	    <result property="issueDt" column="ISSUE_DT" />
+	    <result property="mrtyDt" column="MRTY_DT" />
+	</resultMap>
+	
+	<resultMap id = "productInfo" type = "com.kirudabatch.dao.ProductInfoDao">
+	    <result property="issueDt" column="ISSUE_DT" />
+	    <result property="mrtyDt" column="MATURITY_DT" />
+	    <result property="ccyCd" column="CCY_CD" />
+	    <result property="principalExchCd" column="PRINCIPAL_EXCH_CD" />
+	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />	    
+	</resultMap>
+	
+	<resultMap id = "productLeg" type = "com.kirudabatch.dao.ProductLegDao">
+	    <result property="payRcvCd" column="PAY_RCV_CD" />	    
+	    <result property="legTypeCd" column="LEG_TYPE_CD" />
+	    <result property="underlyingType" column="UNDERLYING_TYPE" />
+	    <result property="conditionType" column="CONDITION_TYPE" />
+	    <result property="notionalPrincipal" column="NOTIONAL_PRINCIPAL" />
+	    <result property="ccyCd" column="CCY_CD" />
+	    <result property="dcf" column="DAY_COUNT_CONVENTION" />
+	    <result property="capFloorCd" column="CAPFLOOR_CD" />	    
+	    <result property="couponIrcCd1" column="COUPON_IRC_CD1" />
+	    <result property="couponIrcMrtyCd1" column="COUPON_IRC_MRTY_CD1" />
+	    <result property="couponIrcTypeCd1" column="COUPON_IRC_TYPE_CD1" />
+	    <result property="couponIrcCouponFreqCd1" column="COUPON_IRC_COUPON_FREQ_CD1" />
+	    <result property="couponIrcCcy1" column="COUPON_IRC_CCY1" />
+   	    <result property="couponIrcCd2" column="COUPON_IRC_CD2" />
+	    <result property="couponIrcMrtyCd2" column="COUPON_IRC_MRTY_CD2" />
+	    <result property="couponIrcTypeCd2" column="COUPON_IRC_TYPE_CD2" />
+	    <result property="couponIrcCouponFreqCd2" column="COUPON_IRC_COUPON_FREQ_CD2" />	    	    
+	    <result property="couponIrcCcy2" column="COUPON_IRC_CCY2" />
+   	    <result property="couponIrcCd3" column="COUPON_IRC_CD3" />
+	    <result property="couponIrcMrtyCd3" column="COUPON_IRC_MRTY_CD3" />
+	    <result property="couponIrcTypeCd3" column="COUPON_IRC_TYPE_CD3" />
+	    <result property="couponIrcCouponFreqCd3" column="COUPON_IRC_COUPON_FREQ_CD3" />
+	    <result property="couponIrcCcy3" column="COUPON_IRC_CCY3" />	    	    
+	</resultMap>
+	
+	<resultMap id = "productLegData" type = "com.kirudabatch.dao.ProductLegDataDao">	        
+	    <result property="nextCouponPayDt" column="NEXT_COUPON_PAY_DT" />
+	    <result property="nextCoupon" column="NEXT_COUPON" />
+	    <result property="accrualDayCnt" column="ACCRUAL_DAY_CNT" />
+	    <result property="accumulateAvgCoupon" column="ACCUMULATE_AVG_COUPON" />
+	</resultMap>
+	
+	<resultMap id = "productOptionSchedule" type = "com.kirudabatch.dao.ProductOptionScheduleDao">
+	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />
+	    <result property="optionStrtDt" column="OPTION_STRT_DT" />
+	    <result property="optionEndDt" column="OPTION_END_DT" />
+	    <result property="strike" column="STRIKE" />
+	</resultMap>
+	
+	<resultMap id = "productSchedule" type = "com.kirudabatch.dao.ProductScheduleDao">
+	    <result property="couponStrtDt" column="COUPON_STRT_DT" />
+	    <result property="couponResetDt" column="COUPON_RESET_DT" />
+	    <result property="couponEndDt" column="COUPON_END_DT" />
+	    <result property="couponPayDt" column="COUPON_PAY_DT" />
+	    <result property="couponType" column="COUPON_TYPE" />
+	    <result property="principal" column="PRINCIPAL" />
+	    <result property="upperBound1" column="UPPERBOUND1" />
+	    <result property="lowerBound1" column="LOWERBOUND1" />
+	    <result property="leverage1" column="LEVERAGE1" />
+	    <result property="upperBound2" column="UPPERBOUND2" />
+	    <result property="lowerBound2" column="LOWERBOUND2" />	    
+	    <result property="leverage2" column="LEVERAGE2" />
+	    <result property="leverage3" column="LEVERAGE3" />
+	    <result property="inCoupon" column="INCOUPON" />
+	    <result property="outCoupon" column="OUTCOUPON" />
+	    <result property="fixedCoupon" column="FIXED_COUPON" />
+	    <result property="cap" column="CAP" />
+	    <result property="floor" column="FLOOR" />
+	</resultMap>
+	
+<!-- SELECT  -->
+	
+	<select id="getInstrumentInfo" resultMap="instrumentInfo">
+		SELECT 
+			INSTRUMENT_CD, CCY_CD, 
+			PAY_LEG_TYPE_CD, RCV_LEG_TYPE_CD, OPTION_TYPE_CD,
+			ISSUE_DT, MRTY_DT
+		FROM 
+			INSTRUMENT_INFO_VIEW
+		WHERE
+			ISSUE_DT &lt;= #{dt}
+			AND MRTY_DT &gt; #{dt}			
+    </select>
+    
+		<select id="getInstrumentInfoSpeicificProduct" resultMap="instrumentInfo">
+		SELECT 
+			INSTRUMENT_CD, CCY_CD, 
+			PAY_LEG_TYPE_CD, RCV_LEG_TYPE_CD, OPTION_TYPE_CD,
+			ISSUE_DT, MRTY_DT
+		FROM 
+			INSTRUMENT_INFO_VIEW
+		WHERE
+			ISSUE_DT &lt;= #{dt}
+			AND MRTY_DT &gt; #{dt}
+			AND INSTRUMENT_CD = #{instrumentCd}		
+    </select>
+	
+	<select id="getProductInfo" parameterType="map" resultMap="productInfo">
+		SELECT 
+			ISSUE_DT, MATURITY_DT, CCY_CD, PRINCIPAL_EXCH_CD, 
+			OPTION_TYPE_CD
+		FROM 
+			PRODUCT_INFO
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+    </select>	
+	
+	<select id="getProductLeg" parameterType="map" resultMap="productLeg">
+		SELECT 
+			PAY_RCV_CD, LEG_TYPE_CD, UNDERLYING_TYPE, CONDITION_TYPE,
+			NOTIONAL_PRINCIPAL, CCY_CD,
+			DAY_COUNT_CONVENTION, CAPFLOOR_CD,		
+			COUPON_IRC_CD1, COUPON_IRC_MRTY_CD1, COUPON_IRC_TYPE_CD1, 
+			COUPON_IRC_COUPON_FREQ_CD1, FT_GET_CCYCDFROMIRCCD(COUPON_IRC_CD1) AS COUPON_IRC_CCY1,
+			COUPON_IRC_CD2, COUPON_IRC_MRTY_CD2, COUPON_IRC_TYPE_CD2, 
+			COUPON_IRC_COUPON_FREQ_CD2, FT_GET_CCYCDFROMIRCCD(COUPON_IRC_CD2) AS COUPON_IRC_CCY2,
+			COUPON_IRC_CD3, COUPON_IRC_MRTY_CD3, COUPON_IRC_TYPE_CD3, 
+			COUPON_IRC_COUPON_FREQ_CD3, FT_GET_CCYCDFROMIRCCD(COUPON_IRC_CD3) AS COUPON_IRC_CCY3
+		FROM 
+			PRODUCT_LEG
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+			AND PAY_RCV_CD = #{payRcvCd}
+	</select>
+	
+	<select id="getProductLegData" parameterType="map" resultMap="productLegData">
+		SELECT			
+			NEXT_COUPON_PAY_DT AS NEXT_COUPON_PAY_DT,
+			IFNULL(NEXT_COUPON, 0) AS NEXT_COUPON, 
+			IFNULL(ACCRUAL_DAY_CNT , 0) AS ACCRUAL_DAY_CNT,
+			IFNULL(ACCUMULATE_AVG_COUPON, 0) AS ACCUMULATE_AVG_COUPON
+		FROM 
+			PRODUCT_LEG_DATA
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+			AND DT = #{dt}
+			AND PAY_RCV_CD = #{payRcvCd}
+	</select>
+
+	<select id="getProductOptionSchedule" parameterType="map" resultMap="productOptionSchedule">
+		SELECT 
+			OPTION_TYPE_CD, OPTION_STRT_DT, OPTION_END_DT, STRIKE
+		FROM 
+			PRODUCT_OPTION_SCHEDULE
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}			
+	</select>
+
+	<select id="getProductSchedule" parameterType="map" resultMap="productSchedule">
+		SELECT
+			COUPON_STRT_DT, COUPON_RESET_DT, COUPON_END_DT, COUPON_PAY_DT,
+			COUPON_TYPE, PRINCIPAL, 
+			IFNULL(UPPERBOUND1,0) AS UPPERBOUND1, 
+			IFNULL(LOWERBOUND1,0) AS LOWERBOUND1, 
+			IFNULL(LEVERAGE1,0) AS LEVERAGE1,
+			IFNULL(UPPERBOUND2,0) AS UPPERBOUND2, 
+			IFNULL(LOWERBOUND2,0) AS LOWERBOUND2, 
+			IFNULL(LEVERAGE2,0) AS LEVERAGE2,
+			IFNULL(LEVERAGE3,0) AS LEVERAGE3,
+			IFNULL(INCOUPON,0) AS INCOUPON, 
+			IFNULL(OUTCOUPON,0) AS OUTCOUPON, 
+			IFNULL(FIXED_COUPON,0) AS FIXED_COUPON,
+			IFNULL(CAP,0) AS CAP,
+			IFNULL(FLOOR,0) AS FLOOR
+		FROM 
+			PRODUCT_SCHEDULE
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+			AND PAY_RCV_CD = #{payRcvCd}			
+	</select>
+	
+</mapper>

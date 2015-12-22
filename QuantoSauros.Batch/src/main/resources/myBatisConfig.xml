@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<configuration>
+
+    <!-- db 정보 파일을 로드한다. -->
+    <properties resource="resource/db.properties" />
+
+	<!-- Log 정보 설정 -->
+   <settings>
+   		<setting name ="logImpl" value = "LOG4J"/>
+   		<!-- <setting name ="logImpl" value = "STDOUT_LOGGING"/> -->
+   		<!-- <setting name ="logImpl" value = "NO_LOGGING"/> -->
+   </settings>
+
+    <!-- db 연결 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}" />
+                <property name="url" value="${url}" />
+                <property name="username" value="${username}" />
+                <property name="password" value="${password}" />
+
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- sql 맵퍼 -->    
+    <mappers>
+        <mapper resource="resource/sqlMapper/DBCommon.xml" />
+        <mapper resource="resource/sqlMapper/MarketData.xml" />
+        <mapper resource="resource/sqlMapper/ProcPriceData.xml" />
+        <mapper resource="resource/sqlMapper/InsertProductInfo.xml" />
+    </mappers>   
+
+</configuration>

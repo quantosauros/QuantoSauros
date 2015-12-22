@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "MarketData">
+	   
+<!-- RESULT MAP -->
+
+	<resultMap id = "getIrCurve" type = "com.kirudabatch.dao.IrCurveDao">
+	    <result property="factorCd" column="FACTOR_CD" />
+	    <result property="irValue" column="IR" />
+	    <result property="dcf" column="DAY_COUNT_CONVENTION" />	  
+	    <result property="compoundFrequency" column="COMPOUND_FREQUENCY" />	  
+	    <result property="ccyCd" column="CCY_CD" />	  	    	  	    
+	    <result property="mrtyCd" column="MRTY_CD" />
+	    <result property="type" column="TYPE" />
+	</resultMap>
+
+	<resultMap id = "getVolSurface" type = "com.kirudabatch.dao.VolSurfDao">
+	    <result property="swaptionMrty" column="VERTEX1" />
+	    <result property="swaptionTenor" column="VERTEX2" />
+	    <result property="vol" column="VOL" />	  
+	    <result property="ccyCd" column="CCY_CD" />	  	    	  	    
+	    <result property="dcf" column="DCF" />
+	    <result property="cntNumber" column="CNT" />
+	</resultMap>
+<!-- SELECT  -->
+	
+	<select id="getIrcCdFromMarketDataMap" resultType="String">
+		SELECT 
+			 IFNULL(A.TOBE_CD, #{originCd})
+		FROM 
+			MARKET_DATA_MAP A		    
+		WHERE			
+		    A.ID = #{marketDataId}
+		    AND A.ORIGIN_CD = #{originCd}
+    </select>
+	
+	<select id="getIrcCd" resultType="map">
+		SELECT
+			A.PAY_RCV_CD, A.LEG_TYPE_CD, 
+			IF(A.COUPON_IRC_CD1 = '', NULL,  A.COUPON_IRC_CD1) AS COUPON_IRC_CD1,
+			IF(A.COUPON_IRC_CD2 = '', NULL,  A.COUPON_IRC_CD2) AS COUPON_IRC_CD2,
+			IF(A.COUPON_IRC_CD3 = '', NULL,  A.COUPON_IRC_CD3) AS COUPON_IRC_CD3,
+			B.IRC_CD AS LEG_IRC_CD,
+			C.IRC_CD AS DISC_IRC_CD
+		FROM
+			PRODUCT_LEG A,
+			IRC_INFO B,
+			(SELECT
+				BB.IRC_CD
+			FROM
+				PRODUCT_INFO AA,
+				IRC_INFO BB
+			WHERE
+				AA.CCY_CD = BB.CCY_CD
+				AND AA.INSTRUMENT_CD = #{instrumentCd}
+				AND BB.ISRISKFREE = 'Y') C
+		WHERE
+			A.INSTRUMENT_CD = #{instrumentCd}
+		   AND A.CCY_CD = B.CCY_CD
+		   AND B.ISRISKFREE = 'Y'
+    </select>
+    
+    <select id="getCcyCodeFromIrcCd" resultType="String">
+   		SELECT CCY_CD FROM IRC_INFO WHERE IRC_CD = #{ircCd};
+    </select>
+    
+    <select id="getRiskFreeIrcCdFromCcyCd" resultType="String">
+   		SELECT IRC_CD FROM IRC_INFO WHERE CCY_CD = #{ccyCd} AND ISRISKFREE = 'Y';
+    </select>
+    
+    <select id="getIrcCodesofProduct" resultType="map">
+		SELECT 
+			RCVLEG.COUPON_IRC_CD1 AS R_COUPON_IRC_CD1, 
+			RCVLEG.COUPON_IRC_CD2 AS R_COUPON_IRC_CD2, 
+			RCVLEG.COUPON_IRC_CD3 AS R_COUPON_IRC_CD3, 
+			PAYLEG.COUPON_IRC_CD1 AS P_COUPON_IRC_CD1,
+			PAYLEG.COUPON_IRC_CD2 AS P_COUPON_IRC_CD2,
+			PAYLEG.COUPON_IRC_CD3 AS P_COUPON_IRC_CD3,
+			DISCLEG.IRC_CD AS DISC_IRC_CD
+		FROM 
+			(SELECT INSTRUMENT_CD, COUPON_IRC_CD1, COUPON_IRC_CD2, COUPON_IRC_CD3 FROM PRODUCT_LEG WHERE PAY_RCV_CD = 'P') PAYLEG,
+			(SELECT INSTRUMENT_CD, COUPON_IRC_CD1, COUPON_IRC_CD2, COUPON_IRC_CD3 FROM PRODUCT_LEG WHERE PAY_RCV_CD = 'R') RCVLEG,
+			(SELECT A.INSTRUMENT_CD, B.IRC_CD FROM PRODUCT_INFO A, IRC_INFO B WHERE A.CCY_CD = B.CCY_CD AND B.ISRISKFREE = 'Y') DISCLEG
+		WHERE 
+			PAYLEG.INSTRUMENT_CD = RCVLEG.INSTRUMENT_CD
+			AND PAYLEG.INSTRUMENT_CD = DISCLEG.INSTRUMENT_CD
+			AND PAYLEG.INSTRUMENT_CD = #{instrumentCd}
+    </select>
+    
+	<select id="getIrCurveFromIrcCd" resultMap="getIrCurve">
+		SELECT 
+			C.FACTOR_CD, C.IR, C.TYPE,
+			A.DAY_COUNT_CONVENTION, 
+			A.COMPOUND_FREQUENCY, A.CCY_CD, B.MRTY_CD 
+		FROM 
+			IRC_INFO A,
+			IR_INFO B,
+		    IR_DATA C,
+  			SYS_CD_MAP D
+		WHERE
+			A.IRC_CD = B.IRC_CD
+		    AND B.FACTOR_CD = C.FACTOR_CD
+		    AND A.IRC_CD = #{ircCd}
+		    AND C.DT = #{dt}
+			AND D.SRC_CD = B.MRTY_CD
+		ORDER BY D.CD
+    </select>
+    
+	<select id="getVolatilitySurfaceData" resultMap="getVolSurface">
+		SELECT 
+			A.VERTEX1, A.VERTEX2, A.VOL, B.CCY_CD, B.DCF, E.CNT
+		FROM 
+			VOL_SURFACE_DATA A,
+			VOL_SURFACE_INFO B,
+			SYS_CD_MAP C,
+			SYS_CD_MAP D,
+			(SELECT 
+					COUNT(*) AS CNT 
+				FROM 
+					VOL_SURFACE_DATA AA, VOL_SURFACE_INFO BB 
+				WHERE 
+					AA.DT = #{dt} 
+					AND AA.VOL_SURFACE_CD = BB.VOL_SURFACE_CD 
+					AND BB.CCY_CD = #{ccyCd} 
+				GROUP BY VERTEX2 
+				LIMIT 1) E
+		WHERE 
+			A.DT = #{dt}
+			AND A.VOL_SURFACE_CD = B.VOL_SURFACE_CD
+			AND B.CCY_CD = #{ccyCd}
+			AND C.TYPE = '002'
+			AND C.SRC_CD = A.VERTEX1
+			AND D.SRC_CD = A.VERTEX2
+		ORDER BY D.CD, C.CD
+	</select>
+    
+    <select id="getStlLegFXRate" resultType="map">
+		SELECT
+			B.PAY_RCV_CD, 
+			B.LEG_TYPE_CD, 
+			A.CCY_CD AS BASE_CCY, 
+			B.CCY_CD AS REFERENCE_CCY, 
+			CASE WHEN A.CCY_CD = B.CCY_CD 
+			THEN 
+				1 
+			ELSE 
+				(SELECT 
+					CC.VALUE 
+				FROM 
+					FX_DATA CC 
+				WHERE 
+					A.CCY_CD = CC.CCY_CD1 
+					AND B.CCY_CD = CC.CCY_CD2)
+			END AS VALUE
+		FROM
+			PRODUCT_INFO A,
+			PRODUCT_LEG B
+		WHERE
+			A.INSTRUMENT_CD = B.INSTRUMENT_CD
+			AND A.INSTRUMENT_CD = #{instrumentCd}
+			AND B.PAY_RCV_CD = #{payRcvCd}
+    </select>
+    
+    <select id="getHullWhiteVolatility" resultType="map">
+		SELECT
+			C.MRTY_CD AS MRTY_CD, D.VOL AS VOL
+		FROM 
+			VOL_INFO C,
+			VOL_DATA D
+		WHERE 
+			C.CCY_CD = #{ccyCd}
+			AND C.FACTOR_CD = D.FACTOR_CD
+    </select>    
+
+</mapper>

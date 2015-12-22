@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+version = '1.0'
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'QuantoSauros.AAD',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.quantosauros.aad'
+    }
+    baseName = project.name + getDate()
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+	compile fileTree(dir: 'lib', include: '*.jar')    
+    compile 'log4j:log4j:1.2.17'
+}
+
+def getDate(){
+	def date = new Date()
+	def formattedDate = date.format('yyyyMMdd')
+	return formattedDate
+}
