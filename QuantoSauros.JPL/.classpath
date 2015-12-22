@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/jayjl/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.2/ec2544ab27e110d2d431bdad7d538ed509b21e62/commons-math3-3.2.jar" sourcepath="C:/Users/jayjl/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.2/cd098e055bf192a60c81d81893893e6e31a6482f/commons-math3-3.2-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/QuantoSauros.Common"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
