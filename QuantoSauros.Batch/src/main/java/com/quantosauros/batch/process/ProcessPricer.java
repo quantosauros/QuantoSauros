@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.quantosauros.batch.dao.MarketDataDao;
+import com.quantosauros.batch.dao.MySqlMarketDataDao;
 import com.quantosauros.batch.instrument.DeltaResult;
 import com.quantosauros.batch.instrument.calculator.AbstractCalculator;
 import com.quantosauros.batch.instrument.marketDataCreator.HullWhiteVolatilitySurfaceCreator;
@@ -28,24 +30,23 @@ import com.quantosauros.jpl.dto.ProductInfo;
 
 public class ProcessPricer {
 
-	protected AbstractCalculator _calculator;
-	protected SqlSession _session;
+	protected AbstractCalculator _calculator;	
 	protected IRCurveContainer _irCurveContainer;	
 	protected HullWhiteVolatilitySurfaceCreator _surfaceContainer;
 	protected double _epsilon = 0.0001;
 	protected Date _processDate;
+	protected MarketDataDao _marketDataDao = new MySqlMarketDataDao();
 	
 	public ProcessPricer(Date processDate, String instrumentCd, 
 			int monitorFrequency, int simNum) {
 				
-		_session = SqlMapClient.getSqlSession();
 		_processDate = processDate;
 		_irCurveContainer = new IRCurveContainer(processDate, _epsilon);		
 		_surfaceContainer = new HullWhiteVolatilitySurfaceCreator(processDate);
 		
-		Map paramMap = new HashMap();
-		paramMap.put("instrumentCd", instrumentCd);
-		List ircCdList = _session.selectList("MarketData.getIrcCd", paramMap);
+		HashMap paramMap = new HashMap();
+		paramMap.put("instrumentCd", instrumentCd);		
+		List ircCdList = _marketDataDao.selectIRCCode(paramMap);
 		HashMap riskFactorMap = genCurveContainer(ircCdList);		
 		
 		_calculator = new AbstractCalculator(instrumentCd, 
@@ -110,11 +111,10 @@ public class ProcessPricer {
 				} else {
 					String ircCd = (String) ircCdMap.get(key);
 					
-					Map paramMap = new HashMap(); 
+					HashMap paramMap = new HashMap(); 
 					paramMap.put("ircCd", ircCd);
-					String ccyCd = _session.selectOne(
-							"MarketData.getCcyCodeFromIrcCd", paramMap);					
-					
+					String ccyCd = _marketDataDao.selectCcyCodeFromIrcCd(paramMap);
+
 					_irCurveContainer.storeIrCurve(ircCd);					
 					
 					String irRiskFactorCd = payRcvCd + "_" + key;

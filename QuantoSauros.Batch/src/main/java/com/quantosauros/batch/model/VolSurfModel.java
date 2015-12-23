@@ -1,6 +1,6 @@
-package com.quantosauros.batch.dao;
+package com.quantosauros.batch.model;
 
-public class VolSurfDao {
+public class VolSurfModel {
 
 	private String swaptionMrty;
 	private String swaptionTenor;

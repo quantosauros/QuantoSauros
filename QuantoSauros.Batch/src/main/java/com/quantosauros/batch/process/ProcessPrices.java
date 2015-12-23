@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.quantosauros.batch.dao.InstrumentInfoDao;
+import org.apache.ibatis.session.SqlSession;
+
+import com.quantosauros.batch.model.InstrumentInfoModel;
 import com.quantosauros.common.TypeDef;
 import com.quantosauros.common.TypeDef.ResultType;
 import com.quantosauros.common.currency.Money;
@@ -22,27 +24,26 @@ public class ProcessPrices extends AbstractProcess {
 	public ProcessPrices(Date processDate, String procId, String idx) {
 		super(processDate, procId, idx);
 		//Insert DeltaGamma Info
-		Map paramMap = new HashMap();
+		HashMap paramMap = new HashMap();
 		paramMap.put("proc_id", _procId);
 		paramMap.put("idx_id", _idx);
 		String description = "default";
 		paramMap.put("description", description);
-		_session.insert("ProcPriceData.insertPriceInfo", paramMap);		
+		_procPriceDataDao.insertPriceInfo(paramMap);				
 		
 		//get a Market Data ID from proc Id
 		paramMap = new HashMap();
 		paramMap.put("procId", _procId);
 		paramMap.put("idxId", _idx);
-		_marketDataId = (String)_session.selectOne(
-				"ProcPriceData.getDataIdFromPriceByProcId", paramMap);
+		_marketDataId = _procPriceDataDao.selectDataIdFromPriceByProcId(paramMap);
 	}
 
-	protected void calcInstrument(InstrumentInfoDao instrumentInfoDao){	
+	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel){	
 		_originPrices = _calculator.getPrice(
 				_processDate, _irCurveContainer, _surfaceContainer, "");
 		
 		if (_insertResult)
-			insertDetailResult(instrumentInfoDao.getInstrumentCd(), true);
+			insertDetailResult(instrumentInfoModel.getInstrumentCd(), true);
 				
 		_resultRcvValues = _calculator.getLegPrice(0).getAmount();		
 		_resultPayValues = _calculator.getLegPrice(1).getAmount();
@@ -57,7 +58,7 @@ public class ProcessPrices extends AbstractProcess {
 					_processDate, _irCurveContainer, _surfaceContainer, "");
 			
 			if (_insertResult)
-				insertDetailResult(instrumentInfoDao.getInstrumentCd(), false);
+				insertDetailResult(instrumentInfoModel.getInstrumentCd(), false);
 			
 			double noncallRcvValue = _calculator.getLegPrice(0).getAmount();
 			double noncallPayValue = _calculator.getLegPrice(1).getAmount();
@@ -92,7 +93,7 @@ public class ProcessPrices extends AbstractProcess {
 						double avg = resultDto[legIndex].getAvgValue(periodIndex);					
 						double std = resultDto[legIndex].getStdValue(periodIndex);
 						
-						Map paramMap = new HashMap();
+						HashMap paramMap = new HashMap();
 						paramMap.put("dt", _processDate.getDt());
 				    	paramMap.put("procId", _procId);
 						paramMap.put("instrumentCd", instrumentCd);
@@ -104,8 +105,7 @@ public class ProcessPrices extends AbstractProcess {
 						paramMap.put("value1", new BigDecimal(avg));
 						paramMap.put("value2", new BigDecimal(std));
 						
-				    	_session.insert("ProcPriceData.insertDetailData", paramMap);
-				    	_session.commit();				
+				    	_procPriceDataDao.insertDetailData(paramMap);			
 						
 						//System.out.println(valueType + legType + periodIndex + avg + std);
 					}
@@ -116,7 +116,7 @@ public class ProcessPrices extends AbstractProcess {
 					double avg = resultDto.getAvgValue(periodIndex);					
 					double std = resultDto.getStdValue(periodIndex);	
 					
-					Map paramMap = new HashMap();
+					HashMap paramMap = new HashMap();
 					paramMap.put("dt", _processDate.getDt());
 			    	paramMap.put("procId", _procId);
 					paramMap.put("instrumentCd", instrumentCd);
@@ -128,15 +128,14 @@ public class ProcessPrices extends AbstractProcess {
 					paramMap.put("value1", new BigDecimal(avg));
 					paramMap.put("value2", new BigDecimal(std));
 					
-			    	_session.insert("ProcPriceData.insertDetailData", paramMap);
-			    	_session.commit();
+					_procPriceDataDao.insertDetailData(paramMap);
 				}
 			}					
 		}
 	}
 	
-	protected void insertResult(InstrumentInfoDao instrumentInfoDao){
-		Map paramMap = new HashMap();
+	protected void insertResult(InstrumentInfoModel instrumentInfoModel){
+		HashMap paramMap = new HashMap();
 		Money originPrice = _originPrices;
 		BigDecimal originValue = 
 				new BigDecimal(originPrice.getAmount());
@@ -154,14 +153,13 @@ public class ProcessPrices extends AbstractProcess {
 		    	
     	paramMap.put("dt", _processDate.getDt());
     	paramMap.put("procId", _procId);
-		paramMap.put("instrumentCd", instrumentInfoDao.getInstrumentCd());
+		paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());
 		paramMap.put("idx", _idx);
 		paramMap.put("price", originValue);
 		paramMap.put("payPrice", new BigDecimal(payPrice));
 		paramMap.put("rcvPrice", new BigDecimal(rcvPrice));		
-		paramMap.put("ccyCd", instrumentInfoDao.getCcyCd());
-    	_session.insert("ProcPriceData.insertPrice", paramMap);
-    	_session.commit();
+		paramMap.put("ccyCd", instrumentInfoModel.getCcyCd());
+    	_procPriceDataDao.insertPrice(paramMap);
 		
 	}
 }

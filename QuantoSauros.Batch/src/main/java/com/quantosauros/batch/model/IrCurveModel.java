@@ -1,6 +1,6 @@
-package com.quantosauros.batch.dao;
+package com.quantosauros.batch.model;
 
-public class IrCurveDao {
+public class IrCurveModel {
 
 	private String factorCd;
 	private String irValue;

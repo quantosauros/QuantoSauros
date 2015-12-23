@@ -8,9 +8,15 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.quantosauros.batch.dao.InstrumentInfoDao;
+import com.quantosauros.batch.dao.MarketDataDao;
+import com.quantosauros.batch.dao.MySqlInstrumentInfoDao;
+import com.quantosauros.batch.dao.MySqlMarketDataDao;
+import com.quantosauros.batch.dao.MySqlProcPriceDataDao;
+import com.quantosauros.batch.dao.ProcPriceDataDao;
 import com.quantosauros.batch.instrument.calculator.AbstractCalculator;
 import com.quantosauros.batch.instrument.marketDataCreator.HullWhiteVolatilitySurfaceCreator;
 import com.quantosauros.batch.instrument.marketDataCreator.IRCurveContainer;
+import com.quantosauros.batch.model.InstrumentInfoModel;
 import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.CcyType;
 import com.quantosauros.batch.types.RiskFactorType;
@@ -22,14 +28,17 @@ public abstract class AbstractProcess {
 	//protected String _processInstTypeCd;
 	protected String _procId;
 	
-	protected String _idx;
-	protected SqlSession _session;
-	protected List<InstrumentInfoDao> _infoDaoList;
+	protected String _idx;	
+	protected List<InstrumentInfoModel> _infoDaoList;
 	protected String _marketDataId;
 	protected IRCurveContainer _irCurveContainer;	
 	protected HullWhiteVolatilitySurfaceCreator _surfaceContainer;
 	
 	protected AbstractCalculator _calculator;
+	
+	protected InstrumentInfoDao _instrumentInfoDao = new MySqlInstrumentInfoDao();
+	protected MarketDataDao _marketDataDao = new MySqlMarketDataDao();
+	protected ProcPriceDataDao _procPriceDataDao = new MySqlProcPriceDataDao();
 	
 	protected int _simNum = 5000;	
 	protected int _monitorFrequency = 1;	
@@ -40,7 +49,6 @@ public abstract class AbstractProcess {
 		_processDate = processDate;
 		_procId = procId;
 		_idx = idx;		
-		_session = SqlMapClient.getSqlSession();	
 		if (this instanceof ProcessPrices){
 			_epsilon = 0;
 		} else if (this instanceof ProcessGreeks){
@@ -50,35 +58,36 @@ public abstract class AbstractProcess {
 		_surfaceContainer = new HullWhiteVolatilitySurfaceCreator(processDate);
 		
 		//get an instrument list
-		Map paramMap = new HashMap();
+		HashMap paramMap = new HashMap();
 		paramMap.put("dt", _processDate.getDt());
-		_infoDaoList = _session.selectList("DBCommon.getInstrumentInfo", paramMap);
+		_infoDaoList = _instrumentInfoDao.selectInstrumentInfo(paramMap);
 	}
 	
 	public final void execute(){
 		for (int infoDaoIndex = 0; infoDaoIndex < _infoDaoList.size(); infoDaoIndex++){
-			InstrumentInfoDao instrumentInfoDao = _infoDaoList.get(infoDaoIndex);
-			generate(instrumentInfoDao);
-			calculate(instrumentInfoDao);
+			InstrumentInfoModel instrumentInfoModel = _infoDaoList.get(infoDaoIndex);
+			generate(instrumentInfoModel);
+			calculate(instrumentInfoModel);
 		}
 	}
-	private void generate(InstrumentInfoDao instrumentInfoDao){		
+	private void generate(InstrumentInfoModel instrumentInfoModel){		
 		//generate a Curve Container
-		Map paramMap = new HashMap();
-		paramMap.put("instrumentCd", instrumentInfoDao.getInstrumentCd());
-		List ircCdList = _session.selectList("MarketData.getIrcCd", paramMap);
+		HashMap paramMap = new HashMap();
+		paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());
+		List ircCdList = _marketDataDao.selectIRCCode(paramMap);
+		
 		HashMap riskFactorCdMap = genCurveContainer(ircCdList);
 		
 		//generate Calculator
 		_calculator = new AbstractCalculator(
-				instrumentInfoDao.getInstrumentCd(), _processDate, 
+				instrumentInfoModel.getInstrumentCd(), _processDate, 
 				riskFactorCdMap, _monitorFrequency, _simNum);
 	}
 	
-	private void calculate(InstrumentInfoDao instrumentInfoDao){		
-		calcInstrument(instrumentInfoDao);
+	private void calculate(InstrumentInfoModel instrumentInfoModel){		
+		calcInstrument(instrumentInfoModel);
 		if (_insertResult)
-			insertResult(instrumentInfoDao);		
+			insertResult(instrumentInfoModel);		
 	}
 		
 	private HashMap genCurveContainer(List ircCdList){
@@ -98,17 +107,15 @@ public abstract class AbstractProcess {
 					String ircCd = (String) ircCdMap.get(key);
 					if (!_marketDataId.equals("0")){
 			        	//Specific Market Scenario
-			        	Map paramMap = new HashMap();        		
+			        	HashMap paramMap = new HashMap();        		
 						paramMap.put("marketDataId", _marketDataId);
 						paramMap.put("originCd", ircCd);
-						ircCd = (String)_session.selectOne(
-								"MarketData.getIrcCdFromMarketDataMap", paramMap);	        	
+						ircCd = _marketDataDao.selectIRCCodeFromMarketDataMap(paramMap);	        	
 					}
 					
-					Map paramMap = new HashMap(); 
+					HashMap paramMap = new HashMap(); 
 					paramMap.put("ircCd", ircCd);
-					String ccyCd = _session.selectOne(
-							"MarketData.getCcyCodeFromIrcCd", paramMap);					
+					String ccyCd = _marketDataDao.selectCcyCodeFromIrcCd(paramMap);					
 					
 					_irCurveContainer.storeIrCurve(ircCd);					
 					
@@ -137,8 +144,8 @@ public abstract class AbstractProcess {
 		return tmpMap;
 	}
 	
-	protected abstract void calcInstrument(InstrumentInfoDao instrumentInfoDao);	
-	protected abstract void insertResult(InstrumentInfoDao instrumentInfoDao);
+	protected abstract void calcInstrument(InstrumentInfoModel instrumentInfoModel);	
+	protected abstract void insertResult(InstrumentInfoModel instrumentInfoModel);
 		
 	public void setSimNum(int simNum){
 		this._simNum = simNum;
@@ -147,11 +154,11 @@ public abstract class AbstractProcess {
 		_monitorFrequency = monitorFrequency;
 	}
 	public void setSpecificInstrument(String instrumentCd){
-		Map paramMap = new HashMap();
+		HashMap paramMap = new HashMap();
 		paramMap.put("dt", _processDate.getDt());
-		paramMap.put("instrumentCd", instrumentCd);
-		_infoDaoList = _session.selectList(
-				"DBCommon.getInstrumentInfoSpeicificProduct", paramMap);		
+		paramMap.put("instrumentCd", instrumentCd);		
+		
+		_infoDaoList = _instrumentInfoDao.selectSpecificInstrumentInfo(paramMap);		
 		
 	}
 	public void setInsertResults(boolean flag){

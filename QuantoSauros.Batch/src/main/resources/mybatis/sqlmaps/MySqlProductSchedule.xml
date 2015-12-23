@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace = "ProductSchedule">
+
+    <!-- RESULT MAP -->
+<resultMap id = "productSchedule" type = "com.quantosauros.batch.model.ProductScheduleModel">
+	    <result property="couponStrtDt" column="COUPON_STRT_DT" />
+	    <result property="couponResetDt" column="COUPON_RESET_DT" />
+	    <result property="couponEndDt" column="COUPON_END_DT" />
+	    <result property="couponPayDt" column="COUPON_PAY_DT" />
+	    <result property="couponType" column="COUPON_TYPE" />
+	    <result property="principal" column="PRINCIPAL" />
+	    <result property="upperBound1" column="UPPERBOUND1" />
+	    <result property="lowerBound1" column="LOWERBOUND1" />
+	    <result property="leverage1" column="LEVERAGE1" />
+	    <result property="upperBound2" column="UPPERBOUND2" />
+	    <result property="lowerBound2" column="LOWERBOUND2" />	    
+	    <result property="leverage2" column="LEVERAGE2" />
+	    <result property="leverage3" column="LEVERAGE3" />
+	    <result property="inCoupon" column="INCOUPON" />
+	    <result property="outCoupon" column="OUTCOUPON" />
+	    <result property="fixedCoupon" column="FIXED_COUPON" />
+	    <result property="cap" column="CAP" />
+	    <result property="floor" column="FLOOR" />
+	</resultMap>
+	
+    <!-- SELECT  -->
+	<select id="getProductSchedule" parameterType="map" resultMap="productSchedule">
+		SELECT
+			COUPON_STRT_DT, COUPON_RESET_DT, COUPON_END_DT, COUPON_PAY_DT,
+			COUPON_TYPE, PRINCIPAL, 
+			IFNULL(UPPERBOUND1,0) AS UPPERBOUND1, 
+			IFNULL(LOWERBOUND1,0) AS LOWERBOUND1, 
+			IFNULL(LEVERAGE1,0) AS LEVERAGE1,
+			IFNULL(UPPERBOUND2,0) AS UPPERBOUND2, 
+			IFNULL(LOWERBOUND2,0) AS LOWERBOUND2, 
+			IFNULL(LEVERAGE2,0) AS LEVERAGE2,
+			IFNULL(LEVERAGE3,0) AS LEVERAGE3,
+			IFNULL(INCOUPON,0) AS INCOUPON, 
+			IFNULL(OUTCOUPON,0) AS OUTCOUPON, 
+			IFNULL(FIXED_COUPON,0) AS FIXED_COUPON,
+			IFNULL(CAP,0) AS CAP,
+			IFNULL(FLOOR,0) AS FLOOR
+		FROM 
+			PRODUCT_SCHEDULE
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+			AND PAY_RCV_CD = #{payRcvCd}			
+	</select>
+</mapper>

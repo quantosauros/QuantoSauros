@@ -31,9 +31,14 @@
 
     <!-- sql 맵퍼 -->    
     <mappers>
-        <mapper resource="./mybatis/sqlmaps/DBCommon.xml" />
-        <mapper resource="./mybatis/sqlmaps/MarketData.xml" />
-        <mapper resource="./mybatis/sqlmaps/ProcPriceData.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlInstrumentInfo.xml" />        
+        <mapper resource="./mybatis/sqlmaps/MySqlProductInfo.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlProductLeg.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlProductLegData.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlProductOptionSchedule.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlProductSchedule.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlMarketData.xml" />
+        <mapper resource="./mybatis/sqlmaps/MySqlProcPriceData.xml" />
         <mapper resource="./mybatis/sqlmaps/InsertProductInfo.xml" />
     </mappers>   
 

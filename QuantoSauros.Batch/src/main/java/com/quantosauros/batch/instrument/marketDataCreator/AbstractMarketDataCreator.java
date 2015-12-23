@@ -6,10 +6,12 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.quantosauros.batch.dao.IrCurveDao;
-import com.quantosauros.batch.dao.ProductInfoDao;
-import com.quantosauros.batch.dao.ProductLegDao;
-import com.quantosauros.batch.dao.VolSurfDao;
+import com.quantosauros.batch.dao.MarketDataDao;
+import com.quantosauros.batch.dao.MySqlMarketDataDao;
+import com.quantosauros.batch.model.IrCurveModel;
+import com.quantosauros.batch.model.ProductInfoModel;
+import com.quantosauros.batch.model.ProductLegModel;
+import com.quantosauros.batch.model.VolSurfModel;
 import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.RiskFactorType.RiskFactor;
 import com.quantosauros.common.Frequency;
@@ -27,15 +29,14 @@ import com.quantosauros.common.volatility.VolatilityCurve;
 import com.quantosauros.common.volatility.VolatilitySurface;
 
 public class AbstractMarketDataCreator {
-
+	
 	public static FxRate getStlLegFxRates(String instrumentCd, String payRcvCd){
 		
-		SqlSession session = SqlMapClient.getSqlSession();
-		Map paramMap = new HashMap();        		
+		MarketDataDao marketDataDao = new MySqlMarketDataDao();		
+		HashMap paramMap = new HashMap();        		
 		paramMap.put("instrumentCd", instrumentCd);
 		paramMap.put("payRcvCd", payRcvCd);
-		Map stlLegFxMap = 
-				(Map) session.selectOne("MarketData.getStlLegFXRate", paramMap);
+		Map<String, Object> stlLegFxMap = marketDataDao.selectSTLLegFxRate(paramMap);
 		
 		//StlLeg FXRATE
 		FxRate fxRate = FxRate.valueOf(
@@ -49,11 +50,10 @@ public class AbstractMarketDataCreator {
 	public static HullWhiteVolatility[] getHullWhiteVolatility1(
 			String ccyCd){
 		
-		SqlSession session = SqlMapClient.getSqlSession();
-		Map paramMap = new HashMap();        		
+		MarketDataDao marketDataDao = new MySqlMarketDataDao();		
+		HashMap paramMap = new HashMap();        		
 		paramMap.put("ccyCd", ccyCd);
-		Map hwMap = (Map) session.selectOne(
-				"MarketData.getHullWhiteVolatility", paramMap);
+		Map hwMap = marketDataDao.selectHWVolatility(paramMap);
 
 		String vertexStr = (String) hwMap.get("MRTY_CD");
 		double vtx = Vertex.valueOf(vertexStr).getVertex();
@@ -63,8 +63,7 @@ public class AbstractMarketDataCreator {
 				new HullWhiteVolatility(new double[]{vtx},new double[]{hwVol}),
 		};
 		
-		return HWVol;
-		
+		return HWVol;		
 	}	
 	
 	public static HullWhiteParameters getHWParameters1(){
@@ -107,12 +106,11 @@ public class AbstractMarketDataCreator {
 	
 	public static double[][] getCorrelation(
 			String instrumentCd, RiskFactor[][] corrRFArray){		
-		
-		SqlSession session = SqlMapClient.getSqlSession();
-		Map paramMap = new HashMap();        		
+				
+		MarketDataDao marketDataDao = new MySqlMarketDataDao();
+		HashMap paramMap = new HashMap();        		
 		paramMap.put("instrumentCd", instrumentCd);
-		Map hwMap = (Map) session.selectOne(
-				"MarketData.getIrcCodesofProduct", paramMap);
+		Map hwMap = marketDataDao.selectIRCCodesofProduct(paramMap);
 		
 		int legNum = corrRFArray.length;
 		int[] undNum = new int[legNum];
@@ -172,21 +170,21 @@ public class AbstractMarketDataCreator {
 	}
 	
 	public static InterestRateCurve getIrCurve(Date asOfDate,
-			List irCurveDaoList){
+			List irCurveModelList){
 		
-		InterestRate[] spotRates = new InterestRate[irCurveDaoList.size()];
+		InterestRate[] spotRates = new InterestRate[irCurveModelList.size()];
 		DayCountFraction dcf = null;
 		Frequency compoundFreq = null;
 
-		for (int i = 0; i < irCurveDaoList.size(); i++){
-			IrCurveDao irCurveDao = (IrCurveDao) irCurveDaoList.get(i);
-			dcf = DayCountFraction.valueOf(irCurveDao.getDcf());
-			compoundFreq = Frequency.valueOf(irCurveDao.getCompoundFrequency());
-			String type = irCurveDao.getType();
+		for (int i = 0; i < irCurveModelList.size(); i++){
+			IrCurveModel irCurveModel = (IrCurveModel) irCurveModelList.get(i);
+			dcf = DayCountFraction.valueOf(irCurveModel.getDcf());
+			compoundFreq = Frequency.valueOf(irCurveModel.getCompoundFrequency());
+			String type = irCurveModel.getType();
 						
 			spotRates[i] = new InterestRate(
-					Vertex.valueOf(irCurveDao.getMrtyCd()),
-					Double.parseDouble(irCurveDao.getIrValue()), type);
+					Vertex.valueOf(irCurveModel.getMrtyCd()),
+					Double.parseDouble(irCurveModel.getIrValue()), type);
 		}
 				
 		InterestRateCurve irCurve = 
@@ -196,15 +194,15 @@ public class AbstractMarketDataCreator {
 	}
 	
 	public static VolatilitySurface getVolatilitySurface(Date asOfDate,
-			List volSurfDaoList){
+			List volSurfModelList){
 		
-		int totalNumber = volSurfDaoList.size();		
+		int totalNumber = volSurfModelList.size();		
 		int mrtyNumber = Integer.parseInt(
-				((VolSurfDao) volSurfDaoList.get(0)).getCntNumber());
+				((VolSurfModel) volSurfModelList.get(0)).getCntNumber());
 		int tenorNumber = totalNumber / mrtyNumber;
 		
 		DayCountFraction dcf = DayCountFraction.valueOf(
-				((VolSurfDao) volSurfDaoList.get(0)).getDcf());
+				((VolSurfModel) volSurfModelList.get(0)).getDcf());
 		
 		//generate Swaption Surface		
 		VolatilityCurve[] volCurves = new VolatilityCurve[tenorNumber];
@@ -214,11 +212,11 @@ public class AbstractMarketDataCreator {
 			Volatility[] vols = new Volatility[mrtyNumber];
 			for (int j = 0; j < mrtyNumber; j++){
 				index = i * mrtyNumber + j;
-				VolSurfDao volSurfDao = (VolSurfDao) volSurfDaoList.get(index);
+				VolSurfModel volSurfModel = (VolSurfModel) volSurfModelList.get(index);
 				
-				tenor = volSurfDao.getSwaptionTenor();
-				String mrty = volSurfDao.getSwaptionMrty();
-				double volatility = Double.parseDouble(volSurfDao.getVol());
+				tenor = volSurfModel.getSwaptionTenor();
+				String mrty = volSurfModel.getSwaptionMrty();
+				double volatility = Double.parseDouble(volSurfModel.getVol());
 				
 				vols[j] = new Volatility(Vertex.valueOf(mrty), volatility);
 				
@@ -234,19 +232,19 @@ public class AbstractMarketDataCreator {
 		return ModelType.HW1F;
 	}
 	
-	public static double[][][] getQuantoMarketData(ProductInfoDao productInfoDao,
-			ProductLegDao[] productLegDaos){
-		String productCcy = productInfoDao.getCcyCd();
+	public static double[][][] getQuantoMarketData(ProductInfoModel productInfoModel,
+			ProductLegModel[] productLegModels){
+		String productCcy = productInfoModel.getCcyCd();
 		//[0:corr, 1:vol][][]
-		double[][][] quantoMarketData = new double[2][productLegDaos.length][];
+		double[][][] quantoMarketData = new double[2][productLegModels.length][];
 		
-		for (int legIndex = 0; legIndex < productLegDaos.length; legIndex++){
+		for (int legIndex = 0; legIndex < productLegModels.length; legIndex++){
 			int undNum = 0;	
-			ProductLegDao productLegDao = productLegDaos[legIndex];
+			ProductLegModel productLegModel = productLegModels[legIndex];
 			String[] ccy = new String[] {
-					productLegDao.getCouponIrcCcy1(),
-					productLegDao.getCouponIrcCcy2(),
-					productLegDao.getCouponIrcCcy3(),
+					productLegModel.getCouponIrcCcy1(),
+					productLegModel.getCouponIrcCcy2(),
+					productLegModel.getCouponIrcCcy3(),
 			};
 			if (ccy[2] == null){
 				undNum = 2;

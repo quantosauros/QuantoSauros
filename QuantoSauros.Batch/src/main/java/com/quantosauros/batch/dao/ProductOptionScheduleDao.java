@@ -1,36 +1,11 @@
 package com.quantosauros.batch.dao;
 
-public class ProductOptionScheduleDao {
+import java.util.HashMap;
+import java.util.List;
 
-	private String optionTypeCd;
-	private String optionStrtDt;
-	private String optionEndDt;
-	private String strike;
-	
-    public String getOptionTypeCd() {
-        return optionTypeCd;
-    }     
-    public void setOptionTypeCd(String optionTypeCd) {
-        this.optionTypeCd = optionTypeCd;
-    }    
-    public String getOptionStrtDt(){
-    	return optionStrtDt;
-    }    
-    public void setOptionStrtDt(String optionStrtDt) {
-        this.optionStrtDt = optionStrtDt;
-    }    
-    public String getOptionEndDt(){
-    	return optionEndDt;
-    }
-    public void setOptionEndDt(String optionEndDt) {
-        this.optionEndDt = optionEndDt;
-    }
-    public String getStrike(){
-    	return strike;
-    }    
-    public void setStrike(String strike) {
-        this.strike = strike;
-    }
-    
-    
+import com.quantosauros.batch.model.ProductOptionScheduleModel;
+
+public interface ProductOptionScheduleDao {
+
+	List<ProductOptionScheduleModel> selectProductOptionSchedule(HashMap<String, Object> paramMap);
 }

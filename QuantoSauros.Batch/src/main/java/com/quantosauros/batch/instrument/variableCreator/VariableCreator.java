@@ -2,11 +2,11 @@ package com.quantosauros.batch.instrument.variableCreator;
 
 import java.util.List;
 
-import com.quantosauros.batch.dao.ProductInfoDao;
-import com.quantosauros.batch.dao.ProductLegDao;
-import com.quantosauros.batch.dao.ProductLegDataDao;
-import com.quantosauros.batch.dao.ProductOptionScheduleDao;
-import com.quantosauros.batch.dao.ProductScheduleDao;
+import com.quantosauros.batch.model.ProductInfoModel;
+import com.quantosauros.batch.model.ProductLegDataModel;
+import com.quantosauros.batch.model.ProductLegModel;
+import com.quantosauros.batch.model.ProductOptionScheduleModel;
+import com.quantosauros.batch.model.ProductScheduleModel;
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.TypeDef;
 import com.quantosauros.common.TypeDef.ConditionType;
@@ -36,41 +36,41 @@ import com.quantosauros.jpl.dto.underlying.UnderlyingInfo;
 
 public class VariableCreator {
 
-	public static ProductInfo getProductInfo(ProductInfoDao productInfoDao){
+	public static ProductInfo getProductInfo(ProductInfoModel productInfoModel){
 		
 		return new ProductInfo(
-				Date.valueOf(productInfoDao.getIssueDt()),
-				Date.valueOf(productInfoDao.getMrtyDt()),
-				Currency.getInstance(productInfoDao.getCcyCd()));		
+				Date.valueOf(productInfoModel.getIssueDt()),
+				Date.valueOf(productInfoModel.getMrtyDt()),
+				Currency.getInstance(productInfoModel.getCcyCd()));		
 	}
 	
 	public static LegCouponInfo[] getLegCouponInfos(
-			ProductInfoDao productInfoDao,
-    		ProductLegDao[] productLegDaos,
-    		List<ProductScheduleDao>[] productScheduleLists){
+			ProductInfoModel productInfoModel,
+    		ProductLegModel[] productLegModels,
+    		List<ProductScheduleModel>[] productScheduleLists){
 		
-		LegCouponInfo[] legCouponInfos = new LegCouponInfo[productLegDaos.length];
+		LegCouponInfo[] legCouponInfos = new LegCouponInfo[productLegModels.length];
 				
-		for (int legIndex = 0; legIndex < productLegDaos.length; legIndex++){
-			PayRcv payRcv = TypeDef.getPayRcv(productLegDaos[legIndex].getPayRcvCd());
-			String legTypeCd = productLegDaos[legIndex].getLegTypeCd();
-			ProductLegDao productLegDao = productLegDaos[legIndex];
-			List<ProductScheduleDao> productScheduleList = productScheduleLists[legIndex];
+		for (int legIndex = 0; legIndex < productLegModels.length; legIndex++){
+			PayRcv payRcv = TypeDef.getPayRcv(productLegModels[legIndex].getPayRcvCd());
+			String legTypeCd = productLegModels[legIndex].getLegTypeCd();
+			ProductLegModel productLegModel = productLegModels[legIndex];
+			List<ProductScheduleModel> productScheduleList = productScheduleLists[legIndex];
 		
 			UnderlyingType underlyingType = 
-					TypeDef.getUnderlyingType(productLegDaos[legIndex].getUnderlyingType());
+					TypeDef.getUnderlyingType(productLegModels[legIndex].getUnderlyingType());
 			ConditionType conditionType = 
-					TypeDef.getConditionType(productLegDaos[legIndex].getConditionType());
+					TypeDef.getConditionType(productLegModels[legIndex].getConditionType());
 						
 			int undNum = TypeDef.getNumOfUnderNum(underlyingType);		
 			int condiNum = TypeDef.getNumOfCondition(conditionType);
 			
 			//Model Type
 			ModelType[] modelTypes = new ModelType[undNum];			
-			String ircCd1 = productLegDaos[legIndex].getCouponIrcCd1();
-			String ircCd2 = productLegDaos[legIndex].getCouponIrcCd2();
-			String ircCd3 = productLegDaos[legIndex].getCouponIrcCd3();
-			String undType = productLegDaos[legIndex].getUnderlyingType();
+			String ircCd1 = productLegModels[legIndex].getCouponIrcCd1();
+			String ircCd2 = productLegModels[legIndex].getCouponIrcCd2();
+			String ircCd3 = productLegModels[legIndex].getCouponIrcCd3();
+			String undType = productLegModels[legIndex].getUnderlyingType();
 			if (undType.equals(UnderlyingType.R1mR2)){
 				//Spread R1 - R2
 				if (ircCd1.equals(ircCd2)){
@@ -119,34 +119,34 @@ public class VariableCreator {
 			RateType[] rateTypes = new RateType[undNum];
 			switch (undNum){
 				case 1 :
-					tenors[0] = Vertex.getVertex(productLegDao.getCouponIrcMrtyCd1());
+					tenors[0] = Vertex.getVertex(productLegModel.getCouponIrcMrtyCd1());
 					swapCouponFrequencies[0] = 
-							Frequency.valueOf(productLegDao.getCouponIrcCouponFreqCd1());
-					rateTypes[0] = TypeDef.getRateType(productLegDao.getCouponIrcTypeCd1());
+							Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd1());
+					rateTypes[0] = TypeDef.getRateType(productLegModel.getCouponIrcTypeCd1());
 					break;
 				case 2 :
-					tenors[0] = Vertex.getVertex(productLegDao.getCouponIrcMrtyCd1());
+					tenors[0] = Vertex.getVertex(productLegModel.getCouponIrcMrtyCd1());
 					swapCouponFrequencies[0] = 
-							Frequency.valueOf(productLegDao.getCouponIrcCouponFreqCd1());
-					rateTypes[0] = TypeDef.getRateType(productLegDao.getCouponIrcTypeCd1());
-					tenors[1] =Vertex.getVertex(productLegDao.getCouponIrcMrtyCd2());
+							Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd1());
+					rateTypes[0] = TypeDef.getRateType(productLegModel.getCouponIrcTypeCd1());
+					tenors[1] =Vertex.getVertex(productLegModel.getCouponIrcMrtyCd2());
 					swapCouponFrequencies[1] = 
-							Frequency.valueOf(productLegDao.getCouponIrcCouponFreqCd2());
-					rateTypes[1] = TypeDef.getRateType(productLegDao.getCouponIrcTypeCd2());
+							Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd2());
+					rateTypes[1] = TypeDef.getRateType(productLegModel.getCouponIrcTypeCd2());
 					break;
 				case 3 : 
-					tenors[0] = Vertex.getVertex(productLegDao.getCouponIrcMrtyCd1());
+					tenors[0] = Vertex.getVertex(productLegModel.getCouponIrcMrtyCd1());
 					swapCouponFrequencies[0] = 
-							Frequency.valueOf(productLegDao.getCouponIrcCouponFreqCd1());
-					rateTypes[0] = TypeDef.getRateType(productLegDao.getCouponIrcTypeCd1());
-					tenors[1] =Vertex.getVertex(productLegDao.getCouponIrcMrtyCd2());
+							Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd1());
+					rateTypes[0] = TypeDef.getRateType(productLegModel.getCouponIrcTypeCd1());
+					tenors[1] =Vertex.getVertex(productLegModel.getCouponIrcMrtyCd2());
 					swapCouponFrequencies[1] = 
-							Frequency.valueOf(productLegDao.getCouponIrcCouponFreqCd2());
-					rateTypes[1] = TypeDef.getRateType(productLegDao.getCouponIrcTypeCd2());
-					tenors[2] =Vertex.getVertex(productLegDao.getCouponIrcMrtyCd3());
+							Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd2());
+					rateTypes[1] = TypeDef.getRateType(productLegModel.getCouponIrcTypeCd2());
+					tenors[2] =Vertex.getVertex(productLegModel.getCouponIrcMrtyCd3());
 					swapCouponFrequencies[2] = 
-							Frequency.valueOf(productLegDao.getCouponIrcCouponFreqCd3());
-					rateTypes[2] = TypeDef.getRateType(productLegDao.getCouponIrcTypeCd3());
+							Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd3());
+					rateTypes[2] = TypeDef.getRateType(productLegModel.getCouponIrcTypeCd3());
 					break;
 			}
 			
@@ -161,46 +161,46 @@ public class VariableCreator {
 			double[] floor = new double[productScheduleList.size()];
 
 			for (int schIndex = 0; schIndex < productScheduleList.size(); schIndex++){
-				ProductScheduleDao productScheduleDao = productScheduleList.get(schIndex);
-				couponType[schIndex] = TypeDef.getCouponType(productScheduleDao.getCouponType());				
-				spreads[schIndex] = Double.parseDouble(productScheduleDao.getFixedCoupon());
-				inCouponRates[schIndex] = Double.parseDouble(productScheduleDao.getInCoupon());
-				outCouponRates[schIndex] = Double.parseDouble(productScheduleDao.getOutCoupon());
-				cap[schIndex] = Double.parseDouble(productScheduleDao.getCap());
-				floor[schIndex] = Double.parseDouble(productScheduleDao.getFloor());
+				ProductScheduleModel productScheduleModel = productScheduleList.get(schIndex);
+				couponType[schIndex] = TypeDef.getCouponType(productScheduleModel.getCouponType());				
+				spreads[schIndex] = Double.parseDouble(productScheduleModel.getFixedCoupon());
+				inCouponRates[schIndex] = Double.parseDouble(productScheduleModel.getInCoupon());
+				outCouponRates[schIndex] = Double.parseDouble(productScheduleModel.getOutCoupon());
+				cap[schIndex] = Double.parseDouble(productScheduleModel.getCap());
+				floor[schIndex] = Double.parseDouble(productScheduleModel.getFloor());
 				
 				switch (undNum){
 					case 1 :
-						leverages[0][schIndex] = Double.parseDouble(productScheduleDao.getLeverage1());
+						leverages[0][schIndex] = Double.parseDouble(productScheduleModel.getLeverage1());
 						break;
 					case 2 :
-						leverages[0][schIndex] = Double.parseDouble(productScheduleDao.getLeverage1());
-						leverages[1][schIndex] = Double.parseDouble(productScheduleDao.getLeverage2());
+						leverages[0][schIndex] = Double.parseDouble(productScheduleModel.getLeverage1());
+						leverages[1][schIndex] = Double.parseDouble(productScheduleModel.getLeverage2());
 						break;
 					case 3 : 
-						leverages[0][schIndex] = Double.parseDouble(productScheduleDao.getLeverage1());
-						leverages[1][schIndex] = Double.parseDouble(productScheduleDao.getLeverage2());
-						leverages[2][schIndex] = Double.parseDouble(productScheduleDao.getLeverage3());
+						leverages[0][schIndex] = Double.parseDouble(productScheduleModel.getLeverage1());
+						leverages[1][schIndex] = Double.parseDouble(productScheduleModel.getLeverage2());
+						leverages[2][schIndex] = Double.parseDouble(productScheduleModel.getLeverage3());
 						break;
 				}
 						
 				switch (condiNum){
 					case 1 :
-						upperLimits[0][schIndex] = Double.parseDouble(productScheduleDao.getUpperBound1());
-						lowerLimits[0][schIndex] = Double.parseDouble(productScheduleDao.getLowerBound1());
+						upperLimits[0][schIndex] = Double.parseDouble(productScheduleModel.getUpperBound1());
+						lowerLimits[0][schIndex] = Double.parseDouble(productScheduleModel.getLowerBound1());
 						break;
 					case 2 :
-						upperLimits[0][schIndex] = Double.parseDouble(productScheduleDao.getUpperBound1());
-						lowerLimits[0][schIndex] = Double.parseDouble(productScheduleDao.getLowerBound1());
-						upperLimits[1][schIndex] = Double.parseDouble(productScheduleDao.getUpperBound2());
-						lowerLimits[1][schIndex] = Double.parseDouble(productScheduleDao.getLowerBound2());
+						upperLimits[0][schIndex] = Double.parseDouble(productScheduleModel.getUpperBound1());
+						lowerLimits[0][schIndex] = Double.parseDouble(productScheduleModel.getLowerBound1());
+						upperLimits[1][schIndex] = Double.parseDouble(productScheduleModel.getUpperBound2());
+						lowerLimits[1][schIndex] = Double.parseDouble(productScheduleModel.getLowerBound2());
 						break;
 				}								
 			}
 			
 			boolean hasCap = false;	
 			boolean hasFloor = false;			
-			String capFloorCd =	productLegDao.getCapFloorCd();
+			String capFloorCd =	productLegModel.getCapFloorCd();
 			if (capFloorCd.equals("0")){				
 			} else if (capFloorCd.equals("1")){
 				hasCap = true;
@@ -241,21 +241,21 @@ public class VariableCreator {
 	}
 	
 	public static LegScheduleInfo[] getLegScheduleInfos(
-			ProductLegDao[] productLegDaos,
+			ProductLegModel[] productLegModels,
     		List[] productScheduleLists){
 		
 		LegScheduleInfo[] legScheduleInfos = 
-				new LegScheduleInfo[productLegDaos.length];
+				new LegScheduleInfo[productLegModels.length];
 		
-		for (int legIndex = 0; legIndex < productLegDaos.length; legIndex++){			
+		for (int legIndex = 0; legIndex < productLegModels.length; legIndex++){			
 			DayCountFraction dcf = DayCountFraction.valueOf(
-					productLegDaos[legIndex].getDcf());
+					productLegModels[legIndex].getDcf());
 			
 			List productScheduleList = productScheduleLists[legIndex];
 			PaymentPeriod[] periods = new PaymentPeriod[productScheduleList.size()];
 			for (int periodIndex = 0; periodIndex < productScheduleList.size(); periodIndex++){
-				ProductScheduleDao productSchedule = 
-						(ProductScheduleDao) productScheduleList.get(periodIndex);
+				ProductScheduleModel productSchedule = 
+						(ProductScheduleModel) productScheduleList.get(periodIndex);
 				
 				periods[periodIndex] = new PaymentPeriod(
 						Date.valueOf(productSchedule.getCouponResetDt()), 
@@ -271,13 +271,13 @@ public class VariableCreator {
 	}
 	
 	public static LegAmortizationInfo[] getLegAmortizationInfos(
-			ProductLegDao[] productLegDaos){
-		LegAmortizationInfo[] legAmortizationInfos = new LegAmortizationInfo[productLegDaos.length];
+			ProductLegModel[] productLegModels){
+		LegAmortizationInfo[] legAmortizationInfos = new LegAmortizationInfo[productLegModels.length];
 		
-		for (int legIndex = 0; legIndex < productLegDaos.length; legIndex++){
-			ProductLegDao productLegDao = productLegDaos[legIndex];
-			Money principal = Money.valueOf(productLegDao.getCcyCd(), 
-					Double.parseDouble(productLegDao.getNotionalPrincipal()));
+		for (int legIndex = 0; legIndex < productLegModels.length; legIndex++){
+			ProductLegModel productLegModel = productLegModels[legIndex];
+			Money principal = Money.valueOf(productLegModel.getCcyCd(), 
+					Double.parseDouble(productLegModel.getNotionalPrincipal()));
 			legAmortizationInfos[legIndex] = new LegAmortizationInfo(principal);
 		}
 		
@@ -285,49 +285,49 @@ public class VariableCreator {
 	}
 	
 	public static LegDataInfo[] getLegDataInfos(
-			ProductLegDao[] productLegDaos,
-			ProductLegDataDao[] productLegDataDaos){
+			ProductLegModel[] productLegModels,
+			ProductLegDataModel[] productLegDataModels){
 		
-		LegDataInfo[] legDataInfos = new LegDataInfo[productLegDaos.length];
+		LegDataInfo[] legDataInfos = new LegDataInfo[productLegModels.length];
 		
-		for (int legIndex = 0; legIndex < productLegDaos.length; legIndex++){			
-			ProductLegDataDao productLegDataDao = productLegDataDaos[legIndex];
-			String dateStr = productLegDataDao.getNextCouponPayDt();
-			if (productLegDataDao == null || dateStr == null){
+		for (int legIndex = 0; legIndex < productLegModels.length; legIndex++){			
+			ProductLegDataModel productLegDataModel = productLegDataModels[legIndex];
+			String dateStr = productLegDataModel.getNextCouponPayDt();
+			if (productLegDataModel == null || dateStr == null){
 				legDataInfos[legIndex] = new LegDataInfo();
 			} else {				
 				legDataInfos[legIndex] = new LegDataInfo(Date.valueOf(dateStr));
 				
 				legDataInfos[legIndex].setNextCouponRate(
-						Double.parseDouble(productLegDataDao.getNextCoupon()));
+						Double.parseDouble(productLegDataModel.getNextCoupon()));
 				legDataInfos[legIndex].setCumulatedAccrualDays(
-	    				Integer.parseInt(productLegDataDao.getAccrualDayCnt()));
+	    				Integer.parseInt(productLegDataModel.getAccrualDayCnt()));
 	    		legDataInfos[legIndex].setCumulatedAvgCoupon(
-	    				Double.parseDouble(productLegDataDao.getAccumulateAvgCoupon()));
+	    				Double.parseDouble(productLegDataModel.getAccumulateAvgCoupon()));
 			}						
 		}
 		
 		return legDataInfos;
 	}
 	
-	public static OptionInfo getOptionInfo(ProductInfoDao productInfoDao,
+	public static OptionInfo getOptionInfo(ProductInfoModel productInfoModel,
     		List productOptionScheduleList){
 		
 		Date[] exerciseDates = new Date[productOptionScheduleList.size()];
 		double[] exercisePrices = new double[productOptionScheduleList.size()];
 		for (int j = 0; j < productOptionScheduleList.size(); j++){
-			ProductOptionScheduleDao productOptionSchedule = 
-					(ProductOptionScheduleDao) productOptionScheduleList.get(j);
+			ProductOptionScheduleModel productOptionScheduleModel = 
+					(ProductOptionScheduleModel) productOptionScheduleList.get(j);
 			
-			exerciseDates[j] = Date.valueOf(productOptionSchedule.getOptionStrtDt());
-			exercisePrices[j] = Double.parseDouble(productOptionSchedule.getStrike());
+			exerciseDates[j] = Date.valueOf(productOptionScheduleModel.getOptionStrtDt());
+			exercisePrices[j] = Double.parseDouble(productOptionScheduleModel.getStrike());
 		}
 		
 		//OptionType
 		OptionType optionType = null;        		
-		if (productInfoDao.getOptionTypeCd().equals("C")){
+		if (productInfoModel.getOptionTypeCd().equals("C")){
 			optionType = OptionType.CALL;
-		} else if (productInfoDao.getOptionTypeCd().equals("P")){
+		} else if (productInfoModel.getOptionTypeCd().equals("P")){
 			optionType = OptionType.PUT;
 		} else {
 			optionType = OptionType.NONE;
@@ -335,51 +335,7 @@ public class VariableCreator {
 		
 		return new OptionInfo(optionType, exerciseDates, exercisePrices);
 	}
-//	
-//	public static QuantoInfo getQuantoInfo(ProductInfoDao productInfoDao,
-//			ProductLegDao[] productLegDaos){
-//				
-//		String productCcy = productInfoDao.getCcyCd();
-//		double[][] fxAssetCorrelations = new double[productLegDaos.length][];
-//		double[][] fxVolatilities = new double[productLegDaos.length][];
-//		
-//		for (int legIndex = 0; legIndex < productLegDaos.length; legIndex++){
-//			int undNum = 0;	
-//			ProductLegDao productLegDao = productLegDaos[legIndex];
-//			
-//			String[] ccy = new String[] {
-//					productLegDao.getCouponIrcCcy1(),
-//					productLegDao.getCouponIrcCcy2(),
-//					productLegDao.getCouponIrcCcy3(),
-//			};
-//			
-//			if (ccy[2] == null){
-//				undNum = 2;
-//				if (ccy[1] == null){
-//					undNum = 1;
-//					if (ccy[0] == null){
-//						undNum = 0;
-//					}
-//				}				
-//			}
-//			fxAssetCorrelations[legIndex] = new double[undNum];
-//			fxVolatilities[legIndex] = new double[undNum];
-//						
-//			//TODO quanto correlation, fx vol
-//			for (int undIndex = 0; undIndex < undNum; undIndex++){
-//				if (productCcy.equals(ccy[undIndex])){
-//					fxAssetCorrelations[legIndex][undIndex] = 1;
-//					fxVolatilities[legIndex][undIndex] = 0;
-//				} else {
-//					fxAssetCorrelations[legIndex][undIndex] = 0;
-//					fxVolatilities[legIndex][undIndex] = 0.1;
-//				}
-//			}
-//		}
-//		
-//		return new QuantoInfo(fxAssetCorrelations, fxVolatilities);
-//	}
-    
+
 	public static long getRandomSeed(String instrumentCd, Date date){
 		if (date == null || instrumentCd == null) 
 			return System.currentTimeMillis();

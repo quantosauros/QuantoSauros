@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace = "ProductLegInfo">
+
+    <!-- RESULT MAP -->
+	<resultMap id = "productLeg" type = "com.quantosauros.batch.model.ProductLegModel">
+	    <result property="payRcvCd" column="PAY_RCV_CD" />	    
+	    <result property="legTypeCd" column="LEG_TYPE_CD" />
+	    <result property="underlyingType" column="UNDERLYING_TYPE" />
+	    <result property="conditionType" column="CONDITION_TYPE" />
+	    <result property="notionalPrincipal" column="NOTIONAL_PRINCIPAL" />
+	    <result property="ccyCd" column="CCY_CD" />
+	    <result property="dcf" column="DAY_COUNT_CONVENTION" />
+	    <result property="capFloorCd" column="CAPFLOOR_CD" />	    
+	    <result property="couponIrcCd1" column="COUPON_IRC_CD1" />
+	    <result property="couponIrcMrtyCd1" column="COUPON_IRC_MRTY_CD1" />
+	    <result property="couponIrcTypeCd1" column="COUPON_IRC_TYPE_CD1" />
+	    <result property="couponIrcCouponFreqCd1" column="COUPON_IRC_COUPON_FREQ_CD1" />
+	    <result property="couponIrcCcy1" column="COUPON_IRC_CCY1" />
+   	    <result property="couponIrcCd2" column="COUPON_IRC_CD2" />
+	    <result property="couponIrcMrtyCd2" column="COUPON_IRC_MRTY_CD2" />
+	    <result property="couponIrcTypeCd2" column="COUPON_IRC_TYPE_CD2" />
+	    <result property="couponIrcCouponFreqCd2" column="COUPON_IRC_COUPON_FREQ_CD2" />	    	    
+	    <result property="couponIrcCcy2" column="COUPON_IRC_CCY2" />
+   	    <result property="couponIrcCd3" column="COUPON_IRC_CD3" />
+	    <result property="couponIrcMrtyCd3" column="COUPON_IRC_MRTY_CD3" />
+	    <result property="couponIrcTypeCd3" column="COUPON_IRC_TYPE_CD3" />
+	    <result property="couponIrcCouponFreqCd3" column="COUPON_IRC_COUPON_FREQ_CD3" />
+	    <result property="couponIrcCcy3" column="COUPON_IRC_CCY3" />	    	    
+	</resultMap>
+	
+    <!-- SELECT  -->
+	<select id="getProductLeg" parameterType="map" resultMap="productLeg">
+		SELECT 
+			PAY_RCV_CD, LEG_TYPE_CD, UNDERLYING_TYPE, CONDITION_TYPE,
+			NOTIONAL_PRINCIPAL, CCY_CD,
+			DAY_COUNT_CONVENTION, CAPFLOOR_CD,		
+			COUPON_IRC_CD1, COUPON_IRC_MRTY_CD1, COUPON_IRC_TYPE_CD1, 
+			COUPON_IRC_COUPON_FREQ_CD1, FT_GET_CCYCDFROMIRCCD(COUPON_IRC_CD1) AS COUPON_IRC_CCY1,
+			COUPON_IRC_CD2, COUPON_IRC_MRTY_CD2, COUPON_IRC_TYPE_CD2, 
+			COUPON_IRC_COUPON_FREQ_CD2, FT_GET_CCYCDFROMIRCCD(COUPON_IRC_CD2) AS COUPON_IRC_CCY2,
+			COUPON_IRC_CD3, COUPON_IRC_MRTY_CD3, COUPON_IRC_TYPE_CD3, 
+			COUPON_IRC_COUPON_FREQ_CD3, FT_GET_CCYCDFROMIRCCD(COUPON_IRC_CD3) AS COUPON_IRC_CCY3
+		FROM 
+			PRODUCT_LEG
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+			AND PAY_RCV_CD = #{payRcvCd}
+	</select>	
+</mapper>

@@ -1,51 +1,12 @@
 package com.quantosauros.batch.dao;
 
-public class ProductInfoDao {
+import java.util.HashMap;
+import java.util.List;
 
-	private String issueDt;
-	private String mrtyDt;
-	private String ccyCd;
-	private String principalExchCd;
-	private String optionTypeCd;	
+import com.quantosauros.batch.model.ProductInfoModel;
+
+public interface ProductInfoDao {
+
+	ProductInfoModel selectProductInfo(HashMap<String, Object> paramMap);
 	
-    public String getIssueDt() {
-        return issueDt;
-    } 
-    
-    public void setIuuseDt(String issueDt) {
-        this.issueDt = issueDt;
-    }
-    
-    public String getMrtyDt(){
-    	return mrtyDt;
-    }
-    
-    public void setMrtyDt(String mrtyDt) {
-        this.mrtyDt = mrtyDt;
-    }
-    
-    public String getCcyCd(){
-    	return ccyCd;
-    }
-    
-    public void setCcyCd(String ccyCd) {
-        this.ccyCd = ccyCd;
-    }
-    
-    public String getPrincipalExchCd(){
-    	return principalExchCd;
-    }
-    
-    public void setPrincipalExchCd(String principalExchCd) {
-        this.principalExchCd = principalExchCd;
-    }
-    
-    public String getOptionTypeCd(){
-    	return optionTypeCd;
-    }
-    
-    public void setOptionTypeCd(String optionTypeCd) {
-        this.optionTypeCd = optionTypeCd;
-    }
-
 }

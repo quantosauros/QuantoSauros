@@ -4,28 +4,23 @@ import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
- 
-public class SqlMapClient {
-    private static SqlSession session;
+
+public class SqlMapClient {    
+    private static SqlSessionFactory sessionFactory;
     
     static {
-        try {
-            String resource = "./mybatis/myBatisConfig.xml";
+    	try {
+    		String resource = "./mybatis/myBatisConfig.xml";
             Reader reader = Resources.getResourceAsReader(resource);
-            SqlSessionFactory sqlMapper = new SqlSessionFactoryBuilder().build(reader);
-             
-            session = sqlMapper.openSession();
-             System.out.println("CONNECTED");
+            sessionFactory = new SqlSessionFactoryBuilder().build(reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
-         
     }
      
-    public static SqlSession getSqlSession() {
-        return session;
+    public static SqlSessionFactory getSqlSessionFactory() {
+        return sessionFactory;
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace = "ProductLegData">
+
+    <!-- RESULT MAP -->
+	<resultMap id = "productLegData" type = "com.quantosauros.batch.model.ProductLegDataModel">	        
+	    <result property="nextCouponPayDt" column="NEXT_COUPON_PAY_DT" />
+	    <result property="nextCoupon" column="NEXT_COUPON" />
+	    <result property="accrualDayCnt" column="ACCRUAL_DAY_CNT" />
+	    <result property="accumulateAvgCoupon" column="ACCUMULATE_AVG_COUPON" />
+	</resultMap>
+	
+    <!-- SELECT  -->
+	<select id="getProductLegData" parameterType="map" resultMap="productLegData">
+		SELECT			
+			NEXT_COUPON_PAY_DT AS NEXT_COUPON_PAY_DT,
+			IFNULL(NEXT_COUPON, 0) AS NEXT_COUPON, 
+			IFNULL(ACCRUAL_DAY_CNT , 0) AS ACCRUAL_DAY_CNT,
+			IFNULL(ACCUMULATE_AVG_COUPON, 0) AS ACCUMULATE_AVG_COUPON
+		FROM 
+			PRODUCT_LEG_DATA
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+			AND DT = #{dt}
+			AND PAY_RCV_CD = #{payRcvCd}
+	</select>
+</mapper>

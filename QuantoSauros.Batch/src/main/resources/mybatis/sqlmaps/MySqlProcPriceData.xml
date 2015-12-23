@@ -6,6 +6,7 @@
 <mapper namespace = "ProcPriceData">
 
 <!-- SELECT -->
+	<!-- use -->
 	<select id="getDataIdFromPriceByProcId" resultType = "String">
 		SELECT 
 			DATA_ID 
@@ -16,6 +17,7 @@
 			AND IDX_ID = #{idxId}
     </select>
 
+	<!-- use -->
 	<select id="getDataIdFromDeltaGammaByProcId" resultType = "String">
 		SELECT 
 			DATA_ID 
@@ -45,14 +47,17 @@
 			PROC_ID = #{procId}	
     </select>
 <!-- INSERT  -->
+	<!-- use -->
 	<insert id="insertDeltaGammaInfo">
 		CALL PC_INSERT_DELTAGAMMA_INFO(#{proc_id}, #{idx_id}, #{description})						
     </insert>    
     
+	<!-- use -->
 	<insert id="insertPriceInfo">
 		CALL PC_INSERT_PRICE_INFO(#{proc_id}, #{idx_id}, #{description})						
     </insert> 
 	
+	<!-- use -->
 	<insert id="insertPrice">
 		INSERT INTO 
 			PROC_PRICE_DATA
@@ -79,6 +84,7 @@
 								
     </insert>    
 	
+	<!-- use -->
 	<insert id="insertDeltaGamma">
 		INSERT INTO 
 			PROC_DELTAGAMMA_DATA
@@ -104,6 +110,7 @@
 						
     </insert>    
 	
+	<!-- use -->
 	<insert id="insertDetailData">
 	    INSERT INTO
 	    	PROC_DETAIL_DATA

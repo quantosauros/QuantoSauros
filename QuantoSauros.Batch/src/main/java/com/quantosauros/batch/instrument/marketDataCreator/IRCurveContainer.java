@@ -3,10 +3,12 @@ package com.quantosauros.batch.instrument.marketDataCreator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.quantosauros.batch.dao.MarketDataDao;
+import com.quantosauros.batch.dao.MySqlMarketDataDao;
+import com.quantosauros.batch.model.IrCurveModel;
 import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.calibration.SpotCurveCalculator;
@@ -59,13 +61,13 @@ public class IRCurveContainer {
 	}
 	
 	public void storeIrCurve(String ircCd){
-		if (!_irCurveMap.containsKey(ircCd)){
-			SqlSession session = SqlMapClient.getSqlSession();
-			Map paramMap = new HashMap();  	
+		if (!_irCurveMap.containsKey(ircCd)){			
+			HashMap paramMap = new HashMap();  	
 			paramMap.put("dt", _processDate.getDt());
 			paramMap.put("ircCd", ircCd);
-			List irCurveDaoList = session.selectList(
-	    			"MarketData.getIrCurveFromIrcCd", paramMap);
+			MarketDataDao marketDataDao = new MySqlMarketDataDao();
+			List<IrCurveModel> irCurveDaoList = 
+					marketDataDao.selectIrCurveModel(paramMap);
 			
 			InterestRateCurve ytmCurve = AbstractMarketDataCreator.getIrCurve(
 					_processDate, irCurveDaoList);

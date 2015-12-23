@@ -6,15 +6,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.quantosauros.batch.dao.InstrumentInfoDao;
 import com.quantosauros.batch.instrument.DeltaResult;
+import com.quantosauros.batch.model.InstrumentInfoModel;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.Vertex;
 
 public class ProcessGreeks extends AbstractProcess {
-	
-	
+		
 	//[riskFactor][vertex]	
 	private ArrayList<DeltaResult> _deltaResultsBump;
 	private ArrayList<DeltaResult> _deltaResultsBumpNoncall;
@@ -25,23 +24,21 @@ public class ProcessGreeks extends AbstractProcess {
 	public ProcessGreeks(Date processDate, String procId, String idx) {
 		super(processDate, procId, idx);
 		//Insert DeltaGamma Info
-		Map paramMap = new HashMap();
+		HashMap paramMap = new HashMap();
 		paramMap.put("proc_id", _procId);
 		paramMap.put("idx_id", _idx);
 		String description = "default";
 		paramMap.put("description", description);
-		_session.insert("ProcPriceData.insertDeltaGammaInfo", paramMap);
+		_procPriceDataDao.insertDeltaGammaInfo(paramMap);		
 		
 		//get a Market Data ID from proc Id
 		paramMap = new HashMap();
 		paramMap.put("procId", _procId);
 		paramMap.put("idxId", _idx);
-		_marketDataId = (String)_session.selectOne(
-				"ProcPriceData.getDataIdFromDeltaGammaByProcId", paramMap);
-
+		_marketDataId = _procPriceDataDao.selectDataIdFromDeltaGammaByProcId(paramMap);
 	}
 	
-	protected void calcInstrument(InstrumentInfoDao instrumentInfoDao) {	
+	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel) {	
 		if (_calcBump){
 	        _deltaResultsBump = new ArrayList<DeltaResult>();
 	        _deltaResultsBumpNoncall = new ArrayList<DeltaResult>();
@@ -75,7 +72,7 @@ public class ProcessGreeks extends AbstractProcess {
 								
 				//BUMPING		
 				if (_calcBump){
-					double[] BumpingGreeks = calcDelta(instrumentInfoDao.getInstrumentCd(), ircCd);
+					double[] BumpingGreeks = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
 					_deltaResultsBump.add(new DeltaResult(ircCd, vertex, "BUMP", BumpingGreeks));
 				}
 								
@@ -97,7 +94,7 @@ public class ProcessGreeks extends AbstractProcess {
 					
 //					BUMPING		
 					if (_calcBump){
-						double[] nonCallBumpingResult = calcDelta(instrumentInfoDao.getInstrumentCd(), ircCd);
+						double[] nonCallBumpingResult = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
 						_deltaResultsBumpNoncall.add(new DeltaResult(ircCd, vertex, "BUMP", nonCallBumpingResult));
 						
 						_calculator.setHasExercise(true);
@@ -148,7 +145,7 @@ public class ProcessGreeks extends AbstractProcess {
 		return greeks;
 	}
 	
-	protected void insertResult(InstrumentInfoDao instrumentInfoDao){		
+	protected void insertResult(InstrumentInfoModel instrumentInfoDao){		
     	System.out.println("INSTRUMENTCD: " + instrumentInfoDao.getInstrumentCd());
     	
     	//BUMPING
@@ -194,7 +191,7 @@ public class ProcessGreeks extends AbstractProcess {
     			    			
 				//AAD
 				double aadValue = greeksAAD[vtxIndex];				
-				Map paramMapForAAD = new HashMap();
+				HashMap paramMapForAAD = new HashMap();
 				paramMapForAAD.put("greek", aadValue);    			
     			//NONCALL
 				double aadNoncallValue = 0;
@@ -209,8 +206,8 @@ public class ProcessGreeks extends AbstractProcess {
 				paramMapForAAD.put("procId", _procId);
 				paramMapForAAD.put("instrumentCd", instrumentInfoDao.getInstrumentCd());
 				paramMapForAAD.put("idx", _idx);
-				paramMapForAAD.put("ccyCd", instrumentInfoDao.getCcyCd());				
-		    	_session.insert("ProcPriceData.insertDeltaGamma", paramMapForAAD);				
+				paramMapForAAD.put("ccyCd", instrumentInfoDao.getCcyCd());		
+				_procPriceDataDao.insertDeltaGamma(paramMapForAAD);		    					
     		
 		    	System.out.println(
 						"RISKFACTOR_CD: " + factorCd + "_" + "AAD" + 
@@ -220,7 +217,7 @@ public class ProcessGreeks extends AbstractProcess {
 		    	//BUMP
 		    	if (_calcBump){
 	    			double bumpValue = greeksBump[vtxIndex];    			    			
-	    			Map paramMapForBumping = new HashMap();    							
+	    			HashMap paramMapForBumping = new HashMap();    							
 	    			paramMapForBumping.put("greek", bumpValue);    			
 	    			//NONCALL
 	    			double bumpNoncallValue = 0;
@@ -234,8 +231,8 @@ public class ProcessGreeks extends AbstractProcess {
 			    	paramMapForBumping.put("procId", _procId);
 					paramMapForBumping.put("instrumentCd", instrumentInfoDao.getInstrumentCd());
 					paramMapForBumping.put("idx", _idx);
-					paramMapForBumping.put("ccyCd", instrumentInfoDao.getCcyCd());				
-					_session.insert("ProcPriceData.insertDeltaGamma", paramMapForBumping);
+					paramMapForBumping.put("ccyCd", instrumentInfoDao.getCcyCd());
+					_procPriceDataDao.insertDeltaGamma(paramMapForBumping);					
 					
 					System.out.println(
 							"RISKFACTOR_CD: " + factorCd + "_" + "BUMP" + 
@@ -244,7 +241,6 @@ public class ProcessGreeks extends AbstractProcess {
 		    	}
     		}
     	}
-    	_session.commit();
 	}
 	
 	public void setCalcBump(boolean calcBump){

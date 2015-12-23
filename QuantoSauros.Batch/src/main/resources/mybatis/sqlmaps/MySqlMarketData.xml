@@ -7,7 +7,7 @@
 	   
 <!-- RESULT MAP -->
 
-	<resultMap id = "getIrCurve" type = "com.quantosauros.batch.dao.IrCurveDao">
+	<resultMap id = "getIrCurve" type = "com.quantosauros.batch.model.IrCurveModel">
 	    <result property="factorCd" column="FACTOR_CD" />
 	    <result property="irValue" column="IR" />
 	    <result property="dcf" column="DAY_COUNT_CONVENTION" />	  
@@ -17,7 +17,7 @@
 	    <result property="type" column="TYPE" />
 	</resultMap>
 
-	<resultMap id = "getVolSurface" type = "com.quantosauros.batch.dao.VolSurfDao">
+	<resultMap id = "getVolSurface" type = "com.quantosauros.batch.model.VolSurfModel">
 	    <result property="swaptionMrty" column="VERTEX1" />
 	    <result property="swaptionTenor" column="VERTEX2" />
 	    <result property="vol" column="VOL" />	  
@@ -27,6 +27,7 @@
 	</resultMap>
 <!-- SELECT  -->
 	
+	<!-- use -->
 	<select id="getIrcCdFromMarketDataMap" resultType="String">
 		SELECT 
 			 IFNULL(A.TOBE_CD, #{originCd})
@@ -37,6 +38,7 @@
 		    AND A.ORIGIN_CD = #{originCd}
     </select>
 	
+	<!-- use -->
 	<select id="getIrcCd" resultType="map">
 		SELECT
 			A.PAY_RCV_CD, A.LEG_TYPE_CD, 
@@ -63,6 +65,7 @@
 		   AND B.ISRISKFREE = 'Y'
     </select>
     
+	<!-- use -->
     <select id="getCcyCodeFromIrcCd" resultType="String">
    		SELECT CCY_CD FROM IRC_INFO WHERE IRC_CD = #{ircCd};
     </select>
@@ -71,6 +74,7 @@
    		SELECT IRC_CD FROM IRC_INFO WHERE CCY_CD = #{ccyCd} AND ISRISKFREE = 'Y';
     </select>
     
+    <!-- use -->
     <select id="getIrcCodesofProduct" resultType="map">
 		SELECT 
 			RCVLEG.COUPON_IRC_CD1 AS R_COUPON_IRC_CD1, 
@@ -90,6 +94,7 @@
 			AND PAYLEG.INSTRUMENT_CD = #{instrumentCd}
     </select>
     
+    <!-- use -->
 	<select id="getIrCurveFromIrcCd" resultMap="getIrCurve">
 		SELECT 
 			C.FACTOR_CD, C.IR, C.TYPE,
@@ -137,6 +142,7 @@
 		ORDER BY D.CD, C.CD
 	</select>
     
+	<!-- use -->
     <select id="getStlLegFXRate" resultType="map">
 		SELECT
 			B.PAY_RCV_CD, 
@@ -164,6 +170,7 @@
 			AND B.PAY_RCV_CD = #{payRcvCd}
     </select>
     
+    <!-- use -->
     <select id="getHullWhiteVolatility" resultType="map">
 		SELECT
 			C.MRTY_CD AS MRTY_CD, D.VOL AS VOL

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace = "ProductInfo">
+
+    <!-- RESULT MAP -->
+	<resultMap id = "productInfo" type = "com.quantosauros.batch.model.ProductInfoModel">
+	    <result property="issueDt" column="ISSUE_DT" />
+	    <result property="mrtyDt" column="MATURITY_DT" />
+	    <result property="ccyCd" column="CCY_CD" />
+	    <result property="principalExchCd" column="PRINCIPAL_EXCH_CD" />
+	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />	    
+	</resultMap>
+	
+    <!-- SELECT  -->
+	<select id="getProductInfo" parameterType="map" resultMap="productInfo">
+		SELECT 
+			ISSUE_DT, MATURITY_DT, CCY_CD, PRINCIPAL_EXCH_CD, 
+			OPTION_TYPE_CD
+		FROM 
+			PRODUCT_INFO
+		WHERE
+			INSTRUMENT_CD = #{instrumentCd}
+    </select>	
+</mapper>

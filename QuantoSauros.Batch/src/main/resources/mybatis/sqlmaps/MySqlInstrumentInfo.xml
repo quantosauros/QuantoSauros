@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace = "InstrumentInfo">
+
+    <!-- RESULT MAP -->
+   	<resultMap id = "instrumentInfo" type = "com.quantosauros.batch.model.InstrumentInfoModel">
+	    <result property="instrumentCd" column="INSTRUMENT_CD" />
+	    <result property="ccyCd" column="CCY_CD" />
+	    <result property="instrumentTypeCd" column="INSTRUMENT_TYPE_CD" />
+	    <result property="payLegTypeCd" column="PAY_LEG_TYPE_CD" />
+	    <result property="rcvLegTypeCd" column="RCV_LEG_TYPE_CD" />
+	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />
+	    <result property="issueDt" column="ISSUE_DT" />
+	    <result property="mrtyDt" column="MRTY_DT" />
+	</resultMap>
+	
+    <!-- SELECT  -->
+   	<select id="getInstrumentInfo" resultMap="instrumentInfo">
+		SELECT 
+			INSTRUMENT_CD, CCY_CD, 
+			PAY_LEG_TYPE_CD, RCV_LEG_TYPE_CD, OPTION_TYPE_CD,
+			ISSUE_DT, MRTY_DT
+		FROM 
+			INSTRUMENT_INFO_VIEW
+		WHERE
+			ISSUE_DT &lt;= #{dt}
+			AND MRTY_DT &gt; #{dt}			
+    </select>
+    
+   	<select id="getInstrumentInfoSpeicificProduct" resultMap="instrumentInfo">
+		SELECT 
+			INSTRUMENT_CD, CCY_CD, 
+			PAY_LEG_TYPE_CD, RCV_LEG_TYPE_CD, OPTION_TYPE_CD,
+			ISSUE_DT, MRTY_DT
+		FROM 
+			INSTRUMENT_INFO_VIEW
+		WHERE
+			ISSUE_DT &lt;= #{dt}
+			AND MRTY_DT &gt; #{dt}
+			AND INSTRUMENT_CD = #{instrumentCd}		
+    </select>
+</mapper>

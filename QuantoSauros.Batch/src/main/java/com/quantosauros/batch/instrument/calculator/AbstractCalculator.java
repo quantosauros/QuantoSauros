@@ -9,15 +9,15 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.quantosauros.aad.engine.AADEngine;
-import com.quantosauros.batch.dao.ProductInfoDao;
-import com.quantosauros.batch.dao.ProductLegDao;
-import com.quantosauros.batch.dao.ProductLegDataDao;
-import com.quantosauros.batch.dao.ProductScheduleDao;
-import com.quantosauros.batch.instrument.daoCreator.AbstractDaoCreator;
 import com.quantosauros.batch.instrument.marketDataCreator.AbstractMarketDataCreator;
 import com.quantosauros.batch.instrument.marketDataCreator.HullWhiteVolatilitySurfaceCreator;
 import com.quantosauros.batch.instrument.marketDataCreator.IRCurveContainer;
+import com.quantosauros.batch.instrument.modelCreator.ModelCreator;
 import com.quantosauros.batch.instrument.variableCreator.VariableCreator;
+import com.quantosauros.batch.model.ProductInfoModel;
+import com.quantosauros.batch.model.ProductLegDataModel;
+import com.quantosauros.batch.model.ProductLegModel;
+import com.quantosauros.batch.model.ProductScheduleModel;
 import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.RiskFactorType;
 import com.quantosauros.batch.types.RiskFactorType.RiskFactor;
@@ -40,8 +40,7 @@ import com.quantosauros.jpl.instrument.AbstractProduct;
 import com.quantosauros.jpl.instrument.StructuredProduct;
 
 public class AbstractCalculator {
-	
-	protected SqlSession _session = SqlMapClient.getSqlSession();
+
 	protected Date _asOfDate;
 	protected String _instrumentCd;	
 	protected AbstractProduct _instance;
@@ -89,48 +88,48 @@ public class AbstractCalculator {
 	}
 	
 	private void generateConstructor(){
-		//DAO		
-		ProductInfoDao productInfoDao = AbstractDaoCreator.getProductInfoDao(
+		//Model
+		ProductInfoModel productInfoModel = ModelCreator.getProductInfoModel(
 				_instrumentCd);
 		
-		ProductLegDao[] productLegDaos = new ProductLegDao[] {
-				AbstractDaoCreator.getProductLegDao(_instrumentCd, "R"),
-				AbstractDaoCreator.getProductLegDao(_instrumentCd, "P"),
+		ProductLegModel[] productLegModels = new ProductLegModel[] {
+				ModelCreator.getProductLegModel(_instrumentCd, "R"),
+				ModelCreator.getProductLegModel(_instrumentCd, "P"),
 		};
 		
-		ProductLegDataDao[] productLegDataDaos = new ProductLegDataDao[]{
-				AbstractDaoCreator.getProductLegDataDao(
+		ProductLegDataModel[] productLegDataModels = new ProductLegDataModel[]{
+				ModelCreator.getProductLegDataModel(
 						_instrumentCd, "R", _asOfDate.getDt()),
-				AbstractDaoCreator.getProductLegDataDao(
+				ModelCreator.getProductLegDataModel(
 						_instrumentCd, "P", _asOfDate.getDt()),		
 		};
-		List<ProductScheduleDao>[] productScheduleLists = new List[]{
-				AbstractDaoCreator.getProductScheduleDao(
+		List<ProductScheduleModel>[] productScheduleLists = new List[]{
+				ModelCreator.getProductScheduleModel(
 						_instrumentCd, "R"),
-				AbstractDaoCreator.getProductScheduleDao(
+				ModelCreator.getProductScheduleModel(
 						_instrumentCd, "P"),
 		};
 				
-		List productOptionScheduleList = AbstractDaoCreator.getProductOptionScheduleDao(
+		List productOptionScheduleList = ModelCreator.getProductOptionScheduleModel(
 				_instrumentCd);
 		
 		//SwapLegInfo		
 		_productInfo = VariableCreator.getProductInfo(
-				productInfoDao);
+				productInfoModel);
 		_legCouponInfos = VariableCreator.getLegCouponInfos(
-				productInfoDao, productLegDaos, productScheduleLists);
+				productInfoModel, productLegModels, productScheduleLists);
 		_legScheduleInfos = VariableCreator.getLegScheduleInfos(
-				productLegDaos, productScheduleLists);
+				productLegModels, productScheduleLists);
 		_legAmortizationInfos = VariableCreator.getLegAmortizationInfos(
-				productLegDaos);
+				productLegModels);
 		_legDataInfos = VariableCreator.getLegDataInfos(
-				productLegDaos, productLegDataDaos);
+				productLegModels, productLegDataModels);
 		_optionInfo = VariableCreator.getOptionInfo(
-				productInfoDao, productOptionScheduleList);			
+				productInfoModel, productOptionScheduleList);			
 		
 		//Quanto Market Data
 		double[][][] quantoMarketData = AbstractMarketDataCreator.getQuantoMarketData(
-				productInfoDao, productLegDaos);		
+				productInfoModel, productLegModels);		
 		_quantoCorrelations = quantoMarketData[0];				
 		_quantoVolatilities = quantoMarketData[1];
 				
