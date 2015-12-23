@@ -8,8 +8,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.aadengine.engine.AADEngine;
-import com.quantosauros.batch.dao.InstrumentInfoDao;
+import com.quantosauros.aad.engine.AADEngine;
 import com.quantosauros.batch.dao.ProductInfoDao;
 import com.quantosauros.batch.dao.ProductLegDao;
 import com.quantosauros.batch.dao.ProductLegDataDao;
@@ -24,7 +23,6 @@ import com.quantosauros.batch.types.RiskFactorType;
 import com.quantosauros.batch.types.RiskFactorType.RiskFactor;
 import com.quantosauros.common.TypeDef.ConditionType;
 import com.quantosauros.common.TypeDef.CouponType;
-import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.TypeDef.PayRcv;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;

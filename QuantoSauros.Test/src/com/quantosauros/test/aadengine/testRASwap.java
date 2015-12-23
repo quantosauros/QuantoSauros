@@ -2,7 +2,7 @@ package com.quantosauros.test.aadengine;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import com.aadengine.engine.AADEngine;
+import com.quantosauros.aad.engine.AADEngine;
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.TypeDef.ConditionType;
 import com.quantosauros.common.TypeDef.CouponType;

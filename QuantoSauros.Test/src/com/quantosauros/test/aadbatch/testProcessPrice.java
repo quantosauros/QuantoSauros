@@ -1,6 +1,6 @@
 package com.quantosauros.test.aadbatch;
 
-import com.kirudabatch.process.ProcessPrices;
+import com.quantosauros.batch.process.ProcessPrices;
 import com.quantosauros.common.calendar.BusinessDayConvention;
 import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.SouthKoreaCalendar;
