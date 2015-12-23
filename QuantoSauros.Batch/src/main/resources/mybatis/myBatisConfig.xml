@@ -6,7 +6,7 @@
 <configuration>
 
     <!-- db 정보 파일을 로드한다. -->
-    <properties resource="resource/db.properties" />
+    <properties resource="./mybatis/db.properties" />
 
 	<!-- Log 정보 설정 -->
    <settings>
@@ -31,10 +31,10 @@
 
     <!-- sql 맵퍼 -->    
     <mappers>
-        <mapper resource="resource/sqlMapper/DBCommon.xml" />
-        <mapper resource="resource/sqlMapper/MarketData.xml" />
-        <mapper resource="resource/sqlMapper/ProcPriceData.xml" />
-        <mapper resource="resource/sqlMapper/InsertProductInfo.xml" />
+        <mapper resource="./mybatis/sqlmaps/DBCommon.xml" />
+        <mapper resource="./mybatis/sqlmaps/MarketData.xml" />
+        <mapper resource="./mybatis/sqlmaps/ProcPriceData.xml" />
+        <mapper resource="./mybatis/sqlmaps/InsertProductInfo.xml" />
     </mappers>   
 
 </configuration>

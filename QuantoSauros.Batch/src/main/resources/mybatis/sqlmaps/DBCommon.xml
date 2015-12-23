@@ -7,7 +7,7 @@
 	   
 <!-- RESULT MAP -->
 
-	<resultMap id = "instrumentInfo" type = "com.kirudabatch.dao.InstrumentInfoDao">
+	<resultMap id = "instrumentInfo" type = "com.quantosauros.batch.dao.InstrumentInfoDao">
 	    <result property="instrumentCd" column="INSTRUMENT_CD" />
 	    <result property="ccyCd" column="CCY_CD" />
 	    <result property="instrumentTypeCd" column="INSTRUMENT_TYPE_CD" />
@@ -18,7 +18,7 @@
 	    <result property="mrtyDt" column="MRTY_DT" />
 	</resultMap>
 	
-	<resultMap id = "productInfo" type = "com.kirudabatch.dao.ProductInfoDao">
+	<resultMap id = "productInfo" type = "com.quantosauros.batch.dao.ProductInfoDao">
 	    <result property="issueDt" column="ISSUE_DT" />
 	    <result property="mrtyDt" column="MATURITY_DT" />
 	    <result property="ccyCd" column="CCY_CD" />
@@ -26,7 +26,7 @@
 	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />	    
 	</resultMap>
 	
-	<resultMap id = "productLeg" type = "com.kirudabatch.dao.ProductLegDao">
+	<resultMap id = "productLeg" type = "com.quantosauros.batch.dao.ProductLegDao">
 	    <result property="payRcvCd" column="PAY_RCV_CD" />	    
 	    <result property="legTypeCd" column="LEG_TYPE_CD" />
 	    <result property="underlyingType" column="UNDERLYING_TYPE" />
@@ -52,21 +52,21 @@
 	    <result property="couponIrcCcy3" column="COUPON_IRC_CCY3" />	    	    
 	</resultMap>
 	
-	<resultMap id = "productLegData" type = "com.kirudabatch.dao.ProductLegDataDao">	        
+	<resultMap id = "productLegData" type = "com.quantosauros.batch.dao.ProductLegDataDao">	        
 	    <result property="nextCouponPayDt" column="NEXT_COUPON_PAY_DT" />
 	    <result property="nextCoupon" column="NEXT_COUPON" />
 	    <result property="accrualDayCnt" column="ACCRUAL_DAY_CNT" />
 	    <result property="accumulateAvgCoupon" column="ACCUMULATE_AVG_COUPON" />
 	</resultMap>
 	
-	<resultMap id = "productOptionSchedule" type = "com.kirudabatch.dao.ProductOptionScheduleDao">
+	<resultMap id = "productOptionSchedule" type = "com.quantosauros.batch.dao.ProductOptionScheduleDao">
 	    <result property="optionTypeCd" column="OPTION_TYPE_CD" />
 	    <result property="optionStrtDt" column="OPTION_STRT_DT" />
 	    <result property="optionEndDt" column="OPTION_END_DT" />
 	    <result property="strike" column="STRIKE" />
 	</resultMap>
 	
-	<resultMap id = "productSchedule" type = "com.kirudabatch.dao.ProductScheduleDao">
+	<resultMap id = "productSchedule" type = "com.quantosauros.batch.dao.ProductScheduleDao">
 	    <result property="couponStrtDt" column="COUPON_STRT_DT" />
 	    <result property="couponResetDt" column="COUPON_RESET_DT" />
 	    <result property="couponEndDt" column="COUPON_END_DT" />

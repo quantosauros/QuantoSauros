@@ -10,10 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  
 public class SqlMapClient {
     private static SqlSession session;
-     
+    
     static {
         try {
-            String resource = "resource/myBatisConfig.xml";
+            String resource = "./mybatis/myBatisConfig.xml";
             Reader reader = Resources.getResourceAsReader(resource);
             SqlSessionFactory sqlMapper = new SqlSessionFactoryBuilder().build(reader);
              
