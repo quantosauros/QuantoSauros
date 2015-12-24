@@ -1,0 +1,2 @@
+include ':QuantoSauros.Common'
+project(':QuantoSauros.Common').projectDir = new File(settingsDir, '../QuantoSauros.Common')

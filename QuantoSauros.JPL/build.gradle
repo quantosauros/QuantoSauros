@@ -1,3 +1,4 @@
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
@@ -5,32 +6,15 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 version = '1.0'
 
-task fatJar(type: Jar) {
-	manifest {
-        attributes 'Implementation-Title': 'QuantoSauros.JPL',  
-        	'Implementation-Version': version,
-        	'Main-Class': 'com.quantosauros.jpl'
-    }
-    baseName = project.name + getDate()
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
-
 dependencies {
-	compile fileTree(dir: 'lib', include: '*.jar')
+	//compile fileTree(dir: 'lib', include: '*.jar')
     compile 'org.apache.commons:commons-math3:3.2'    
     compile 'log4j:log4j:1.2.17'
+    compile project(':QuantoSauros.Common')
 }
 
-def getDate(){
-	def date = new Date()
-	def formattedDate = date.format('yyyyMMdd')
-	return formattedDate
-}

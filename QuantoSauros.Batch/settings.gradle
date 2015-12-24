@@ -1,0 +1,4 @@
+include ':QuantoSauros.Common', ':QuantoSauros.AAD', ':QuantoSauros.JPL'
+project(':QuantoSauros.Common').projectDir = new File(settingsDir, '../QuantoSauros.Common')
+project(':QuantoSauros.AAD').projectDir = new File(settingsDir, '../QuantoSauros.AAD')
+project(':QuantoSauros.JPL').projectDir = new File(settingsDir, '../QuantoSauros.JPL')
