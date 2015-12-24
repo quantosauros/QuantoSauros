@@ -128,4 +128,15 @@
 			DT = #{dt} AND FACTOR_CD = #{factorCd} 
 	</select>
 	
+	<select id="selectPrevAccruaDayCnt" resultType = "String">
+		SELECT 
+			ACCRUAL_DAY_CNT
+		FROM 
+			PRODUCT_LEG_DATA 
+		WHERE 
+			DT = #{dt} 
+			AND INSTRUMENT_CD = #{instrumentCd}
+			AND PAY_RCV_CD = #{payRcvCd}			  
+	</select>
+	
 </mapper>

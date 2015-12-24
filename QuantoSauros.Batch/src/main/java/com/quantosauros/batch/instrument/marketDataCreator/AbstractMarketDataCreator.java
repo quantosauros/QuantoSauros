@@ -170,14 +170,14 @@ public class AbstractMarketDataCreator {
 	}
 	
 	public static InterestRateCurve getIrCurve(Date asOfDate,
-			List irCurveModelList){
+			List<IrCurveModel> irCurveModelList){
 		
 		InterestRate[] spotRates = new InterestRate[irCurveModelList.size()];
 		DayCountFraction dcf = null;
 		Frequency compoundFreq = null;
 
 		for (int i = 0; i < irCurveModelList.size(); i++){
-			IrCurveModel irCurveModel = (IrCurveModel) irCurveModelList.get(i);
+			IrCurveModel irCurveModel = irCurveModelList.get(i);
 			dcf = DayCountFraction.valueOf(irCurveModel.getDcf());
 			compoundFreq = Frequency.valueOf(irCurveModel.getCompoundFrequency());
 			String type = irCurveModel.getType();

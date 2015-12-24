@@ -70,6 +70,7 @@
    		SELECT CCY_CD FROM IRC_INFO WHERE IRC_CD = #{ircCd};
     </select>
     
+    <!-- use -->
     <select id="getRiskFreeIrcCdFromCcyCd" resultType="String">
    		SELECT IRC_CD FROM IRC_INFO WHERE CCY_CD = #{ccyCd} AND ISRISKFREE = 'Y';
     </select>
@@ -114,6 +115,7 @@
 		ORDER BY D.CD
     </select>
     
+	<!-- use -->
 	<select id="getVolatilitySurfaceData" resultMap="getVolSurface">
 		SELECT 
 			A.VERTEX1, A.VERTEX2, A.VOL, B.CCY_CD, B.DCF, E.CNT

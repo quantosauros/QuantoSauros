@@ -6,6 +6,10 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.quantosauros.batch.dao.MarketDataDao;
+import com.quantosauros.batch.dao.MySqlMarketDataDao;
+import com.quantosauros.batch.model.IrCurveModel;
+import com.quantosauros.batch.model.VolSurfModel;
 import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.CcyType;
 import com.quantosauros.common.calibration.HWVolatilityCalibration;
@@ -27,42 +31,39 @@ public class HullWhiteVolatilitySurfaceCreator {
 	}
 	
 	public void genSurface(String ccyCd){		
-		if (!_container.containsKey(ccyCd)){
-//			SqlSession session = SqlMapClient.getSqlSession();
-//			Map paramMap = new HashMap();  	
-//			paramMap.put("dt", _processDate.getDt());
-//			paramMap.put("ccyCd", ccyCd);		
-//			List volSurfDaoList = session.selectList(
-//	    			"MarketData.getVolatilitySurfaceData", paramMap);
-//			
-//			VolatilitySurface surface = AbstractMarketDataCreator.getVolatilitySurface(
-//					_processDate, volSurfDaoList);
-//			
-//			HullWhiteParameters HWParams = AbstractMarketDataCreator.getHWParameters1();
-//			
-//			//get Risk-Free IRC CD from CCYCD
-//			paramMap = new HashMap();			
-//			paramMap.put("ccyCd", ccyCd);
-//			String rfIrcCd = session.selectOne(
-//	    			"MarketData.getRiskFreeIrcCdFromCcyCd", paramMap);
-//			
-//			//get IRC Curve dao
-//			paramMap = new HashMap();  	
-//			paramMap.put("dt", _processDate.getDt());
-//			paramMap.put("ircCd", rfIrcCd);
-//			List irCurveDaoList = session.selectList(
-//	    			"MarketData.getIrCurveFromIrcCd", paramMap);
-//			
-//			InterestRateCurve spotCurve = AbstractMarketDataCreator.getIrCurve(
-//					_processDate, irCurveDaoList);
-//			
-//			HWVolatilityCalibration cali = new HWVolatilityCalibration(
-//					ccyCd, _processDate, spotCurve, surface, HWParams);
-//						
-//			_container.put(CcyType.valueof(ccyCd), cali.calculate());	
+		if (!_container.containsKey(ccyCd)){			
+			HashMap paramMap = new HashMap();  	
+			paramMap.put("dt", _processDate.getDt());
+			paramMap.put("ccyCd", ccyCd);		
+			MarketDataDao marketDataDao = new MySqlMarketDataDao();
+			List<VolSurfModel> volSurfDaoList = marketDataDao.selectVolSurfModel(paramMap);
 			
-			_container.put(CcyType.valueof(ccyCd), 
-					AbstractMarketDataCreator.getHullWhiteVolatility1(ccyCd));			
+			VolatilitySurface surface = AbstractMarketDataCreator.getVolatilitySurface(
+					_processDate, volSurfDaoList);
+			
+			HullWhiteParameters HWParams = AbstractMarketDataCreator.getHWParameters1();
+			
+			//get Risk-Free IRC CD from CCYCD
+			paramMap = new HashMap();			
+			paramMap.put("ccyCd", ccyCd);
+			String rfIrcCd = marketDataDao.selectRiskFreeIrcCdFromCcyCd(paramMap);
+			
+			//get IRC Curve dao
+			paramMap = new HashMap();  	
+			paramMap.put("dt", _processDate.getDt());
+			paramMap.put("ircCd", rfIrcCd);
+			List<IrCurveModel> irCurveDaoList = marketDataDao.selectIrCurveModel(paramMap);					
+			
+			InterestRateCurve spotCurve = AbstractMarketDataCreator.getIrCurve(
+					_processDate, irCurveDaoList);
+			
+			HWVolatilityCalibration cali = new HWVolatilityCalibration(
+					ccyCd, _processDate, spotCurve, surface, HWParams);
+						
+			_container.put(CcyType.valueof(ccyCd), cali.calculate());	
+			
+//			_container.put(CcyType.valueof(ccyCd), 
+//					AbstractMarketDataCreator.getHullWhiteVolatility1(ccyCd));			
 		}		
 	}
 	

@@ -202,8 +202,8 @@ public class AbstractCalculator {
 				_legMarketInfos[legIndex][undIndex] = new RateMarketInfo(
 						irCurveContainer.getIrCurve(_riskFactorMap.get(irCurveRFs[legIndex][undIndex]), flag),
 						(HullWhiteParameters) _riskFactorMap.get(hwParamsRFs[legIndex][undIndex]), 
-						hwSurfaceContainer.getHWVolatility(_riskFactorMap.get(hwVolRFs[legIndex][undIndex])),
-//						hwSurfaceContainer.getHWVolSurface(_riskFactorMap.get(hwVolRFs[legIndex][undIndex])),
+//						hwSurfaceContainer.getHWVolatility(_riskFactorMap.get(hwVolRFs[legIndex][undIndex])),
+						hwSurfaceContainer.getHWVolSurface(_riskFactorMap.get(hwVolRFs[legIndex][undIndex])),
 						_quantoCorrelations[legIndex][undIndex], 
 						_quantoVolatilities[legIndex][undIndex]
 				);
@@ -213,8 +213,8 @@ public class AbstractCalculator {
 		_discountUnderlyingInfo = new RateMarketInfo(
 				irCurveContainer.getIrCurve(_riskFactorMap.get(RiskFactor.DISC_IRC_CD), flag),
 				(HullWhiteParameters) _riskFactorMap.get(RiskFactor.DISC_HWPARAMS),
-				hwSurfaceContainer.getHWVolatility(_riskFactorMap.get(RiskFactor.DISC_HWVOL))
-//				hwSurfaceContainer.getHWVolSurface(_riskFactorMap.get(RiskFactor.DISC_HWVOL))
+//				hwSurfaceContainer.getHWVolatility(_riskFactorMap.get(RiskFactor.DISC_HWVOL))
+				hwSurfaceContainer.getHWVolSurface(_riskFactorMap.get(RiskFactor.DISC_HWVOL))
 		);
 		
 		double[][] correlations = (double[][]) _riskFactorMap.get(RiskFactor.CORRELATION);
