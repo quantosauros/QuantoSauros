@@ -73,4 +73,7 @@ public class RateMarketInfo extends MarketInfo {
 	public boolean isHWVolSurface(){
 		return _hwVolSurfaceOrCurve;
 	}
+	public void setHWVolatilities(HullWhiteVolatility[] hwVolatilities){
+		this._hwVolatilities = hwVolatilities;
+	}
 }

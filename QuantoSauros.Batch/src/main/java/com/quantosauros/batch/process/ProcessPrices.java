@@ -139,7 +139,7 @@ public class ProcessPrices extends AbstractProcess {
 		Money originPrice = _originPrices;
 		BigDecimal originValue = 
 				new BigDecimal(originPrice.getAmount());
-		if (_calculator.getHasExercise()){			
+		if (!_nonExercisePrices.equals(0)){			
 			Money nonCallPrice = _nonExercisePrices;
 			BigDecimal nonCallValue = 
 					new BigDecimal(nonCallPrice.getAmount());

@@ -23,6 +23,7 @@ import com.quantosauros.jpl.dto.market.RateMarketInfo;
 import com.quantosauros.jpl.dto.underlying.EquityUnderlyingInfo;
 import com.quantosauros.jpl.dto.underlying.UnderlyingInfo;
 import com.quantosauros.jpl.engine.data.StructuredData;
+import com.quantosauros.jpl.engine.method.model.hullwhite.HullWhiteStripping;
 import com.quantosauros.jpl.engine.method.montecarlo.lsmc.AbstractLSMC;
 import com.quantosauros.jpl.engine.method.montecarlo.motion.GeneralizedWienerMotion;
 import com.quantosauros.jpl.engine.method.montecarlo.motion.MotionGenerator;
@@ -173,10 +174,34 @@ public class StructuredPricer extends AbstractPricer{
 		ArrayList<UnderlyingInfo> legUnderlyingInfoArray = new ArrayList<>();		
 		
 		for (int legIndex = 0; legIndex < _legNum; legIndex++){
-			for (int undIndex = 0; undIndex < _undNum[legIndex]; undIndex++){
-				legMarketInfoArray.add(legMarketInfos[legIndex][undIndex]);
-				legUnderlyingInfoArray.add(_legCouponInfos[legIndex].getUnderlyingInfo(undIndex));
+			for (int undIndex = 0; undIndex < _undNum[legIndex]; undIndex++){				
+				MarketInfo marketInfo = legMarketInfos[legIndex][undIndex];
+				UnderlyingInfo underlyingInfo = _legCouponInfos[legIndex].getUnderlyingInfo(undIndex);
+				
+				if (marketInfo instanceof RateMarketInfo){
+					RateMarketInfo rateMarketInfo = (RateMarketInfo)marketInfo;
+					if (rateMarketInfo.isHWVolSurface()){
+						HullWhiteStripping hwStripping = new HullWhiteStripping(
+								_asOfDate, _productInfo.getMaturityDate(), 
+								_optionInfo.getExerciseDates(),
+								rateMarketInfo.getHWVolatilitySurface());
+						rateMarketInfo.setHWVolatilities(
+								hwStripping.getHWVolatility(underlyingInfo.getModelType()));
+					}										
+				}
+								
+				legMarketInfoArray.add(marketInfo);
+				legUnderlyingInfoArray.add(underlyingInfo);
 			}
+		}
+		
+		if (discountMarketInfo.isHWVolSurface()){
+			HullWhiteStripping hwStripping = new HullWhiteStripping(
+					_asOfDate, _productInfo.getMaturityDate(), 
+					_optionInfo.getExerciseDates(),
+					discountMarketInfo.getHWVolatilitySurface());
+			discountMarketInfo.setHWVolatilities(
+					hwStripping.getHWVolatility(_discModelType));
 		}
 				
 		declareDataClass(legMarketInfoArray, legUnderlyingInfoArray,
