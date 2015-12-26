@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 2. 동적 SQL 적용 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantosauros.manager.dao.ProductLeg">
+  
+	<insert id="insertProductLeg">
+		INSERT INTO PRODUCT_LEG 
+			(INSTRUMENT_CD, PAY_RCV_CD, LEG_TYPE_CD, UNDERLYING_TYPE, CONDITION_TYPE, NOTIONAL_PRINCIPAL, CCY_CD,
+			 DAY_COUNT_CONVENTION, CAPFLOOR_CD,
+			 COUPON_IRC_CD1, COUPON_IRC_MRTY_CD1, COUPON_IRC_TYPE_CD1, COUPON_IRC_COUPON_FREQ_CD1,
+			 COUPON_IRC_CD2, COUPON_IRC_MRTY_CD2, COUPON_IRC_TYPE_CD2, COUPON_IRC_COUPON_FREQ_CD2,
+			 COUPON_IRC_CD3, COUPON_IRC_MRTY_CD3, COUPON_IRC_TYPE_CD3, COUPON_IRC_COUPON_FREQ_CD3) 
+		VALUES (
+			#{instrumentCd},
+			#{payRcvCd},
+			#{TypeCd},
+			#{UndTypeCd},
+			#{CondiTypeCd},
+			#{Notional},
+			#{CcyCd},
+			#{DCF},
+			#{CapFloorCd},
+			#{IrCd1},
+			#{IrTenor1},
+			#{IrTypeCd1},
+			#{IrCouponFreq1},
+			#{IrCd2},
+			#{IrTenor2},
+			#{IrTypeCd2},
+			#{IrCouponFreq2},
+			#{IrCd3},
+			#{IrTenor3},
+			#{IrTypeCd3},
+			#{IrCouponFreq3}
+		);
+
+	</insert>  
+  
+</mapper>

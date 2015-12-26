@@ -1,0 +1,5 @@
+#org.springsource.ide.eclipse.gradle.core.preferences.GradleProjectPreferences
+#Sat Dec 26 12:37:04 KST 2015
+build.family.org.gradle.tooling.model.eclipse.HierarchicalEclipseProject=;../QuantoSauros.AAD;../QuantoSauros.Batch;../QuantoSauros.Common;../QuantoSauros.JPL;
+org.springsource.ide.eclipse.gradle.linkedresources=
+org.springsource.ide.eclipse.gradle.rootprojectloc=

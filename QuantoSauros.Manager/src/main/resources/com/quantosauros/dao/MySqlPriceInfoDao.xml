@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 2. 동적 SQL 적용 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantosauros.manager.dao.PriceInfoDao">
+  <resultMap type="priceinfo" id="priceInfoResultMap">    
+    <result column="DT"    property="processDt"/>
+    <result column="INSTRUMENT_CD"    property="instrumentCd"/>
+    <result column="PRICE"      property="price"/>    
+    <result column="PAY_PRICE"      property="payPrice"/>
+    <result column="RCV_PRICE"      property="rcvPrice"/>
+    <result column="NON_EXERCISE_PRICE"      property="nonCallPrice"/>
+    <result column="CCY_CD"      property="ccyCd"/>
+  </resultMap>
+  
+  <select id="selectAllList" parameterType="map" resultMap="priceInfoResultMap">
+    SELECT 
+    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE, CCY_CD
+    FROM 
+    	PROC_PRICE_DATA
+    WHERE
+    	PROC_ID = #{procId}
+    	AND IDX = #{idxId}
+  </select>
+  
+  <select id="selectList" parameterType="map" resultMap="priceInfoResultMap">
+    SELECT 
+    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE, CCY_CD
+    FROM 
+    	PROC_PRICE_DATA    
+    WHERE 
+    	DT &gt; #{startDt}
+    	AND DT &lt; #{endDt}
+    	<choose>  
+        <when test="instrumentCd != null">
+        	AND INSTRUMENT_CD = '#{instrumentCd}'
+        </when>
+        </choose>    	
+  </select>
+  
+  <select id="selectOne" parameterType="string" resultMap="priceInfoResultMap">
+    SELECT 
+    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE, CCY_CD
+    FROM 
+    	PROC_PRICE_DATA
+    WHERE
+    	DT= ${dt}
+    	AND INSTRUMENT_CD = #{instrumentCd}
+  </select>  
+</mapper>
