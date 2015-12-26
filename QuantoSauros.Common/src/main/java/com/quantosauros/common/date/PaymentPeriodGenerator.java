@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.security.auth.login.Configuration;
-
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.calendar.BusinessDayConvention;
 import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.CalendarFactory;
+import com.quantosauros.common.calendar.SouthKoreaCalendar;
 
 public class PaymentPeriodGenerator {
 
@@ -23,6 +22,8 @@ public class PaymentPeriodGenerator {
 	protected Date _lastCouponPaymentDate;
 	protected Frequency _paymentFrequency;
 	protected Date _deferredDate;
+	protected Calendar _calendar;
+	protected BusinessDayConvention _businessConvention;
 
 	protected PaymentPeriodGenerator() {
 		// Empty. Should not be instantiated explicitly.
@@ -34,25 +35,27 @@ public class PaymentPeriodGenerator {
 		_issueDate = issueDate;
 		_maturityDate = maturityDate;
 		_firstCouponPaymentDate = firstCouponPaymentDate;
-		// Moved to adjustNullPaymentDates() 2009.05.13
-		/*
-		if (this.firstCouponPaymentDate == null && paymentFrequency != Frequency.NONE) {
-			this.firstCouponPaymentDate = issueDate.plusMonths(paymentFrequency.toMonthUnit());
-			if (this.firstCouponPaymentDate.compareTo(maturityDate) > 0) {
-				this.firstCouponPaymentDate = maturityDate;
-			}
-		}*/
-
 		_lastCouponPaymentDate = lastCouponPaymentDate;
-		/*
-		if (this.lastCouponPaymentDate == null) {
-			this.lastCouponPaymentDate = maturityDate;
-		}*/
-		_paymentFrequency = paymentFrequency;
-
+		_paymentFrequency = paymentFrequency;		
+		_calendar = SouthKoreaCalendar.getCalendar(1);
+		_businessConvention = BusinessDayConvention.MODIFIED_FOLLOWING;
 		adjustNullPaymentDates();
 	}
 
+	public PaymentPeriodGenerator(Date issueDate, Date maturityDate,
+			Date firstCouponPaymentDate, Date lastCouponPaymentDate,
+			Frequency paymentFrequency,
+			Calendar calendar, BusinessDayConvention businessDayConvention) {
+		_issueDate = issueDate;
+		_maturityDate = maturityDate;
+		_firstCouponPaymentDate = firstCouponPaymentDate;
+		_lastCouponPaymentDate = lastCouponPaymentDate;
+		_paymentFrequency = paymentFrequency;		
+		_calendar = calendar;
+		_businessConvention = businessDayConvention;
+		adjustNullPaymentDates();
+	}
+	
 	// Kang Seok-Chan, 2009.09.18
 	// Deferred + Fixed Rate Bond
 	public PaymentPeriodGenerator(Date issueDate, Date maturityDate,
@@ -64,6 +67,8 @@ public class PaymentPeriodGenerator {
 		_lastCouponPaymentDate = lastCouponPaymentDate;
 		_paymentFrequency = paymentFrequency;
 		_deferredDate = deferredDate;
+		_calendar = SouthKoreaCalendar.getCalendar(1);
+		_businessConvention = BusinessDayConvention.MODIFIED_FOLLOWING;
 		adjustNullPaymentDates();
 	}
 
@@ -89,21 +94,18 @@ public class PaymentPeriodGenerator {
 	}
 
 	public PaymentPeriod [] generate() {
-		
-		// Jae-Heon Kim 2010.12.29
+
 		if (_paymentFrequency.compareTo(Frequency.valueOf("M")) > 0) {
 			//20140401 Jihoon Lee, 원래는 Frequency가 M이상이면 에러이지만 Quarterly로 바꿔서 계산
 			_paymentFrequency = Frequency.valueOf("Q");
-//			throw new DerivativesException(ErrorCode.OUT_OF_RANGE);
 		}
 
-		List paymentPeriodList = new ArrayList();
+		List<PaymentPeriod> paymentPeriodList = new ArrayList<>();
 
 		Date startDate = _issueDate;
 		Date endDate = _firstCouponPaymentDate;
 		Date paymentDate = null;
 
-		// Kang Seok-Chan, 2009.09.18
 		// Deferred + Fixed Rate Bond
 		if (_deferredDate != null) {
 			PaymentPeriod paymentPeriod = new PaymentPeriod(_issueDate,
@@ -112,9 +114,7 @@ public class PaymentPeriodGenerator {
 			startDate = _deferredDate;
 		}
 
-		// Jae-Heon Kim 2010.12.29
-		int count = 1;
-		
+		int count = 1;		
 		boolean prepayment = false;
 		if (startDate.equals(_firstCouponPaymentDate)) {
 			prepayment = true;
@@ -127,8 +127,6 @@ public class PaymentPeriodGenerator {
 		Date stubDate = null;
 		int deltaT = 0;
 		while (!done) {
-//		while (!done && endDate.compareTo(lastCouponPaymentDate) <= 0) {
-
 			if (endDate.compareTo(_maturityDate) >= 0) {
 				if (endDate.compareTo(_maturityDate) > 0) {
 					deltaT = (int)startDate.getDays(_maturityDate);
@@ -177,39 +175,16 @@ public class PaymentPeriodGenerator {
 			}
 
 			startDate = endDate;
-			//endDate = endDate.plusMonths(_paymentFrequency.toMonthUnit());
 			endDate = _firstCouponPaymentDate.plusMonths(
 					_paymentFrequency.toMonthUnit() * count);
 			count++;
 		}
 
-//		if (lastCouponPaymentDate.compareTo(maturityDate) != 0) {
-//			// 마지막 이자지급일과 만기일이 일치하지 않는 경우로,
-//			// 이 경우는 만기에 원금이 발생하도록 한다.
-//
-//			// TODO:: Jae-Heon Kim, 2009.04.22
-//			// How to handle periods that don't have the regular length...?
-//			//startDate = maturityDate;
-//			endDate = maturityDate;
-//
-//			if (prepayment) {
-//				paymentDate = startDate;
-//			}
-//			else {
-//				paymentDate = maturityDate;
-//			}
-//
-//			PaymentPeriod paymentPeriod = new PaymentPeriod(startDate, endDate, paymentDate);
-//			paymentPeriodList.add(paymentPeriod);
-//		}
-
-		// BusinessDayConvention에 의한 휴일의 이동
-		Calendar calendar = CalendarFactory.getInstance("KR", 1);
-		BusinessDayConvention convention = BusinessDayConvention.getInstance(1);
+		// BusinessDayConvention에 의한 휴일의 이동		
 		Iterator it = paymentPeriodList.iterator();
 		while (it.hasNext()) {
 			PaymentPeriod period = (PaymentPeriod)it.next();
-			period.adjustPaymentDate(calendar, convention);
+			period.adjustPaymentDate(_calendar, _businessConvention);
 		}
 
 		return (PaymentPeriod [])paymentPeriodList.toArray(new PaymentPeriod[paymentPeriodList.size()]);

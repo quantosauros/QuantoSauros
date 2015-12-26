@@ -52,9 +52,12 @@ public class PaymentPeriod {
 	public void setStubType(StubPeriod stubType) {
 		_stubType = stubType;
 	}
-	public void adjustPaymentDate(Calendar calendar, BusinessDayConvention convention) {
-		Date adjustedDate = calendar.adjustDate(_paymentDate, convention);
-		_paymentDate = adjustedDate;
+	public void adjustPaymentDate(Calendar calendar, BusinessDayConvention convention) {		
+		_resetDate = calendar.adjustDate(_resetDate, convention);
+		_startDate = calendar.adjustDate(_startDate, convention);
+		_endDate = calendar.adjustDate(_endDate, convention);
+		_paymentDate = calendar.adjustDate(_paymentDate, convention);
+		 
 	}
 	
 	public String toString(){
