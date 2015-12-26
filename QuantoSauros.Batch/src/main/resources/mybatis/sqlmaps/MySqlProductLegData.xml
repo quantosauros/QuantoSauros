@@ -27,4 +27,23 @@
 			AND DT = #{dt}
 			AND PAY_RCV_CD = #{payRcvCd}
 	</select>
+	
+	<!-- INSERT -->
+	<insert id="insertProductLegData">
+		INSERT INTO 
+			PRODUCT_LEG_DATA
+			(
+				DT, INSTRUMENT_CD, PAY_RCV_CD, 
+				NEXT_COUPON_PAY_DT, 
+				NEXT_COUPON, ACCRUAL_DAY_CNT, ACCUMULATE_AVG_COUPON
+			)
+		VALUES 
+			(
+				#{dt},
+				#{instrumentCd}, #{payRcvCd},
+				#{nextCouponPayDt}, 
+				#{nextCoupon}, #{accrualDayCnt}, #{accumulateAvgCoupon}
+			)							
+	</insert>
+	
 </mapper>

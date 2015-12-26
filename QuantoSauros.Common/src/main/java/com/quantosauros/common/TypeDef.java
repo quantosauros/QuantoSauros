@@ -196,7 +196,7 @@ public class TypeDef {
 				condiNum = 2;
 				break;
 			case R1nR2mR3 :
-				condiNum = 3;
+				condiNum = 2;
 				break;			
 		}
 		

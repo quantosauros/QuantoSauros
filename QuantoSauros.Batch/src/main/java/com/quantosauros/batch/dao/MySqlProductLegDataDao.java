@@ -20,7 +20,16 @@ public class MySqlProductLegDataDao implements ProductLegDataDao {
 		try {
 			return sqlSession.selectOne("ProductLegData.getProductLegData", paramMap);
 		} finally {
-			
+			sqlSession.close();
 		}		
+	}
+	public void insertProductLegData(HashMap<String, Object> paramMap){
+		SqlSession sqlSession = sqlsessionFactory.openSession();
+		try {
+			sqlSession.insert("ProductLegData.insertProductLegData", paramMap);
+		} finally {
+			sqlSession.commit();
+			sqlSession.close();
+		}	
 	}
 }

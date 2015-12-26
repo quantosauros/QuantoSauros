@@ -8,5 +8,5 @@ import com.quantosauros.batch.model.ProductLegDataModel;
 public interface ProductLegDataDao {
 
 	ProductLegDataModel selectProductLegData(HashMap<String, Object> paramMap);
-	
+	void insertProductLegData(HashMap<String, Object> paramMap);
 }
