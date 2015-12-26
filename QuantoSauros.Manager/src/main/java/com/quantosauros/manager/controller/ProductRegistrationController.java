@@ -32,8 +32,7 @@ import com.quantosauros.manager.model.ScheduleInfo;
 public class ProductRegistrationController {
 
 	private ProductInfoDao productInfoDao;
-	private ProductLegDao productLegDao;
-	private ProductLegDataDao productLegDataDao;
+	private ProductLegDao productLegDao;	
 	private ProductScheduleDao productScheduleDao;
 	private ProductOptionScheduleDao productOptionScheduleDao;
 	
@@ -41,12 +40,10 @@ public class ProductRegistrationController {
 	public ProductRegistrationController(
 			ProductInfoDao productInfoDao,
 			ProductLegDao productLegDao,
-			ProductLegDataDao productLegDataDao,
 			ProductScheduleDao productScheduleDao,
 			ProductOptionScheduleDao productOptionScheduleDao){
 		this.productInfoDao = productInfoDao;
-		this.productLegDao = productLegDao;
-		this.productLegDataDao = productLegDataDao;
+		this.productLegDao = productLegDao;		
 		this.productOptionScheduleDao = productOptionScheduleDao;
 		this.productScheduleDao = productScheduleDao;
 	}	
@@ -107,7 +104,7 @@ public class ProductRegistrationController {
 		String[] payLegKeys = new String[]{			
 			//PayLeg
 			"payLegTypeCd", "payLegUndTypeCd", "payLegCondiTypeCd", "payLegNotional", 
-			"payLegCcyCd", "payLegDCF", "payCapFloorCd",
+			"payLegCcyCd", "payLegDCF", "payLegCapFloorCd",
 			"payLegIrCd1", "payLegIrTenor1", "payLegIrCouponFreq1", "payLegIrTypeCd1",
 			"payLegIrCd2", "payLegIrTenor2", "payLegIrCouponFreq2", "payLegIrTypeCd2",
 			"payLegIrCd3", "payLegIrTenor3", "payLegIrCouponFreq3", "payLegIrTypeCd3",
@@ -122,14 +119,14 @@ public class ProductRegistrationController {
 		String[] rcvLegKeys = new String[] {
 			//RcvLeg
 			"rcvLegTypeCd", "rcvLegUndTypeCd", "rcvLegCondiTypeCd", "rcvLegNotional", 
-			"rcvLegCcyCd", "rcvLegDCF", "rcvCapFloorCd", 
+			"rcvLegCcyCd", "rcvLegDCF", "rcvLegCapFloorCd", 
 			"rcvLegIrCd1", "rcvLegIrTenor1", "rcvLegIrCouponFreq1", "rcvLegIrTypeCd1",
 			"rcvLegIrCd2", "rcvLegIrTenor2", "rcvLegIrCouponFreq2", "rcvLegIrTypeCd2",
 			"rcvLegIrCd3", "rcvLegIrTenor3", "rcvLegIrCouponFreq3", "rcvLegIrTypeCd3",
 		};
 		String[] rcvLegScheduleKeys = new String[] {
 			//RcvLegSchedule
-			"rcvstartDate", "rcvendDate", "rcvrcvmentDate", "rcvCouponType", 
+			"rcvstartDate", "rcvendDate", "rcvpaymentDate", "rcvCouponType", 
 			"rcvUpperLimit1", "rcvLowerLimit1", "rcvUpperLimit2", "rcvLowerLimit2",
 			"rcvInCouponRate", "rcvOutCouponRate", "rcvLeverage1", "rcvLeverage2", "rcvLeverage3",
 			"rcvSpread", "rcvcap", "rcvfloor",

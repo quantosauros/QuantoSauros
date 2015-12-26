@@ -27,7 +27,8 @@ public class MySqlProductScheduleDao implements ProductScheduleDao{
 			Map params = new HashMap<String, String>();
 			params.put("instrumentCd", productSchedule.getInstrumentCd());
 			params.put("payRcvCd", productSchedule.getPayRcvCd());
-			params.put("couponResetDt", productSchedule.getCouponResetDt());
+			//TODO coupon reset date
+			params.put("couponResetDt", productSchedule.getCouponStrtDt());
 			params.put("startDate", productSchedule.getCouponStrtDt());			
 			params.put("endDate", productSchedule.getCouponEndDt());
 			params.put("paymentDate", productSchedule.getCouponPayDt());

@@ -181,7 +181,7 @@
 												</div>
 												<div class = "list-group-item">												
 													<label for="capFloorCd"> Cap/Floor Code </label>
-													<span><select class="form-control" id = "input-payCapFloorCd" name="payCapFloorCd">
+													<span><select class="form-control" id = "input-payCapFloorCd" name="payLegCapFloorCd">
 															<option value = "0"> NONE </option>
 															<option value = "1"> Cap Only </option>
 															<option value = "2"> Floor Only </option>
@@ -376,7 +376,7 @@
 												</div>	
 												<div class = "list-group-item">												
 													<label for="capFloorCd"> Cap/Floor Code </label>
-													<span><select class="form-control" id = "input-rcvCapFloorCd" name="rcvCapFloorCd">
+													<span><select class="form-control" id = "input-rcvCapFloorCd" name="rcvLegCapFloorCd">
 															<option value = "0"> NONE </option>
 															<option value = "1"> Cap Only </option>
 															<option value = "2"> Floor Only </option>
