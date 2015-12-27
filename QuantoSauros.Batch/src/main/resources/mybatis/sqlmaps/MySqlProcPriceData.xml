@@ -61,25 +61,24 @@
 	<insert id="insertPrice">
 		INSERT INTO 
 			PROC_PRICE_DATA
-			(DT, PROC_ID, INSTRUMENT_CD, IDX, 
-			PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE,
+			(DT, PROC_ID, INSTRUMENT_CD, IDX, NONCALL_CD,			 
+			PRICE, PAY_PRICE, RCV_PRICE,
 			CCY_CD, CRTN_TIME)
 		VALUES 
 			(#{dt}, 
 			#{procId}, 
 			#{instrumentCd},
 			#{idx}, 
-			#{price, jdbcType = FLOAT}, 
-			#{payPrice, jdbcType = FLOAT},
-			#{rcvPrice, jdbcType = FLOAT},
-			#{nonExercisePrice, jdbcType = FLOAT},
+			#{nonCallCd},
+			#{price}, 
+			#{payPrice},
+			#{rcvPrice},			
 			#{ccyCd}, 
 			now())	
 		ON DUPLICATE KEY UPDATE 
 			PRICE = VALUES(PRICE),
 			PAY_PRICE = VALUES(PAY_PRICE),
-			RCV_PRICE = VALUES(RCV_PRICE),
-			NON_EXERCISE_PRICE = VALUES(NON_EXERCISE_PRICE),
+			RCV_PRICE = VALUES(RCV_PRICE),			
 			CRTN_TIME = VALUES(CRTN_TIME)
 								
     </insert>    
@@ -113,7 +112,7 @@
 	<insert id="insertDetailData">
 	    INSERT INTO
 	    	PROC_DETAIL_DATA
-	    	(DT, PROC_ID, INSTRUMENT_CD, IDX, VALUE_TYPE, ISNONCALL,
+	    	(DT, PROC_ID, INSTRUMENT_CD, IDX, VALUE_TYPE, NONCALL_CD,
 	    	LEG_TYPE, PERIOD_NUM, VALUE1, VALUE2, CRTN_TIME)
 	    VALUES
 	    	(#{dt},
@@ -121,7 +120,7 @@
 	    	#{instrumentCd},
 	    	#{idx},
 	    	#{valueType},
-	    	#{isNoncall},
+	    	#{nonCallCd},
 	    	#{legType},
 	    	#{periodNum},
 	    	#{value1},

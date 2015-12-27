@@ -85,9 +85,7 @@ public abstract class AbstractProcess {
 	}
 	
 	private void calculate(InstrumentInfoModel instrumentInfoModel){		
-		calcInstrument(instrumentInfoModel);
-		if (_insertResult)
-			insertResult(instrumentInfoModel);		
+		calcInstrument(instrumentInfoModel);				
 	}
 		
 	private HashMap genCurveContainer(List ircCdList){
@@ -145,7 +143,6 @@ public abstract class AbstractProcess {
 	}
 	
 	protected abstract void calcInstrument(InstrumentInfoModel instrumentInfoModel);	
-	protected abstract void insertResult(InstrumentInfoModel instrumentInfoModel);
 		
 	public void setSimNum(int simNum){
 		this._simNum = simNum;

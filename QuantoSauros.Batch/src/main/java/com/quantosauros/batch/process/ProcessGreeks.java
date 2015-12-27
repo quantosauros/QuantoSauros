@@ -70,14 +70,14 @@ public class ProcessGreeks extends AbstractProcess {
 				double[] AADGreeks = _calculator.getAADGreek(
 						ircCd, _irCurveContainer, changedIRCurves, false);
 				
-				insertGreek(instrumentInfoModel, ircCd, "AAD", "N", vertex, AADGreeks);
+				insertGreekResult(instrumentInfoModel, ircCd, "AAD", "N", vertex, AADGreeks);
 				
 //				_deltaResultsAAD.add(new DeltaResult(ircCd, vertex, "AAD", AADGreeks));				
 								
 				//BUMPING		
 				if (_calcBump){
 					double[] BumpingGreeks = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
-					insertGreek(instrumentInfoModel, ircCd, "BUMP", "N", vertex, BumpingGreeks);					
+					insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "N", vertex, BumpingGreeks);					
 //					_deltaResultsBump.add(new DeltaResult(ircCd, vertex, "BUMP", BumpingGreeks));
 				}
 								
@@ -96,12 +96,12 @@ public class ProcessGreeks extends AbstractProcess {
 					double[] nonCallAADResult = _calculator.getAADGreek(
 							ircCd, _irCurveContainer, changedIRCurves, true);
 //					_deltaResultsAADNoncall.add(new DeltaResult(ircCd, vertex, "AAD", nonCallAADResult));
-					insertGreek(instrumentInfoModel, ircCd, "AAD", "Y", vertex, nonCallAADResult);
+					insertGreekResult(instrumentInfoModel, ircCd, "AAD", "Y", vertex, nonCallAADResult);
 					_calculator.setHasExercise(true);
 //					BUMPING		
 					if (_calcBump){
 						double[] nonCallBumpingResult = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
-						insertGreek(instrumentInfoModel, ircCd, "BUMP", "Y", vertex, nonCallBumpingResult);
+						insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "Y", vertex, nonCallBumpingResult);
 //						_deltaResultsBumpNoncall.add(new DeltaResult(ircCd, vertex, "BUMP", nonCallBumpingResult));
 						
 						_calculator.setHasExercise(true);
@@ -153,7 +153,7 @@ public class ProcessGreeks extends AbstractProcess {
 		return greeks;
 	}
 	
-	protected void insertGreek(InstrumentInfoModel instrumentInfoModel,
+	protected void insertGreekResult(InstrumentInfoModel instrumentInfoModel,
 			String ircCd, String greekCd, String nonCallCd, 
 			Vertex[] vertexList, double[] greeks){		    
 		
@@ -189,113 +189,8 @@ public class ProcessGreeks extends AbstractProcess {
 		}
 	}
 	
-	
-//	protected void insertResult(InstrumentInfoModel instrumentInfoDao){		
-//    	System.out.println("INSTRUMENTCD: " + instrumentInfoDao.getInstrumentCd());
-//    	
-//    	//BUMPING
-//    	ArrayList<DeltaResult> bumpArray = null;
-//    	ArrayList<DeltaResult> bumpNoncallArray = null;
-//    	if (_calcBump){
-//	    	bumpArray = _deltaResultsBump;
-//	    	bumpNoncallArray = _deltaResultsBumpNoncall;
-//    	}
-//    	//AAD
-//    	ArrayList<DeltaResult> AADArray = _deltaResultsAAD;
-//    	ArrayList<DeltaResult> AADNoncallArray = _deltaResultsAADNoncall;
-//    	
-//    	for (int rfIdx = 0; rfIdx < AADArray.size(); rfIdx++){
-//    		//AAD
-//    		DeltaResult deltaAAD = AADArray.get(rfIdx);    		
-//    		double[] greeksAAD = deltaAAD.getGreeks();    		
-//    		//NONCALL
-//    		double[] greeksNoncallAAD = null;
-//    		if (_calculator.getHasExercise()){
-//	    		DeltaResult deltaAADNoncall = AADNoncallArray.get(rfIdx);
-//	    		greeksNoncallAAD = deltaAADNoncall.getGreeks();
-//    		}   		
-//    		
-//    		//BUMPING
-//    		double[] greeksBump = null;
-//    		double[] greeksNoncallBump = null;
-//    		if (_calcBump){
-//	    		DeltaResult deltaBump = bumpArray.get(rfIdx);    		
-//	    		greeksBump = deltaBump.getGreeks();    		
-//	    		//NONCALL	    		
-//	    		if (_calculator.getHasExercise()){
-//		    		DeltaResult deltaBumpNoncall = bumpNoncallArray.get(rfIdx);
-//		    		greeksNoncallBump = deltaBumpNoncall.getGreeks();
-//	    		}
-//    		}
-//    		String riskFactorCd = deltaAAD.getRiskFactorCode();		
-//    		Vertex[] vertexList = deltaAAD.getVertex();    		
-//    		for (int vtxIndex = 0; vtxIndex < vertexList.length; vtxIndex++){
-//    			
-//    			Vertex vtx = vertexList[vtxIndex];
-//    			String factorCd = riskFactorCd + vtx.getCode();
-//    			    			
-//				//AAD
-//				double aadValue = greeksAAD[vtxIndex];				
-//				HashMap paramMapForAAD = new HashMap();
-//				paramMapForAAD.put("greek", aadValue);    			
-//    			//NONCALL
-//				double aadNoncallValue = 0;
-//    			if (_calculator.getHasExercise()){
-//    				aadNoncallValue = greeksNoncallAAD[vtxIndex];    				
-//    			}
-//    			
-//    			paramMapForAAD.put("nonExerciseGreek", aadNoncallValue);
-//    			paramMapForAAD.put("greekCd", "AAD");				
-//				paramMapForAAD.put("factorCd", factorCd);
-//				paramMapForAAD.put("nonCallCd", nonCallCd);
-//				paramMapForAAD.put("dt", _processDate.getDt());
-//				paramMapForAAD.put("procId", _procId);
-//				paramMapForAAD.put("instrumentCd", instrumentInfoDao.getInstrumentCd());
-//				paramMapForAAD.put("idx", _idx);
-//				paramMapForAAD.put("ccyCd", instrumentInfoDao.getCcyCd());		
-//				_procPriceDataDao.insertDeltaGamma(paramMapForAAD);		    					
-//    		
-//		    	System.out.println(
-//						"RISKFACTOR_CD: " + factorCd + "; " + 
-//						"AADGREEK: " + aadValue + "; " +
-//						"NONCALL_AADGREEK: " + aadNoncallValue);
-//		    	
-//		    	//BUMP
-//		    	if (_calcBump){
-//	    			double bumpValue = greeksBump[vtxIndex];    			    			
-//	    			HashMap paramMapForBumping = new HashMap();    							
-//	    			paramMapForBumping.put("greek", bumpValue);    			
-//	    			//NONCALL
-//	    			double bumpNoncallValue = 0;
-//	    			if (_calculator.getHasExercise()){
-//	    				bumpNoncallValue = greeksNoncallBump[vtxIndex];    				
-//	    			}
-//	    			paramMapForBumping.put("nonExerciseGreek", bumpNoncallValue);
-//					paramMapForBumping.put("greekCd", "BUMP");				
-//					paramMapForBumping.put("factorCd", factorCd);
-//			    	paramMapForBumping.put("dt", _processDate.getDt());
-//			    	paramMapForBumping.put("procId", _procId);
-//					paramMapForBumping.put("instrumentCd", instrumentInfoDao.getInstrumentCd());
-//					paramMapForBumping.put("idx", _idx);
-//					paramMapForBumping.put("ccyCd", instrumentInfoDao.getCcyCd());
-//					_procPriceDataDao.insertDeltaGamma(paramMapForBumping);					
-//					
-//					System.out.println(
-//							"RISKFACTOR_CD: " + factorCd + "; " +  
-//							"BUMPGREEK: " + bumpValue + "; " +
-//							"NONCALL_BUMPGREEK: " + bumpNoncallValue);			
-//		    	}
-//    		}
-//    	}
-//	}
-	
 	public void setCalcBump(boolean calcBump){
 		_calcBump = calcBump; 
 	}
 
-	@Override
-	protected void insertResult(InstrumentInfoModel instrumentInfoModel) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -1,11 +1,10 @@
 package com.quantosauros.batch.process;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
 
 import com.quantosauros.batch.model.InstrumentInfoModel;
 import com.quantosauros.common.TypeDef;
@@ -15,12 +14,7 @@ import com.quantosauros.common.date.Date;
 import com.quantosauros.jpl.result.ResultDto;
 
 public class ProcessPrices extends AbstractProcess {
-	
-	protected Money _originPrices;
-	protected Money _nonExercisePrices;
-	protected double _resultRcvValues;
-	protected double _resultPayValues;
-	
+			
 	public ProcessPrices(Date processDate, String procId, String idx) {
 		super(processDate, procId, idx);
 		//Insert DeltaGamma Info
@@ -39,36 +33,70 @@ public class ProcessPrices extends AbstractProcess {
 	}
 
 	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel){	
-		_originPrices = _calculator.getPrice(
+		Money originPrice = _calculator.getPrice(
 				_processDate, _irCurveContainer, _surfaceContainer, "");
 		
 		if (_insertResult)
-			insertDetailResult(instrumentInfoModel.getInstrumentCd(), true);
+			insertDetailResult(instrumentInfoModel.getInstrumentCd(), "N");
 				
-		_resultRcvValues = _calculator.getLegPrice(0).getAmount();		
-		_resultPayValues = _calculator.getLegPrice(1).getAmount();
+		Money rcvPrice = _calculator.getLegPrice(0);		
+		Money payPrice = _calculator.getLegPrice(1);
 		
-		System.out.println("Original Price: " + _originPrices);
-		System.out.println("Original RCV: " + _resultRcvValues);
-		System.out.println("Original PAY: " + _resultPayValues);
-		
+		insertPriceResult(instrumentInfoModel, "N", 
+				originPrice, rcvPrice, payPrice);
+				
 		if (_calculator.getHasExercise()){
 			_calculator.setHasExercise(false);
-			_nonExercisePrices = _calculator.getPrice(
+			Money nonCallPrices = _calculator.getPrice(
 					_processDate, _irCurveContainer, _surfaceContainer, "");
 			
 			if (_insertResult)
-				insertDetailResult(instrumentInfoModel.getInstrumentCd(), false);
+				insertDetailResult(instrumentInfoModel.getInstrumentCd(), "Y");
 			
-			double noncallRcvValue = _calculator.getLegPrice(0).getAmount();
-			double noncallPayValue = _calculator.getLegPrice(1).getAmount();
-			System.out.println("NonCall Price: " + _nonExercisePrices);
-			System.out.println("NonCall RCV: " + noncallRcvValue);
-			System.out.println("NonCall PAY: " + noncallPayValue);
+			Money noncallRcvValue = _calculator.getLegPrice(0);
+			Money noncallPayValue = _calculator.getLegPrice(1);
+			
+			insertPriceResult(instrumentInfoModel, "Y", 
+					nonCallPrices, noncallRcvValue, noncallPayValue);
+			
+			_calculator.setHasExercise(true);
 		}		
 	}
 	
-	protected void insertDetailResult(String instrumentCd, boolean isOriginal){
+	protected void insertPriceResult(InstrumentInfoModel instrumentInfoModel,
+			String nonCallCd, Money originalPrice, Money rcvPrice, Money payPrice){
+		HashMap paramMap = new HashMap();
+		DecimalFormat dformat = new DecimalFormat(".####");
+		String originalValue = dformat.format(originalPrice.getAmount());		
+		String payValue = dformat.format(payPrice.getAmount());
+		String rcvValue = dformat.format(rcvPrice.getAmount());
+		
+		System.out.println(
+				"Price Results of Product Code; " + instrumentInfoModel.getInstrumentCd() + 
+				"; at; " + _processDate.getDt() +				 
+				"; NONCALLCD: " + nonCallCd +  
+				";)"				
+		);
+
+		System.out.println("Original Price: " + originalPrice);
+		System.out.println("Original RCV: " + rcvPrice);
+		System.out.println("Original PAY: " + payPrice);
+		
+    	paramMap.put("dt", _processDate.getDt());
+    	paramMap.put("procId", _procId);
+		paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());
+		paramMap.put("idx", _idx);
+		paramMap.put("nonCallCd", nonCallCd);
+		paramMap.put("price", originalValue);
+		paramMap.put("payPrice", payValue);
+		paramMap.put("rcvPrice", rcvValue);		
+		paramMap.put("ccyCd", instrumentInfoModel.getCcyCd());
+		if(_insertResult)
+			_procPriceDataDao.insertPrice(paramMap);
+		
+	}
+	
+	protected void insertDetailResult(String instrumentCd, String nonCallCd){
 
 		Map results = _calculator.getResults();
 		
@@ -100,7 +128,7 @@ public class ProcessPrices extends AbstractProcess {
 						paramMap.put("idx", _idx);
 						paramMap.put("valueType", valueType);
 						paramMap.put("legType", legType);
-						paramMap.put("isNoncall", isOriginal);
+						paramMap.put("nonCallCd", nonCallCd);
 						paramMap.put("periodNum", periodIndex);
 						paramMap.put("value1", new BigDecimal(avg));
 						paramMap.put("value2", new BigDecimal(std));
@@ -122,7 +150,7 @@ public class ProcessPrices extends AbstractProcess {
 					paramMap.put("instrumentCd", instrumentCd);
 					paramMap.put("idx", _idx);
 					paramMap.put("valueType", valueType);
-					paramMap.put("isNoncall", isOriginal);
+					paramMap.put("nonCallCd", nonCallCd);
 					paramMap.put("legType", "");
 					paramMap.put("periodNum", periodIndex);
 					paramMap.put("value1", new BigDecimal(avg));
@@ -134,32 +162,4 @@ public class ProcessPrices extends AbstractProcess {
 		}
 	}
 	
-	protected void insertResult(InstrumentInfoModel instrumentInfoModel){
-		HashMap paramMap = new HashMap();
-		Money originPrice = _originPrices;
-		BigDecimal originValue = 
-				new BigDecimal(originPrice.getAmount());
-		if (!_nonExercisePrices.equals(0)){			
-			Money nonCallPrice = _nonExercisePrices;
-			BigDecimal nonCallValue = 
-					new BigDecimal(nonCallPrice.getAmount());
-			paramMap.put("nonExercisePrice", nonCallValue);
-		} else {
-			paramMap.put("nonExercisePrice", "0");
-		}
-		
-		double payPrice = _resultPayValues;
-		double rcvPrice = _resultRcvValues;
-		    	
-    	paramMap.put("dt", _processDate.getDt());
-    	paramMap.put("procId", _procId);
-		paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());
-		paramMap.put("idx", _idx);
-		paramMap.put("price", originValue);
-		paramMap.put("payPrice", new BigDecimal(payPrice));
-		paramMap.put("rcvPrice", new BigDecimal(rcvPrice));		
-		paramMap.put("ccyCd", instrumentInfoModel.getCcyCd());
-    	_procPriceDataDao.insertPrice(paramMap);
-		
-	}
 }
