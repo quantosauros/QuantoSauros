@@ -91,7 +91,7 @@ public class ProcessGreeks extends AbstractProcess {
 					double[] nonCallAADResult = _calculator.getAADGreek(
 							ircCd, _irCurveContainer, changedIRCurves, true);
 					_deltaResultsAADNoncall.add(new DeltaResult(ircCd, vertex, "AAD", nonCallAADResult));
-					
+					_calculator.setHasExercise(true);
 //					BUMPING		
 					if (_calcBump){
 						double[] nonCallBumpingResult = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
@@ -99,6 +99,7 @@ public class ProcessGreeks extends AbstractProcess {
 						
 						_calculator.setHasExercise(true);
 					}
+					
 				}				
 			}
 		}		
@@ -115,14 +116,14 @@ public class ProcessGreeks extends AbstractProcess {
 			
 			//Up Price
 			String upFlag = ircCd + "_UP_" + vertex.getCode();
-			_calculator.setExerciseIndex(null);
+//			_calculator.setExerciseIndex(null);
 			Money upPrice = _calculator.getPrice(_processDate, 
 					_irCurveContainer, _surfaceContainer, upFlag);						
 //			_calculator.getResults();
 			
 			//Down Price
 			String downFlag = ircCd + "_DOWN_" + vertex.getCode();
-			_calculator.setExerciseIndex(null);
+//			_calculator.setExerciseIndex(null);
 			Money downPrice = _calculator.getPrice(_processDate, 
 					_irCurveContainer, _surfaceContainer, downFlag);
 //			_calculator.getResults();
