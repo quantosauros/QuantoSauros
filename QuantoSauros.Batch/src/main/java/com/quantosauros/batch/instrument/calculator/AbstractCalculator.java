@@ -436,10 +436,10 @@ public class AbstractCalculator {
 						for (int i = 0; i < greek.length; i++){
 							aadGreek[i] += greek[i];
 							
-							System.out.println(
-									"IRCCD: " + aadIrcCd +
-									" key: " + key.toString() +
-									" VALUE: " + greek[i]);				
+//							System.out.println(
+//									"IRCCD: " + aadIrcCd +
+//									" key: " + key.toString() +
+//									" VALUE: " + greek[i]);				
 						}
 					}					
 				}
@@ -447,12 +447,12 @@ public class AbstractCalculator {
 		}
 		
 		
-		for (int i = 0; i < aadGreek.length; i++){
-			System.out.println(
-					"ISNONCALL: " + isNonCall + 
-					": IRCCD: " + ircCd +  
-					": AAD: " + aadGreek[i]);		
-		}
+//		for (int i = 0; i < aadGreek.length; i++){
+//			System.out.println(
+//					"ISNONCALL: " + isNonCall + 
+//					": IRCCD: " + ircCd +  
+//					": AAD: " + aadGreek[i]);		
+//		}
 		
 		return aadGreek;
 	}

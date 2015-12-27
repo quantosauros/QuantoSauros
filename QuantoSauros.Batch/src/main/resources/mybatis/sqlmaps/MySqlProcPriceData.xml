@@ -89,8 +89,8 @@
 		INSERT INTO 
 			PROC_DELTAGAMMA_DATA
 			(DT, PROC_ID, INSTRUMENT_CD, IDX, FACTOR_CD, 
-			GREEK_CD,
-			GREEK, NON_EXERCISE_GREEK,		
+			GREEK_CD, NONCALL_CD,
+			GREEK,		
 			CCY_CD, CRTN_TIME)
 		VALUES 
 			(#{dt}, 
@@ -99,13 +99,12 @@
 			#{idx}, 
 			#{factorCd},
 			#{greekCd},
-			#{greek, jdbcType = FLOAT}, 
-			#{nonExerciseGreek, jdbcType = FLOAT},						
+			#{nonCallCd},
+			#{greek},									
 			#{ccyCd}, 
 			now())
 		ON DUPLICATE KEY UPDATE 
-			GREEK = VALUES(GREEK),
-			NON_EXERCISE_GREEK = VALUES(NON_EXERCISE_GREEK),
+			GREEK = VALUES(GREEK),			
 			CRTN_TIME = VALUES(CRTN_TIME)
 						
     </insert>    
