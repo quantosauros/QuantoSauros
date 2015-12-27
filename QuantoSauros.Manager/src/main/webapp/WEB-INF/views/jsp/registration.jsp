@@ -224,7 +224,7 @@
 															<select class="form-control" id = "input-payLegIrCd1">
 																<option value = ""> NONE </option>
 																<option value = "KRWIRS" selected> KRW IRS </option>
-																<option value = "USDIRW"> USD IRS </option>
+																<option value = "USDIRS"> USD IRS </option>
 																<option value = "EURIRS"> EUR IRS </option>
 																<option value = "1010000W"> KRW TBOND </option>
 															</select>
@@ -258,7 +258,7 @@
 															<select class="form-control" id = "input-payLegIrCd2" name="payLegIrCd2">
 																<option value = ""> NONE </option>
 																<option value = "KRWIRS" selected> KRW IRS </option>
-																<option value = "USDIRW"> USD IRS </option>
+																<option value = "USDIRS"> USD IRS </option>
 																<option value = "EURIRS"> EUR IRS </option>
 																<option value = "1010000W"> KRW TBOND </option>
 															</select>
@@ -292,7 +292,7 @@
 															<select class="form-control" id = "input-payLegIrCd3" name="payLegIrCd3">
 																<option value = ""> NONE </option>
 																<option value = "KRWIRS" selected> KRW IRS </option>
-																<option value = "USDIRW"> USD IRS </option>
+																<option value = "USDIRS"> USD IRS </option>
 																<option value = "EURIRS"> EUR IRS </option>
 																<option value = "1010000W"> KRW TBOND </option>
 															</select>
@@ -328,6 +328,56 @@
 															<option value = "A"> Annually </option>
 														</select>
 													</span>
+												</div>
+												<div class="list-group-item">
+													<label for="payLegInitSpread"> Initial Spread </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitSpread" value="0">													
+													</span>
+													<label for="payLegInitLeverage1"> Initial Leverage1 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitLeverage1" value="1">													
+													</span>
+													<label for="payLegInitLeverage2"> Initial Leverage2 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitLeverage2" value="1">														
+													</span>
+													<label for="payLegInitLeverage3"> Initial Leverage3 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitLeverage3" value="1">													
+													</span>
+													<label for="payLegInitInCoupon"> Initial InCoupon </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitInCoupon" value="5">														
+													</span>
+													<label for="payLegInitOutCoupon"> Initial OutCoupon </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitOutCoupon" value="0">														
+													</span>			
+													<label for="payLegInitLowerBound1"> Initial LowerBound1 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitLowerBound1" value="0">														
+													</span>
+													<label for="payLegInitUpperBound1"> Initial UpperBound1 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitUpperBound1" value="5">														
+													</span>
+													<label for="payLegInitLowerBound2"> Initial LowerBound2 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitLowerBound2" value="0">														
+													</span>
+													<label for="payLegInitUpperBound2"> Initial UpperBound2 </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitUpperBound2" value="5">														
+													</span>
+													<label for="payLegInitCap"> Initial Cap </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitCap" value="7">														
+													</span>
+													<label for="payLegInitFloor"> Initial Floor </label>
+													<span>
+														<input class="form-control" type="text" id="input-payLegInitFloor" value="0">														
+													</span>										
 												</div>
 												<div class="list-group-item table-responsive">
 													<button class="btn btn-primary" type ="button" id="payLegScheduleGen_button"> Generate Schedule </button>										
@@ -419,7 +469,7 @@
 															<select class="form-control" id = "input-rcvLegIrCd1" name="rcvLegIrCd1">
 																<option value = ""> NONE </option>
 																<option value = "KRWIRS" selected> KRW IRS </option>
-																<option value = "USDIRW"> USD IRS </option>
+																<option value = "USDIRS"> USD IRS </option>
 																<option value = "EURIRS"> EUR IRS </option>
 																<option value = "1010000W"> KRW TBOND </option>
 															</select>
@@ -453,7 +503,7 @@
 															<select class="form-control" id = "input-rcvLegIrCd2" name="rcvLegIrCd2">
 																<option value = ""> NONE </option>
 																<option value = "KRWIRS" selected> KRW IRS </option>
-																<option value = "USDIRW"> USD IRS </option>
+																<option value = "USDIRS"> USD IRS </option>
 																<option value = "EURIRS"> EUR IRS </option>
 																<option value = "1010000W"> KRW TBOND </option>
 															</select>
@@ -487,7 +537,7 @@
 															<select class="form-control" id = "input-rcvLegIrCd3" name="rcvLegIrCd3">
 																<option value = ""> NONE </option>
 																<option value = "KRWIRS" selected> KRW IRS </option>
-																<option value = "USDIRW"> USD IRS </option>
+																<option value = "USDIRS"> USD IRS </option>
 																<option value = "EURIRS"> EUR IRS </option>
 																<option value = "1010000W"> KRW TBOND </option>
 															</select>
@@ -523,6 +573,56 @@
 															<option value = "A"> Annually </option>
 														</select>
 													</span>
+												</div>
+												<div class="list-group-item">
+													<label for="rcvLegInitSpread"> Initial Spread </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitSpread" value="0">														
+													</span>
+													<label for="rcvLegInitLeverage1"> Initial Leverage1 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitLeverage1" value="1">													
+													</span>
+													<label for="rcvLegInitLeverage2"> Initial Leverage2 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitLeverage2" value="1">														
+													</span>
+													<label for="rcvLegInitLeverage3"> Initial Leverage3 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitLeverage3" value="1">													
+													</span>
+													<label for="rcvLegInitInCoupon"> Initial InCoupon </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitInCoupon" value="5">														
+													</span>
+													<label for="rcvLegInitOutCoupon"> Initial OutCoupon </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitOutCoupon" value="0">														
+													</span>													
+													<label for="rcvLegInitLowerBound1"> Initial LowerBound1 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitLowerBound1" value="0">														
+													</span>
+													<label for="rcvLegInitUpperBound1"> Initial UpperBound1 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitUpperBound1" value="5">														
+													</span>
+													<label for="rcvLegInitLowerBound2"> Initial LowerBound2 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitLowerBound2" value="0">														
+													</span>
+													<label for="rcvLegInitUpperBound2"> Initial UpperBound2 </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitUpperBound2" value="5">														
+													</span>
+													<label for="rcvLegInitCap"> Initial Cap </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitCap" value="7">														
+													</span>
+													<label for="rcvLegInitFloor"> Initial Floor </label>
+													<span>
+														<input class="form-control" type="text" id="input-rcvLegInitFloor" value="0">														
+													</span>		
 												</div>
 												<div class="list-group-item table-responsive">
 													<button class="btn btn-primary" type ="button" id="rcvLegScheduleGen_button"> Generate Schedule </button>										
@@ -639,6 +739,9 @@
 			'class' : 'inputRate',
 			'name' : tagCode + 'floor'
 		});
+		var initCap = $('#input-' + tagCode + "LegInitCap").val();
+		var initFloor = $('#input-' + tagCode + "LegInitFloor").val();
+		
 		
 		if (capFloorTypeCd == 0){
 			//NONE		
@@ -648,21 +751,21 @@
 		} else if (capFloorTypeCd == 1){
 			//Cap Only
 			resultTag.append("min(Coupon, ");
-			resultTag.append(capTag.attr({'value': '7'}));
+			resultTag.append(capTag.attr({'value': initCap}));
 			resultTag.append("%)");
 			resultTag.append(floorTag.attr({'hidden': 'true'}))
 		} else if (capFloorTypeCd == 2){
 			//Floor Only
 			resultTag.append("max(Coupon, ");
-			resultTag.append(floorTag.attr({'value' : '0'}));
+			resultTag.append(floorTag.attr({'value' : initFloor}));
 			resultTag.append("%)");
 			resultTag.append(capTag.attr({'hidden': 'true'}));
 		} else if (capFloorTypeCd == 3){
 			//Cap & Floor
 			resultTag.append("min[max(Coupon, ");
-			resultTag.append(floorTag.attr({'value' : '0'}));
+			resultTag.append(floorTag.attr({'value' : initFloor}));
 			resultTag.append("%), ");
-			resultTag.append(capTag.attr({'value': '7'}));
+			resultTag.append(capTag.attr({'value': initCap}));
 			resultTag.append("%]");
 		}
 		
@@ -692,6 +795,10 @@
 			'class' : 'inputRate',
 			'name' : tagCode + "UpperLimit2"
 		});
+		var initLowerBound1 = $('#input-' + tagCode + "LegInitLowerBound1").val();
+		var initUpperBound1 = $('#input-' + tagCode + "LegInitUpperBound1").val();
+		var initLowerBound2 = $('#input-' + tagCode + "LegInitLowerBound2").val();
+		var initUpperBound2 = $('#input-' + tagCode + "LegInitUpperBound2").val();
 		
 		if (condiTypeCd == 0){
 			//NONE		
@@ -702,83 +809,83 @@
 			resultTag.append(upperLimit2Tag.attr({'hidden' : 'true'}));
 		} else if (condiTypeCd == 1){
 			//R1
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R1 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%");
 			resultTag.append(lowerLimit2Tag.attr({'hidden' : 'true'}));
 			resultTag.append(upperLimit2Tag.attr({'hidden' : 'true'}));
 		} else if (condiTypeCd == 2){
 			//R2
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R2 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%");
 			resultTag.append(lowerLimit2Tag.attr({'hidden' : 'true'}));
 			resultTag.append(upperLimit2Tag.attr({'hidden' : 'true'}));			
 		} else if (condiTypeCd == 3){
 			//R3
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R3 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%");
 			resultTag.append(lowerLimit2Tag.attr({'hidden' : 'true'}));
 			resultTag.append(upperLimit2Tag.attr({'hidden' : 'true'}));
 		} else if (condiTypeCd == 4){
 			//R1-R2
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R1 - R2 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '100'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%");
 			resultTag.append(lowerLimit2Tag.attr({'hidden' : 'true'}));
 			resultTag.append(upperLimit2Tag.attr({'hidden' : 'true'}));
 		} else if (condiTypeCd == 5){
 			//R2-R3
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R2 - R3 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '100'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%");
 			resultTag.append(lowerLimit2Tag.attr({'hidden' : 'true'}));
 			resultTag.append(upperLimit2Tag.attr({'hidden' : 'true'}));
 		} else if (condiTypeCd == 6){
 			//R1 & R2
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R1 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%, ");
-			resultTag.append(lowerLimit2Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit2Tag.attr({'value' : initLowerBound2}));
 			resultTag.append("% < R2 < ");
-			resultTag.append(upperLimit2Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit2Tag.attr({'value' : initUpperBound2}));
 			resultTag.append("%");
 		} else if (condiTypeCd == 7){
 			//R1 & R3
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R1 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%, ");
-			resultTag.append(lowerLimit2Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit2Tag.attr({'value' : initLowerBound2}));
 			resultTag.append("% < R3 < ");
-			resultTag.append(upperLimit2Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit2Tag.attr({'value' : initUpperBound2}));
 			resultTag.append("%");		
 		} else if (condiTypeCd == 8){
 			//R2 & R3
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R2 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%, ");
-			resultTag.append(lowerLimit2Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit2Tag.attr({'value' : initLowerBound2}));
 			resultTag.append("% < R3 < ");
-			resultTag.append(upperLimit2Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit2Tag.attr({'value' : initUpperBound2}));
 			resultTag.append("%");
 		} else if (condiTypeCd == 9){
 			//R1 & (R2- R3)
-			resultTag.append(lowerLimit1Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit1Tag.attr({'value' : initLowerBound1}));
 			resultTag.append("% < R1 < ");
-			resultTag.append(upperLimit1Tag.attr({'value' : '5'}));
+			resultTag.append(upperLimit1Tag.attr({'value' : initUpperBound1}));
 			resultTag.append("%, ");
-			resultTag.append(lowerLimit2Tag.attr({'value' : '0'}));
+			resultTag.append(lowerLimit2Tag.attr({'value' : initLowerBound2}));
 			resultTag.append("% < R2 - R3 < ");
-			resultTag.append(upperLimit2Tag.attr({'value' : '100'}));
+			resultTag.append(upperLimit2Tag.attr({'value' : initUpperBound2}));
 			resultTag.append("%");
 		}
 		
@@ -788,6 +895,12 @@
 	function genCouponContents(tagCode, undTypeCd, typeCd){
 		//tagCode: pay/rcv, undTypeCd: underlying Type Code, typeCd: Coupon Type Code
 		var resultTag = $("<div/>").attr({'display': 'inline'});
+		var initSpread = $('#input-' + tagCode + "LegInitSpread").val();
+		var initLeverage1 = $('#input-' + tagCode + "LegInitLeverage1").val();
+		var initLeverage2 = $('#input-' + tagCode + "LegInitLeverage2").val();
+		var initLeverage3 = $('#input-' + tagCode + "LegInitLeverage3").val();
+		var initInCoupon = $('#input-' + tagCode + "LegInitInCoupon").val();
+		var initOutCoupon = $('#input-' + tagCode + "LegInitOutCoupon").val();
 		
 		//Underlying Tag
 		var leverageTag1 = $('<input/>').attr({
@@ -820,25 +933,25 @@
 		} else if (undTypeCd == 2){
 			//R1 - R2
 			underlyingTag.append("(");
-			underlyingTag.append(leverageTag1.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag1.attr({'value' : initLeverage1}));
 			underlyingTag.append(" x R1 - ");
-			underlyingTag.append(leverageTag2.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag2.attr({'value' : initLeverage2}));
 			underlyingTag.append(" x R2) + ");
 			underlyingTag.append(leverageTag3.attr({'hidden' : 'true', 'value' : '0'}));
 		} else if (undTypeCd == 3){
 			//R1 & R2
-			underlyingTag.append(leverageTag1.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag1.attr({'value' : initLeverage1}));
 			underlyingTag.append(" x R1 & ");
-			underlyingTag.append(leverageTag2.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag2.attr({'value' : initLeverage2}));
 			underlyingTag.append(" x R2 + ");
 			underlyingTag.append(leverageTag3.attr({'hidden' : 'true', 'value' : '0'}));
 		} else if (undTypeCd == 4){
 			//R1 & (R2 - R3)
-			underlyingTag.append(leverageTag1.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag1.attr({'value' : initLeverage1}));
 			underlyingTag.append(" x R1 & (");
-			underlyingTag.append(leverageTag2.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag2.attr({'value' : initLeverage2}));
 			underlyingTag.append(" x R2 - ");
-			underlyingTag.append(leverageTag3.attr({'value' : '1'}));
+			underlyingTag.append(leverageTag3.attr({'value' : initLeverage3}));
 			underlyingTag.append(" x R3) + ");
 		}
 		//Spread Tag
@@ -864,7 +977,7 @@
 			//RESET		
 			if (undTypeCd == 1){
 				resultTag.append(underlyingTag);
-				resultTag.append(spreadTag.attr({'value' : '0'}));
+				resultTag.append(spreadTag.attr({'value' : initSpread}));
 				resultTag.append(" %");
 				resultTag.append(inCouponTag.attr({'hidden' : 'true', 'value': '0'}));
 				resultTag.append(outCouponTag.attr({'hidden' : 'true', 'value': '0'}));		
@@ -880,9 +993,9 @@
 			//ACCRUAL			
 			resultTag.append(underlyingTag);
 			resultTag.append("Satisfied: ");
-			resultTag.append(inCouponTag.attr({'value' : '5'}));
+			resultTag.append(inCouponTag.attr({'value' : initInCoupon}));
 			resultTag.append("%, Otherwise: ");
-			resultTag.append(outCouponTag.attr({'value' : '0'}));
+			resultTag.append(outCouponTag.attr({'value' : initOutCoupon}));
 			resultTag.append("%");
 			resultTag.append(spreadTag.attr({'hidden' : 'true', 'value' : '0'}));
 		} else if (typeCd == 3){
@@ -890,7 +1003,7 @@
 			if (undTypeCd == 1 || undTypeCd == 2){
 				resultTag.append("AVG[");
 				resultTag.append(underlyingTag);
-				resultTag.append(spreadTag.attr({'value': '0'}));
+				resultTag.append(spreadTag.attr({'value': initSpread}));
 				resultTag.append("] %");
 				resultTag.append(inCouponTag.attr({'hidden' : 'true', 'value': '0'}));
 				resultTag.append(outCouponTag.attr({'hidden' : 'true', 'value': '0'}));	
@@ -905,7 +1018,7 @@
 		} else if (typeCd == 4){
 			//FIXED			
 			resultTag.append(underlyingTag);
-			resultTag.append(spreadTag.attr({'value': '0'}));
+			resultTag.append(spreadTag.attr({'value': initSpread}));
 			resultTag.append(" %");
 			resultTag.append(inCouponTag.attr({'hidden' : 'true', 'value': '0'}));
 			resultTag.append(outCouponTag.attr({'hidden' : 'true', 'value': '0'}));						 		
