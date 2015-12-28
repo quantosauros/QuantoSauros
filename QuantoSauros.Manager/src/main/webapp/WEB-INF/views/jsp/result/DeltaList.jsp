@@ -55,11 +55,11 @@
 							<div class="panel-body">
 								<div class = "form-inline list-group-item">
 									<label for="processIdInput"> Process ID </label>
-									<input class="form-control" type="text" id="input-procId" name="procId" value ="123">
+									<input class="form-control" type="text" id="input-procId" name="procId" value ="101">
 								</div>		
 								<div class = "form-inline list-group-item">
 									<label for="idxIdInput"> Index ID </label>
-									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="123">	
+									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="102">	
 								</div>
 								<div>
 									<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateTable();">	
@@ -87,7 +87,6 @@
 															<th>MRTY Code</th>
 															<th>MRTY List Code</th>
 															<th>Greek</th>
-															<th>NonCall Greek</th>	
 														</tr>
 													</thead>
 												</table>
@@ -145,8 +144,7 @@
                 { data: 'ircCd' },                       
                 { data: 'mrtyCd' },
                 { data: 'mrtyListCd' },
-                { data: 'greek'},
-                { data: 'nonCallGreek'}                              
+                { data: 'greek'},                           
             ]
         });
     }

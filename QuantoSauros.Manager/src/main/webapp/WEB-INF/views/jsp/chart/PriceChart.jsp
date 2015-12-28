@@ -43,55 +43,50 @@
 			<div id="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
-							<h1 class="page-header"> Delta Charts </h1>
+							<h1 class="page-header"> Price Charts </h1>
 					</div>
 				</div>	
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-primary form-group">
 							<div class="panel-heading">
-									<h3 class="panel-title"> Delta Control Panel </h3>
+									<h3 class="panel-title"> Price Control Panel </h3>
 								</div>
 							<div class="panel-body">
-								<div class = "form-inline list-group-item">
-									<label for="processIdInput"> Process ID </label>
-									<input class="form-control" type="text" id="input-procId" name="procId" value ="123">
-								</div>		
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> Index ID </label>
-									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="123">	
-								</div>
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> Instrument Code </label>
-									<input class="form-control" type="text" id="input-instrumentCd" name="instrumentCd" value ="APS002">	
-								</div>
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> Greek Code </label>
-									<select class="form-control" id = "input-greekCd" name="greekCd">
-										<option value = "AAD"> AAD </option>
-										<option value = "BUMP"> BUMP </option>											
-									</select>									
-								</div>
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> IR Code </label>
-									<select class="form-control" id = "input-ircCd" name="ircCd">										
-										<option value = "KRWIRS" selected> KRW IRS </option>
-										<option value = "USDIRS"> USD IRS </option>
-										<option value = "EURIRS"> EUR IRS </option>
-										<option value = "1010000W"> KRW TBOND </option>
-									</select>
-								</div>
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> Start Date </label>
-									<input class="form-control" type="date" id="input-startDate" name="startDate" value ="2015-04-28">
-								</div>
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> End Date </label>
-									<input class="form-control" type="date" id="input-endDate" name="endDate" value ="2015-04-30">
-								</div>
-								<div>
-									<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateChart();">	
-								</div>	
+								<div class="list-group">
+									<div class = "list-group-item">
+										<label for="processIdInput"> Process ID </label>
+										<span><input class="form-control" type="text" id="input-procId" name="procId" value ="101"></span>
+									</div>		
+									<div class = "list-group-item">
+										<label for="idxIdInput"> Index ID </label>
+										<span><input class="form-control" type="text" id="input-idxId" name="idxId" value ="102"></span>
+									</div>
+									<div class = "list-group-item">
+										<label for="idxIdInput"> Instrument Code </label>
+										<span><input class="form-control" type="text" id="input-instrumentCd" name="instrumentCd" value ="APSSWAP001"></span>	
+									</div>
+									<div class = "list-group-item">
+										<label for="idxIdInput"> Start Date </label>
+										<span><input class="form-control" type="date" id="input-startDate" name="startDate" value ="2013-12-02"></span>
+									</div>
+									<div class = "list-group-item">
+										<label for="idxIdInput"> End Date </label>
+										<span><input class="form-control" type="date" id="input-endDate" name="endDate" value ="2013-12-30"></span>
+									</div>
+									<div class = "list-group-item">
+										<label for="idxIdInput"> NonCall Type </label>
+										<span>
+											<select class="form-control" id="input-nonCallCd" name="nonCallCd">
+												<option value="N"> Original </option>
+												<option value="Y"> NonCall</option>
+											</select>
+										</span>
+									</div>
+									<div>
+										<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateChart();">	
+									</div>	
+								</div>								
 							</div>
 						</div>
 					</div>
@@ -127,15 +122,13 @@
     <!-- java scripts -->
 	<script type="text/javascript">
 		function generateChart(){
-			var url = "./json/deltaChart?procId="
+			var url = "./json/priceChart?procId="
 					+ $('#input-procId').val()
 					+ '&idxId=' + $('#input-idxId').val()
 					+ '&startDate=' + $('#input-startDate').val()
 					+ '&endDate=' + $('#input-endDate').val()
 					+ '&instrumentCd=' + $('#input-instrumentCd').val()
-					+ '&greekCd=' + $('#input-greekCd').val()
-					+ '&ircCd=' + $('#input-ircCd').val()
-					;
+					+ '&nonCallCd=' + $('#input-nonCallCd').val();
 			
 			$.getJSON(url, function(data) {
 				var chart1;				

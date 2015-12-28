@@ -2,7 +2,6 @@ package com.quantosauros.manager.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +21,8 @@ import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.date.PaymentPeriodGenerator;
 import com.quantosauros.manager.dao.ProductInfoDao;
 import com.quantosauros.manager.dao.ProductLegDao;
-import com.quantosauros.manager.dao.ProductLegDataDao;
 import com.quantosauros.manager.dao.ProductOptionScheduleDao;
 import com.quantosauros.manager.dao.ProductScheduleDao;
-import com.quantosauros.manager.model.ProductInfo;
 import com.quantosauros.manager.model.ScheduleInfo;
 
 @Controller

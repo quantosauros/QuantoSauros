@@ -1,7 +1,5 @@
 package com.quantosauros.common.calendar;
 
-import com.sun.org.apache.bcel.internal.Constants;
-
 /**
  * {@code Weekday} 클래스는 요일의 코드를 정의한다.
  * <p>각 요일의 코드 값은 다음과 같다:

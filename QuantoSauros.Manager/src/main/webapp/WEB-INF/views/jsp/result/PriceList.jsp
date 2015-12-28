@@ -59,7 +59,7 @@
 								</div>
 								<div class = "form-inline list-group-item">
 									<label for="idxIdInput"> Index ID </label>
-									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="101">
+									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="102">
 								</div>
 								<div>
 									<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateTable();">	
@@ -87,7 +87,6 @@
 														<th>Price</th>
 														<th>Pay Price</th>
 														<th>Rcv Price</th>
-														<th>NonCall Price</th>
 													</tr>
 												</thead>
 											</table>																																			</div>			
@@ -141,8 +140,7 @@
                 { data: 'instrumentCd' },
                 { data: 'price'},
                 { data: 'payPrice'},
-                { data: 'rcvPrice'},
-                { data: 'nonCallPrice'}                                          
+                { data: 'rcvPrice'},                                     
             ]
         });
     }

@@ -33,9 +33,12 @@ public class JSONDeltaInfoController {
 		
 		String procId = request.getParameter("procId");
 		String idxId = request.getParameter("idxId");
+		String nonCallCd = "N";
+		
 		HashMap paramMap = new HashMap();
 		paramMap.put("procId", procId);
 		paramMap.put("idxId", idxId);
+		paramMap.put("nonCallCd", nonCallCd);
 		
 		List<DeltaInfo> list = deltaInfoDao.selectAllList(paramMap);
 		

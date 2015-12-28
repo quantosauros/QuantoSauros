@@ -30,17 +30,26 @@ public class PriceInfo {
 	public String getPrice(){		
 		return df.format(price);
 	}
+	public double getNonFormattedPrice(){
+		return price;
+	}
 	public void setPrice(double price){		
 		this.price = price;
 	}
 	public String getPayPrice(){
 		return df.format(payPrice);
 	}
+	public double getNonFormattedPayPrice(){
+		return payPrice;
+	}
 	public void setPayPrice(double payPrice){
 		this.payPrice = payPrice;
 	}
 	public String getRcvPrice(){
 		return df.format(rcvPrice);
+	}
+	public double getNonFormattedRcvPrice(){
+		return rcvPrice;
 	}
 	public void setRcvPrice(double rcvPrice){
 		this.rcvPrice = rcvPrice;

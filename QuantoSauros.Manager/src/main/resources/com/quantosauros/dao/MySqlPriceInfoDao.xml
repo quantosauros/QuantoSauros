@@ -9,34 +9,33 @@
     <result column="INSTRUMENT_CD"    property="instrumentCd"/>
     <result column="PRICE"      property="price"/>    
     <result column="PAY_PRICE"      property="payPrice"/>
-    <result column="RCV_PRICE"      property="rcvPrice"/>
-    <result column="NON_EXERCISE_PRICE"      property="nonCallPrice"/>
+    <result column="RCV_PRICE"      property="rcvPrice"/>    
     <result column="CCY_CD"      property="ccyCd"/>
   </resultMap>
   
   <select id="selectAllList" parameterType="map" resultMap="priceInfoResultMap">
     SELECT 
-    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE, CCY_CD
+    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, CCY_CD
     FROM 
     	PROC_PRICE_DATA
     WHERE
     	PROC_ID = #{procId}
     	AND IDX = #{idxId}
+    	AND NONCALL_CD = #{nonCallCd}
   </select>
   
-  <select id="selectList" parameterType="map" resultMap="priceInfoResultMap">
+  <select id="selectListForChart" parameterType="map" resultMap="priceInfoResultMap">
     SELECT 
-    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE, CCY_CD
+    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, CCY_CD
     FROM 
     	PROC_PRICE_DATA    
     WHERE 
-    	DT &gt; #{startDt}
-    	AND DT &lt; #{endDt}
-    	<choose>  
-        <when test="instrumentCd != null">
-        	AND INSTRUMENT_CD = '#{instrumentCd}'
-        </when>
-        </choose>    	
+    	PROC_ID = #{procId}
+    	AND IDX = #{idxId}
+    	AND NONCALL_CD = #{nonCallCd}
+    	AND INSTRUMENT_CD = #{instrumentCd}
+    	AND DT &gt; #{startDate}
+    	AND DT &lt; #{endDate}    	
   </select>
   
   <select id="selectOne" parameterType="string" resultMap="priceInfoResultMap">

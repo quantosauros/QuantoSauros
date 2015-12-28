@@ -36,14 +36,14 @@ public class JSONDetailInfoController {
 		String idxId = request.getParameter("idxId");
 		String valueTypeInput = request.getParameter("valueType");	
 		String legType = request.getParameter("legType");
-		String isNonCall = request.getParameter("isNonCall");
+		String nonCallCd = request.getParameter("nonCallCd");
 		
 		HashMap paramMap = new HashMap();
 		paramMap.put("instrumentCd", instrumentCd);
 		paramMap.put("procId", procId);
 		paramMap.put("idx", idxId);
 		paramMap.put("valueType", valueTypeInput);
-		paramMap.put("isNonCall", isNonCall);
+		paramMap.put("nonCallCd", nonCallCd);
 		if (legType != null)
 			paramMap.put("legType", legType);
 				

@@ -7,8 +7,7 @@
   <resultMap type="detailinfo" id="detailInfoResultMap">    
     <result column="DT"    property="processDt"/>
     <result column="INSTRUMENT_CD"    property="instrumentCd"/>
-    <result column="VALUE_TYPE"    property="valueType"/>
-    <result column="ISNONCALL"    property="isNonCall"/>
+    <result column="VALUE_TYPE"    property="valueType"/>    
     <result column="LEG_TYPE"    property="legType"/>
     <result column="PERIOD_NUM"    property="periodNum"/>
     <result column="VALUE1"    property="average"/>
@@ -17,7 +16,7 @@
     
   <select id="selectList" parameterType="map" resultMap="detailInfoResultMap">
     SELECT 
-    	DT, INSTRUMENT_CD, VALUE_TYPE, ISNONCALL, LEG_TYPE, PERIOD_NUM, VALUE1, VALUE2
+    	DT, INSTRUMENT_CD, VALUE_TYPE, LEG_TYPE, PERIOD_NUM, VALUE1, VALUE2
     FROM 
     	PROC_DETAIL_DATA
     WHERE 
@@ -25,7 +24,7 @@
     	AND PROC_ID = #{procId}
     	AND IDX = #{idx}
     	AND VALUE_TYPE = #{valueType}
-    	AND ISNONCALL = #{isNonCall}
+    	AND NONCALL_CD = #{nonCallCd}
    		<choose>  
         <when test="legType != null">
         	AND LEG_TYPE = #{legType}

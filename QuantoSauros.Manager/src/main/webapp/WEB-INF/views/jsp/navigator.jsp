@@ -36,7 +36,7 @@
                     <a href=""><i class="fa fa-bar-chart-o fa-fw"></i> Result Charts <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">Price Charts</a>
+                            <a href="priceChart">Price Charts</a>
                         </li>
                         <li>
                             <a href="deltaChart">Delta Charts</a>

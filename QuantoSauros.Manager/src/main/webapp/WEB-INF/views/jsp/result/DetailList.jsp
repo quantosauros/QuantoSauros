@@ -55,7 +55,7 @@
 							<div class="panel-body">															
 								<div class = "form-inline list-group-item">	
 									<label for="instrumentCdInput"> Instrument Code </label>
-									<input class="form-control" type="text" id="input-instrumentCd" name="instrumentCd" value ="APS002">
+									<input class="form-control" type="text" id="input-instrumentCd" name="instrumentCd" value ="APSSWAP001">
 								</div>
 								<div class = "form-inline list-group-item">	
 									<label for="processIdInput"> Process ID </label>					
@@ -63,13 +63,13 @@
 								</div>
 								<div class = "form-inline list-group-item">	
 									<label for="idxIdInput"> Index ID </label>					
-									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="101">
+									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="102">
 								</div>
 								<div class = "form-inline list-group-item">	
-									<label for="isNonCallInput"> NonCall </label>					
-									<select class="form-control" id="input-isNonCall" name="isNonCall">
-										<option value="0"> Original </option>
-										<option value="1"> NonCall </option>
+									<label for="nonCallCdInput"> NonCall </label>					
+									<select class="form-control" id="input-nonCallCd" name="nonCallCd">
+										<option value="N"> Original </option>
+										<option value="Y"> NonCall </option>
 									</select>
 								</div>
 								<div class = "form-inline list-group-item">	
@@ -197,7 +197,7 @@
 	            'excel'		            
     		],
     		pageLength: 30,
-			"order": [[2, "asc"]],
+			order: [[0, "asc"],[2, "asc"]],
             ajax: ajaxStr,
             columns: [
                 { data: 'processDt'},
@@ -218,7 +218,7 @@
 				+ '&procId=' + $('#input-procId').val()
 				+ '&idxId=' + $('#input-idxId').val()
 				+ '&valueType=' + $('#input-valueType').val()
-				+ '&isNonCall=' + $('#input-isNonCall').val();
+				+ '&nonCallCd=' + $('#input-nonCallCd').val();
     		
     		createTable(tableEtc, ajaxStr);
     		
@@ -240,13 +240,13 @@
 				+ '&idxId=' + $('#input-idxId').val()
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&legType=P' 
-				+ '&isNonCall=' + $('#input-isNonCall').val();
+				+ '&nonCallCd=' + $('#input-nonCallCd').val();
         	var ajaxStr2 = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
 				+ '&procId=' + $('#input-procId').val()
 				+ '&idxId=' + $('#input-idxId').val()
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&legType=R' 
-				+ '&isNonCall=' + $('#input-isNonCall').val();
+				+ '&nonCallCd=' + $('#input-nonCallCd').val();
         	
 			createTable(tablePay, ajaxStr1);
 			createTable(tableRcv, ajaxStr2);

@@ -1,22 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="2.0">
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
 	<wb-module deploy-name="QuantoSauros.Manager">
 		<property name="context-root" value="QuantoSauros.Manager"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
 		<wb-resource deploy-path="/" source-path="src/main/webapp"/>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.Common/QuantoSauros.Common">
-			<dependency-type>uses</dependency-type>
-		</dependent-module>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.AAD/QuantoSauros.AAD">
-			<dependency-type>uses</dependency-type>
-		</dependent-module>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.JPL/QuantoSauros.JPL">
-			<dependency-type>uses</dependency-type>
-		</dependent-module>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.Batch/QuantoSauros.Batch">
-			<dependency-type>uses</dependency-type>
-		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/jayjl/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/4.8.1.1/654b7021e7bb6c5b7b35c88d23cac1022c7b3d6b/icu4j-4.8.1.1.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
@@ -104,5 +91,17 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/jayjl/.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+        <dependent-module archiveName="QuantoSauros.Batch.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.Batch/QuantoSauros.Batch">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="QuantoSauros.Common.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.Common/QuantoSauros.Common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="QuantoSauros.AAD.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.AAD/QuantoSauros.AAD">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="QuantoSauros.JPL.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QuantoSauros.JPL/QuantoSauros.JPL">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
 	</wb-module>
 </project-modules>

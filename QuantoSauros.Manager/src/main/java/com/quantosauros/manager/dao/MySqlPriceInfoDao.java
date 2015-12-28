@@ -31,11 +31,11 @@ public class MySqlPriceInfoDao implements PriceInfoDao {
 	}
 	
 	@Override
-	public List<PriceInfo> selectList(HashMap<String, Object> paramMap)
+	public List<PriceInfo> selectListForChart(HashMap<String, Object> paramMap)
 			throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			return sqlSession.selectList("com.quantosauros.manager.dao.PriceInfoDao.selectList", paramMap);
+			return sqlSession.selectList("com.quantosauros.manager.dao.PriceInfoDao.selectListForChart", paramMap);
 		} finally {
 			sqlSession.close();
 		}		
