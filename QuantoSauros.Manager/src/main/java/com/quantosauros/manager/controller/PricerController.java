@@ -13,24 +13,33 @@ import com.quantosauros.common.date.Date;
 
 @Controller
 public class PricerController {
-
+	
+	private ProcessPricer _processPricer;
+	
 	@RequestMapping(value = "/pricer", method = RequestMethod.GET)
-	public ModelAndView execute(HttpServletRequest request, 
+	public ModelAndView getView(HttpServletRequest request, 
 			HttpServletResponse response){
 		
-		Date processDate = Date.valueOf("20150428");
-		String instrumentCd = "APS002";
-		int monitorFrequency = 1;
-		int simNum = 1000;
+		ModelAndView model = new ModelAndView("/pricer");
 		
-		ProcessPricer processPricer = new ProcessPricer(
-				processDate, instrumentCd, monitorFrequency, simNum);
-						
-		processPricer.execute();
-		
-		ModelAndView model = new ModelAndView("/index");
-				
 		return model;
 	}
 	
+	@RequestMapping(value = "/pricer/list", method = RequestMethod.GET)
+	public void getInstrumentLists(HttpServletRequest request, 
+			HttpServletResponse response){
+
+		Date processDate = Date.valueOf("20131209");
+		String instrumentCd = "APSSWAP001";
+		int monitorFrequency = 1;
+		int simNum = 100;
+		
+		if (_processPricer == null){
+			_processPricer = new ProcessPricer(
+					processDate, instrumentCd, monitorFrequency, simNum);
+		}		
+						
+		_processPricer.execute();
+		
+	}
 }
