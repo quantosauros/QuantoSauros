@@ -14,12 +14,7 @@ import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.Vertex;
 
 public class ProcessGreeks extends AbstractProcess {
-		
-	//[riskFactor][vertex]	
-//	private ArrayList<DeltaResult> _deltaResultsBump;
-//	private ArrayList<DeltaResult> _deltaResultsBumpNoncall;
-//	private ArrayList<DeltaResult> _deltaResultsAAD;
-//	private ArrayList<DeltaResult> _deltaResultsAADNoncall;
+
 	private boolean _calcBump = false;
 	
 	public ProcessGreeks(Date processDate, String procId, String idx) {
@@ -40,28 +35,21 @@ public class ProcessGreeks extends AbstractProcess {
 	}
 	
 	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel) {	
-//		if (_calcBump){
-//	        _deltaResultsBump = new ArrayList<DeltaResult>();
-//	        _deltaResultsBumpNoncall = new ArrayList<DeltaResult>();
-//		}
-//        _deltaResultsAAD = new ArrayList<DeltaResult>();        
-//        _deltaResultsAADNoncall = new ArrayList<DeltaResult>();
-		
-		//CALCULATE PRICE
-		Money price = _calculator.getPrice(
-				_processDate, _irCurveContainer, _surfaceContainer, "");
-//		_calculator.getResults();
-		
-		System.out.println("Price: " + price);
-		System.out.println("Rcv Leg: " + _calculator.getLegPrice(0));
-		System.out.println("Pay Leg: " + _calculator.getLegPrice(1));
-				
+					
 		Iterator itr = new ArrayList(
 				new HashSet(_calculator.getRiskFactorCdMap())).iterator();		
 		//CALCULATE DELTA
 		while (itr.hasNext()){
 			Object itrNext = itr.next();
-			if(itrNext.getClass() == String.class){
+			if(itrNext.getClass() == String.class){				
+				//CALCULATE PRICE
+				Money price = _calculator.getPrice(
+						_processDate, _irCurveContainer, _surfaceContainer, "");
+				
+				System.out.println("Price: " + price);
+				System.out.println("Rcv Leg: " + _calculator.getLegPrice(0));
+				System.out.println("Pay Leg: " + _calculator.getLegPrice(1));
+				
 				String ircCd = (String) itrNext;
 				Vertex[] vertex = _irCurveContainer.getVertex(ircCd);
 				//AAD
@@ -71,14 +59,11 @@ public class ProcessGreeks extends AbstractProcess {
 						ircCd, _irCurveContainer, changedIRCurves, false);
 				
 				insertGreekResult(instrumentInfoModel, ircCd, "AAD", "N", vertex, AADGreeks);
-				
-//				_deltaResultsAAD.add(new DeltaResult(ircCd, vertex, "AAD", AADGreeks));				
-								
+
 				//BUMPING		
 				if (_calcBump){
 					double[] BumpingGreeks = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
 					insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "N", vertex, BumpingGreeks);					
-//					_deltaResultsBump.add(new DeltaResult(ircCd, vertex, "BUMP", BumpingGreeks));
 				}
 								
 				if (_calculator.getHasExercise()){					
@@ -95,18 +80,15 @@ public class ProcessGreeks extends AbstractProcess {
 										
 					double[] nonCallAADResult = _calculator.getAADGreek(
 							ircCd, _irCurveContainer, changedIRCurves, true);
-//					_deltaResultsAADNoncall.add(new DeltaResult(ircCd, vertex, "AAD", nonCallAADResult));
-					insertGreekResult(instrumentInfoModel, ircCd, "AAD", "Y", vertex, nonCallAADResult);
+					insertGreekResult(instrumentInfoModel, ircCd, "AAD", "Y", vertex, nonCallAADResult);					
 					_calculator.setHasExercise(true);
+					
 //					BUMPING		
 					if (_calcBump){
 						double[] nonCallBumpingResult = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
-						insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "Y", vertex, nonCallBumpingResult);
-//						_deltaResultsBumpNoncall.add(new DeltaResult(ircCd, vertex, "BUMP", nonCallBumpingResult));
-						
+						insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "Y", vertex, nonCallBumpingResult);						
 						_calculator.setHasExercise(true);
-					}
-					
+					}					
 				}				
 			}
 		}		
