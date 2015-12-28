@@ -40,26 +40,23 @@ public class MySqlDeltaInfoDao implements DeltaInfoDao {
 		}
 	}
 	
-	@Override
-	public List<DeltaInfo> selectList(HashMap<String, Object> paramMap)
-			throws Exception {
+	public List<DeltaInfo> selectDeltaForChart2(HashMap<String, Object> paramMap) throws Exception{
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			return sqlSession.selectList("com.quantosauros.manager.dao.DeltaInfoDao.selectList", paramMap);
+			return sqlSession.selectList(
+					"com.quantosauros.manager.dao.DeltaInfoDao.selectDeltaForChart2", paramMap);
 		} finally {
 			sqlSession.close();
-		}		
+		}
 	}
-
-	@Override
-	public DeltaInfo selectOne(HashMap<String, Object> paramMap) throws Exception {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		try {
-			return sqlSession.selectOne("com.quantosauros.manager.dao.DeltaInfoDao.selectOne", paramMap);
-		} finally {
-			sqlSession.close();
-		}	
-	}
-
 	
+	public List<String> selectMrtyCd(HashMap<String, Object> paramMap) throws Exception{
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		try {
+			return sqlSession.selectList(
+					"com.quantosauros.manager.dao.DeltaInfoDao.selectMrtyCd", paramMap);
+		} finally {
+			sqlSession.close();
+		}
+	}
 }

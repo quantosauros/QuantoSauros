@@ -54,28 +54,41 @@
 	ORDER BY IRC_CD, MRTY_LIST_CD
   </select>
   
-  <select id="selectList" parameterType="map" resultMap="deltaInfoResultMap">
-    SELECT 
-    	DT, INSTRUMENT_CD, FACTOR_CD, GREEK_CD, GREEK, NON_EXERCISE_GREEK, CCY_CD
-    FROM 
-    	PROC_DELTAGAMMA_DATA    
-    WHERE 
-    	DT &gt; '${startDt}'
-    	AND DT &lt; '${endDt}'
-    	<choose>  
-        <when test="instrumentCd != null">
-        	AND INSTRUMENT_CD = '#{instrumentCd}'
-        </when>
-        </choose>    	
+  <select id="selectDeltaForChart2" parameterType="map" resultMap="deltaInfoResultMap">
+	SELECT 
+		A.DT, A.INSTRUMENT_CD, A.FACTOR_CD, B.IRC_CD, B.MRTY_CD, C.CD AS MRTY_LIST_CD, 
+		A.GREEK_CD, A.GREEK, A.CCY_CD
+	FROM 
+		PROC_DELTAGAMMA_DATA A,
+		IR_INFO B,
+		SYS_CD_MAP C
+	WHERE
+		A.FACTOR_CD = B.FACTOR_CD
+		AND C.SRC_CD = B.MRTY_CD
+	 	AND A.PROC_ID = #{procId}
+	 	AND A.IDX = #{idxId}	
+	 	AND A.GREEK_CD = #{greekCd}
+	 	AND B.IRC_CD = #{ircCd}
+		AND B.MRTY_CD = #{mrtyCd}
+		AND A.NONCALL_CD = #{nonCallCd}
+		AND A.INSTRUMENT_CD = #{instrumentCd}
+		AND C.TYPE = '002'
+	ORDER BY DT;
   </select>
   
-  <select id="selectOne" parameterType="string" resultMap="deltaInfoResultMap">
-    SELECT 
-    	DT, INSTRUMENT_CD, FACTOR_CD, GREEK_CD, GREEK, NON_EXERCISE_GREEK, CCY_CD
-    FROM 
-    	PROC_DELTAGAMMA_DATA
-    WHERE
-    	DT= ${dt}
-    	AND INSTRUMENT_CD = #{instrumentCd}
-  </select>  
+  <select id="selectMrtyCd" parameterType="map" resultType="String">
+  	SELECT 
+		DISTINCT(B.MRTY_CD)
+	FROM 
+		PROC_DELTAGAMMA_DATA A,
+		IR_INFO B,
+		SYS_CD_MAP C
+	WHERE
+		A.INSTRUMENT_CD = #{instrumentCd}
+		AND B.IRC_CD = #{ircCd}
+		AND A.FACTOR_CD = B.FACTOR_CD
+		AND C.TYPE = '002'
+		AND C.SRC_CD = B.MRTY_CD	
+	ORDER BY C.CD;
+   </select>
 </mapper>

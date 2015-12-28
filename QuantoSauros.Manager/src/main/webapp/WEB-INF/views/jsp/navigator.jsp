@@ -42,6 +42,9 @@
                             <a href="deltaChart">Delta Charts</a>
                         </li>
                         <li>
+                            <a href="deltaChart2">Delta Charts2</a>
+                        </li>
+                        <li>
                             <a href="#">Detail Charts</a>
                         </li>
                     </ul>

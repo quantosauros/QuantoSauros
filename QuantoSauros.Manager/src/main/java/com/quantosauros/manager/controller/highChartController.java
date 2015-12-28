@@ -51,6 +51,12 @@ public class highChartController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/deltaChart2", method = RequestMethod.GET)
+	public ModelAndView getDelta2View() throws Exception {
+		ModelAndView model = new ModelAndView("/chart/DeltaChart2");
+		return model;
+	}
+	
 	@RequestMapping(value = "/json/priceChart", method = RequestMethod.GET)
 	public @ResponseBody String getPriceChart(HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
@@ -108,15 +114,78 @@ public class highChartController {
 		
 	}
 	
+	@RequestMapping(value = "/json/deltaChart2", method = RequestMethod.GET)
+	public @ResponseBody String getDeltaChart2(HttpServletRequest request, 
+			HttpServletResponse response) throws Exception {
+				
+		String procId = request.getParameter("procId");
+		String idxId = request.getParameter("idxId");		
+		String instrumentCd = request.getParameter("instrumentCd");
+		String greekCd = request.getParameter("greekCd");		
+		String ircCd = request.getParameter("ircCd");		
+		Date startDate = Date.valueOf(request.getParameter("startDate").replace("-", ""));
+		Date endDate = Date.valueOf(request.getParameter("endDate").replace("-", ""));
+		String nonCallCd = request.getParameter("nonCallCd");
+		
+		HashMap paramMap = new HashMap();
+		paramMap.put("instrumentCd", instrumentCd);
+		paramMap.put("ircCd", ircCd);
+		List<String> dateArray = deltaInfoDao.selectMrtyCd(paramMap); 
+		
+		int seriesNum = dateArray.size();
+		Number[][] seriesValues = new Number[seriesNum][];		
+		String[] seriesNames = new String[seriesNum];
+		String[] xAxisValue = null;
+		for (int seriesIndex = 0; seriesIndex < seriesNum; seriesIndex++){
+			paramMap = new HashMap();
+			paramMap.put("procId", procId);
+			paramMap.put("idxId", idxId);
+			paramMap.put("startDate", startDate);
+			paramMap.put("endDate", endDate);
+			paramMap.put("instrumentCd", instrumentCd);
+			paramMap.put("greekCd", greekCd);
+			paramMap.put("ircCd", ircCd);
+			paramMap.put("nonCallCd", nonCallCd);
+			paramMap.put("mrtyCd", dateArray.get(seriesIndex));
+			
+			List<DeltaInfo> list = deltaInfoDao.selectDeltaForChart2(paramMap);
+			int valueNum = list.size();
+			seriesValues[seriesIndex] = new Number[valueNum];
+			
+			seriesNames[seriesIndex] = dateArray.get(seriesIndex);			
+			if (seriesIndex == 0){
+				xAxisValue = new String[valueNum];
+			}			
+			for (int valueIndex = 0; valueIndex < valueNum; valueIndex++){
+				if (seriesIndex == 0){
+					xAxisValue[valueIndex] = list.get(valueIndex).getProcessDt();
+				}				
+				seriesValues[seriesIndex][valueIndex] = list.get(valueIndex).getGreek();	
+			}			
+		}
+		
+		String titleStr = "DELTA CHART of Factor Code by Time";
+		String subtitleStr = "Source: quantosauros";
+		String yAxisTitle = "VALUES";
+		
+		CreateHighChart highChart = new CreateHighChart(SeriesType.LINE);
+		highChart.setTitle(titleStr);
+		highChart.setSubTitle(subtitleStr);
+		highChart.setLegend();
+		highChart.setXAxisValue(xAxisValue);
+		highChart.setYAxisValue(yAxisTitle);
+		highChart.setSeriesNames(seriesNames);
+		highChart.setSeriesValues(seriesValues);
+		
+		String renderTo = "chart_1";
+		String highChartJSON = highChart.getChart(renderTo);
+				
+		return highChartJSON;		
+	}
+		
 	@RequestMapping(value = "/json/deltaChart", method = RequestMethod.GET)
 	public @ResponseBody String getDeltaChart(HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
-//		String procId = "123";
-//		String idxId = "123";
-//		String[] dt = new String[]{"20150428", "20150429"};
-//		String instrumentCd = "APS002";
-//		String greekCd = "AAD";		
-//		String ircCd = "KRWIRS";
 		
 		String procId = request.getParameter("procId");
 		String idxId = request.getParameter("idxId");		
