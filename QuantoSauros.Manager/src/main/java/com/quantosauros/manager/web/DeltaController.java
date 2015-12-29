@@ -1,4 +1,4 @@
-package com.quantosauros.manager.controller;
+package com.quantosauros.manager.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class PriceController {
+public class DeltaController {
 
-	@RequestMapping(value = "/pricelist", method = RequestMethod.GET)
+	@RequestMapping(value = "/deltalist", method = RequestMethod.GET)
 	public ModelAndView getPriceList(){
 		
-		ModelAndView model = new ModelAndView("/result/PriceList");
+		ModelAndView model = new ModelAndView("/result/DeltaList");
 		
 		return model;
 	}
 	
-	@RequestMapping(value = "/priceResult", method = RequestMethod.GET)
+	@RequestMapping(value = "/deltaResult", method = RequestMethod.GET)
 	public ModelAndView getDetailResult(){
 		
-		ModelAndView model = new ModelAndView("/result/PriceResult");
+		ModelAndView model = new ModelAndView("/result/DeltaResult");
 		
 		return model;
 	}
 	
-	@RequestMapping(value = "/priceExecute", method = RequestMethod.GET)
+	@RequestMapping(value = "/deltaExecute", method = RequestMethod.GET)
 	public ModelAndView execute(HttpServletRequest request, 
 			HttpServletResponse response){
 				

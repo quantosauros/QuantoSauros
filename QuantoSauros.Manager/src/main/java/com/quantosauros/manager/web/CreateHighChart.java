@@ -1,4 +1,4 @@
-package com.quantosauros.manager.chart;
+package com.quantosauros.manager.web;
 
 import java.util.Arrays;
 import java.util.Collections;

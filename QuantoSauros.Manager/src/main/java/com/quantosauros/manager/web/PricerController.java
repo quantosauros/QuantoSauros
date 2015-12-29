@@ -1,4 +1,4 @@
-package com.quantosauros.manager.controller;
+package com.quantosauros.manager.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

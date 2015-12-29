@@ -1,4 +1,4 @@
-package com.quantosauros.manager.controller.json;
+package com.quantosauros.manager.web;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,25 +12,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.quantosauros.manager.dao.DeltaInfoDao;
-import com.quantosauros.manager.model.DeltaInfo;
+import com.quantosauros.manager.dao.PriceInfoDao;
 import com.quantosauros.manager.model.JSONDataTablesModel;
+import com.quantosauros.manager.model.PriceInfo;
 
 @Controller
-public class JSONDeltaInfoController {
+public class JSONPriceInfoController {
 
-	private DeltaInfoDao deltaInfoDao;
+	private PriceInfoDao priceInfoDao;
 	
 	@Autowired
-	public JSONDeltaInfoController(DeltaInfoDao deltaInfoDao){
-		this.deltaInfoDao = deltaInfoDao;
+	public JSONPriceInfoController(PriceInfoDao priceInfoDao){
+		this.priceInfoDao = priceInfoDao;
 	}
 	
-	@RequestMapping(value = "/json/deltalist", method = RequestMethod.GET)
-	public @ResponseBody JSONDataTablesModel getDeltaInfoList(
+	@RequestMapping(value = "/json/pricelist", method = RequestMethod.GET)
+	public @ResponseBody JSONDataTablesModel getPriceInfoList(
 			HttpServletRequest request, 
-			HttpServletResponse response) throws Exception {
-		
+			HttpServletResponse response) throws Exception{
+
 		String procId = request.getParameter("procId");
 		String idxId = request.getParameter("idxId");
 		String nonCallCd = "N";
@@ -39,8 +39,7 @@ public class JSONDeltaInfoController {
 		paramMap.put("procId", procId);
 		paramMap.put("idxId", idxId);
 		paramMap.put("nonCallCd", nonCallCd);
-		
-		List<DeltaInfo> list = deltaInfoDao.selectAllList(paramMap);
+		List<PriceInfo> list = priceInfoDao.selectAllList(paramMap);
 		
 		int iTotalDisplayRecords = list.size();
 		int iTotalRecords = list.size();
@@ -53,4 +52,5 @@ public class JSONDeltaInfoController {
 				
 		return priceInfoJsonObject;
 	}
+	
 }

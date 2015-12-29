@@ -1,4 +1,4 @@
-package com.quantosauros.manager.controller;
+package com.quantosauros.manager.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
