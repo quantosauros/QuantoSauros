@@ -138,8 +138,8 @@
     <!-- java scripts -->
 	<script type="text/javascript">
 		function generateChart(){
-			var url = "./json/deltaChart2?procId="
-					+ $('#input-procId').val()					
+			var url = './deltaChart2/json?'
+					+ 'procId='	+ $('#input-procId').val()					
 					+ '&startDate=' + $('#input-startDate').val()
 					+ '&endDate=' + $('#input-endDate').val()
 					+ '&instrumentCd=' + $('#input-instrumentCd').val()

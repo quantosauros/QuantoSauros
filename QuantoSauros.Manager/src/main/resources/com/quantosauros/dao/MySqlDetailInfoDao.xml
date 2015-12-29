@@ -25,7 +25,7 @@
     	AND VALUE_TYPE = #{valueType}
     	AND NONCALL_CD = #{nonCallCd}
    		<choose>  
-        <when test="legType != null">
+        <when test="legType != ''">
         	AND LEG_TYPE = #{legType}
         </when>
         </choose>      	    	

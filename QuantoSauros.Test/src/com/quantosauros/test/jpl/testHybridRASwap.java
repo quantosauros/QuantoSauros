@@ -236,7 +236,7 @@ public class testHybridRASwap {
 				
 		//PRODUCT INFO
 		ProductInfo productInfo = new ProductInfo(
-				_issueDate, _maturityDate, _currency);
+				_issueDate, _maturityDate, _currency, true);
 				
 		//LEG SCHEDULE INFO
 		LegScheduleInfo[] legScheduleInfos = new LegScheduleInfo[2];

@@ -80,6 +80,7 @@
 															<th>Instrument Code</th>
 															<th>Greek Code</th>
 															<th>IRC Code</th>
+															<th>NonCall Code</th>
 															<th>MRTY Code</th>
 															<th>MRTY List Code</th>
 															<th>Greek</th>
@@ -137,7 +138,8 @@
                 { data: 'processDt' },
                 { data: 'instrumentCd' },
                 { data: 'greekCd'},
-                { data: 'ircCd' },                       
+                { data: 'ircCd' },
+                { data: 'nonCallCd' }, 
                 { data: 'mrtyCd' },
                 { data: 'mrtyListCd' },
                 { data: 'greek'},                           
@@ -147,7 +149,7 @@
     function generateTable(){
 		var table1 = $('#table1');		
 		
-		var ajaxStr = './json/deltalist?procId=' 
+		var ajaxStr = './deltaTable/json?procId=' 
 				+ $('#input-procId').val();
 				
 		createTable(table1, ajaxStr);

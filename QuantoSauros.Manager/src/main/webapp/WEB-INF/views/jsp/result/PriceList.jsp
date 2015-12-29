@@ -59,7 +59,7 @@
 								</div>
 								<div>
 									<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateTable();">	
-								</div>								
+								</div>
 							</div>							
 						</div>											
 					</div>
@@ -79,7 +79,8 @@
 												<thead>
 													<tr>
 														<th>Process Date</th>
-														<th>Instrument Code</th>						
+														<th>Instrument Code</th>
+														<th>NonCall Code</th>
 														<th>Price</th>
 														<th>Pay Price</th>
 														<th>Rcv Price</th>
@@ -129,11 +130,12 @@
 	            'excel'		            
     		],
     		pageLength: 30,
-			"order": [[1, "asc"]],
+			"order": [[0, "asc"], [1, "asc"], [2, "asc"]],
             ajax: ajaxStr,
             columns: [
                 { data: 'processDt' },
                 { data: 'instrumentCd' },
+                { data: 'nonCallCd' },
                 { data: 'price'},
                 { data: 'payPrice'},
                 { data: 'rcvPrice'},                                     
@@ -143,7 +145,7 @@
     function generateTable(){
 		var table1 = $('#table1');		
 		
-		var ajaxStr = './json/pricelist?procId=' 
+		var ajaxStr = './priceTable/json?procId=' 
 				+ $('#input-procId').val();
 				
 		createTable(table1, ajaxStr);

@@ -7,6 +7,7 @@ public class PriceInfo {
 
 	protected String processDt;
 	protected String instrumentCd;
+	protected String nonCallCd;
 	protected double price;
 	protected double payPrice;
 	protected double rcvPrice;
@@ -26,6 +27,12 @@ public class PriceInfo {
 	}
 	public void setInstrumentCd(String instrumentCd){
 		this.instrumentCd = instrumentCd;
+	}
+	public String getNonCallCd(){
+		return this.nonCallCd;
+	}
+	public void setNonCallCd(String nonCallCd){
+		this.nonCallCd = nonCallCd;
 	}
 	public String getPrice(){		
 		return df.format(price);

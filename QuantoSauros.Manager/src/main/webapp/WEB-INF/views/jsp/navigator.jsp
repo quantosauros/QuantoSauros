@@ -21,13 +21,13 @@
                     <a href="#"><i class="fa fa-table fa-fw"></i> Result Tables <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="pricelist">Price Table</a>
+                            <a href="priceTable">Price Table</a>
                         </li>
                         <li>
-                            <a href="deltalist">Delta Table</a>
+                            <a href="deltaTable">Delta Table</a>
                         </li>
                         <li>
-                            <a href="detaillist">Detail Table</a>
+                            <a href="detailTable">Detail Table</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->

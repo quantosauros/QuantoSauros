@@ -7,6 +7,6 @@ import com.quantosauros.manager.model.DetailInfo;
 
 public interface DetailInfoDao {	
 	
-	List<DetailInfo> selectList(HashMap<String,Object> paramMap) throws Exception;
+	List<DetailInfo> selectList(HashMap<String,Object> paramMap);
 	
 }

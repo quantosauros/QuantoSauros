@@ -210,10 +210,11 @@
     		
     		//var tableEtc = $('#tableEtc');
     		var tableEtc = '#tableEtc';
-    		var ajaxStr = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
+    		var ajaxStr = './detailTable/json?instrumentCd=' + $('#input-instrumentCd').val() 
 				+ '&procId=' + $('#input-procId').val()				
 				+ '&valueType=' + $('#input-valueType').val()
-				+ '&nonCallCd=' + $('#input-nonCallCd').val();
+				+ '&nonCallCd=' + $('#input-nonCallCd').val()
+				+ '&legType=';
     		
     		createTable(tableEtc, ajaxStr);
     		
@@ -230,12 +231,12 @@
         	//var tablePay = $('#tablePay');		
         	//var tableRcv = $('#tableRcv');
         	
-        	var ajaxStr1 = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
+        	var ajaxStr1 = './detailTable/json?instrumentCd=' + $('#input-instrumentCd').val() 
 				+ '&procId=' + $('#input-procId').val()				
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&legType=P' 
 				+ '&nonCallCd=' + $('#input-nonCallCd').val();
-        	var ajaxStr2 = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
+        	var ajaxStr2 = './detailTable/json?instrumentCd=' + $('#input-instrumentCd').val() 
 				+ '&procId=' + $('#input-procId').val()				
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&legType=R' 

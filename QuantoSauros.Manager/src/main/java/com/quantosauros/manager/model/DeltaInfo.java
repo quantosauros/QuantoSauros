@@ -11,6 +11,7 @@ public class DeltaInfo {
 	protected String mrtyCd;	
 	protected String mrtyListCd;
 	protected String greekCd;
+	protected String nonCallCd;
 	protected double greek;
 	protected double nonCallGreek;
 	protected String ccyCd;
@@ -52,6 +53,12 @@ public class DeltaInfo {
 	}
 	public void setGreekCd(String greekCd){
 		this.greekCd = greekCd;
+	}
+	public String getNonCallCd(){
+		return this.nonCallCd;
+	}
+	public void setNonCallCd(String nonCallCd){
+		this.nonCallCd = nonCallCd;
 	}
 	public double getGreek(){
 		return greek;

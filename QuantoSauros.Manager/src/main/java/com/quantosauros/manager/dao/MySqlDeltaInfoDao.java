@@ -20,7 +20,7 @@ public class MySqlDeltaInfoDao implements DeltaInfoDao {
 	}
 	
 	@Override
-	public List<DeltaInfo> selectAllList(HashMap<String, Object> paramMap) throws Exception {
+	public List<DeltaInfo> selectAllList(HashMap<String, Object> paramMap){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			return sqlSession.selectList(
@@ -30,7 +30,7 @@ public class MySqlDeltaInfoDao implements DeltaInfoDao {
 		}		
 	}
 	
-	public List<DeltaInfo> selectDeltaForChart(HashMap<String, Object> paramMap) throws Exception{
+	public List<DeltaInfo> selectDeltaForChart(HashMap<String, Object> paramMap){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			return sqlSession.selectList(
@@ -40,7 +40,7 @@ public class MySqlDeltaInfoDao implements DeltaInfoDao {
 		}
 	}
 	
-	public List<DeltaInfo> selectDeltaForChart2(HashMap<String, Object> paramMap) throws Exception{
+	public List<DeltaInfo> selectDeltaForChart2(HashMap<String, Object> paramMap){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			return sqlSession.selectList(
@@ -50,7 +50,7 @@ public class MySqlDeltaInfoDao implements DeltaInfoDao {
 		}
 	}
 	
-	public List<String> selectMrtyCd(HashMap<String, Object> paramMap) throws Exception{
+	public List<String> selectMrtyCd(HashMap<String, Object> paramMap) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			return sqlSession.selectList(

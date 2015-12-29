@@ -11,9 +11,9 @@ public class testProcessGreeks extends TestBase {
 
 	public void test(){
 		//INPUT VARIABLES
-		String procId = "0";
+		String procId = "1";
 		Date startDate = Date.valueOf("20131202");
-		Date endDate = Date.valueOf("20150512");				
+		Date endDate = Date.valueOf("20131205");				
 		int simNum = 5000;
 		boolean calcBump = false;
 		int monitorFrequency = 1;
@@ -29,9 +29,9 @@ public class testProcessGreeks extends TestBase {
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);
 			process.setCalcBump(calcBump);
-			//process.setSpecificInstrument("APS002");
+			process.setSpecificInstrument("APSSWAP001");
 			//DB기록 여부 입력(true:기록, false:미기록)
-			process.setInsertResults(false);
+			process.setInsertResults(true);
 			process.execute();
 			
 			long end = System.currentTimeMillis();

@@ -7,6 +7,7 @@
   <resultMap type="priceinfo" id="priceInfoResultMap">    
     <result column="DT"    property="processDt"/>
     <result column="INSTRUMENT_CD"    property="instrumentCd"/>
+    <result column="NONCALL_CD"    property="nonCallCd"/>
     <result column="PRICE"      property="price"/>    
     <result column="PAY_PRICE"      property="payPrice"/>
     <result column="RCV_PRICE"      property="rcvPrice"/>    
@@ -15,12 +16,11 @@
   
   <select id="selectAllList" parameterType="map" resultMap="priceInfoResultMap">
     SELECT 
-    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, CCY_CD
+    	DT, INSTRUMENT_CD, NONCALL_CD, PRICE, PAY_PRICE, RCV_PRICE, CCY_CD
     FROM 
     	PROC_PRICE_DATA
     WHERE
     	PROC_ID = #{procId}    	
-    	AND NONCALL_CD = #{nonCallCd}
   </select>
   
   <select id="selectListForChart" parameterType="map" resultMap="priceInfoResultMap">
@@ -32,7 +32,7 @@
     	PROC_ID = #{procId}
     	AND NONCALL_CD = #{nonCallCd}
     	AND INSTRUMENT_CD = #{instrumentCd}
-    	AND DT &gt; #{startDate}
-    	AND DT &lt; #{endDate}    	
+    	AND DT &gt; #{startDt}
+    	AND DT &lt; #{endDt}    	
   </select>
 </mapper>

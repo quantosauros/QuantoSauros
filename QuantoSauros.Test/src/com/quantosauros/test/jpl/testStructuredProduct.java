@@ -234,7 +234,7 @@ public class testStructuredProduct {
 		
 		//PRODUCT INFO
 		ProductInfo productInfo = new ProductInfo(
-				_issueDate, _maturityDate, _currency);
+				_issueDate, _maturityDate, _currency, true);
 		
 		
 		//LEG SCHEDULE INFO

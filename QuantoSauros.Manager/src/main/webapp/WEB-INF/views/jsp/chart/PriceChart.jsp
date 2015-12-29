@@ -118,7 +118,7 @@
     <!-- java scripts -->
 	<script type="text/javascript">
 		function generateChart(){
-			var url = "./json/priceChart?procId="
+			var url = "./priceChart/json?procId="
 					+ $('#input-procId').val()					
 					+ '&startDate=' + $('#input-startDate').val()
 					+ '&endDate=' + $('#input-endDate').val()

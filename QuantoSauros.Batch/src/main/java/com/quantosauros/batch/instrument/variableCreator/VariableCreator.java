@@ -38,10 +38,16 @@ public class VariableCreator {
 
 	public static ProductInfo getProductInfo(ProductInfoModel productInfoModel){
 		
-		return new ProductInfo(
+		boolean hasPrincipalExchange = false;
+		if (productInfoModel.getPrincipalExchCd().equals("Y")){
+			hasPrincipalExchange = true;
+		}
+		
+		return new ProductInfo(				
 				Date.valueOf(productInfoModel.getIssueDt()),
 				Date.valueOf(productInfoModel.getMrtyDt()),
-				Currency.getInstance(productInfoModel.getCcyCd()));		
+				Currency.getInstance(productInfoModel.getCcyCd()),
+				hasPrincipalExchange);		
 	}
 	
 	public static LegCouponInfo[] getLegCouponInfos(

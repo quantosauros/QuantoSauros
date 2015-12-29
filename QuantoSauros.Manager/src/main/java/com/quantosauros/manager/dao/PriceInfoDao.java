@@ -7,7 +7,7 @@ import com.quantosauros.manager.model.PriceInfo;
 
 public interface PriceInfoDao {
 
-	List<PriceInfo> selectAllList(HashMap<String, Object> paramMap) throws Exception;
-	List<PriceInfo> selectListForChart(HashMap<String,Object> paramMap) throws Exception;
+	List<PriceInfo> selectAllList(HashMap<String, Object> paramMap);
+	List<PriceInfo> selectListForChart(HashMap<String,Object> paramMap);
 	
 }

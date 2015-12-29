@@ -118,8 +118,8 @@
 												<div class = "list-group-item">
 													<label for="principalExchCd"> Principal Exchange </label>
 													<span><select class="form-control" id = "input-principalExchCd" name="principalExchCd">
-															<option value ="0"> No Exchange </option>
-															<option value ="1"> Exchange </option>
+															<option value ="N"> No Exchange </option>
+															<option value ="Y"> Exchange </option>
 													</select></span>
 												</div>
 												<div class = "list-group-item">
