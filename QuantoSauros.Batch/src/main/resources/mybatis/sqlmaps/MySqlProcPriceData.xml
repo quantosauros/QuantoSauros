@@ -5,70 +5,19 @@
 
 <mapper namespace = "ProcPriceData">
 
-<!-- SELECT -->
-	<!-- use -->
-	<select id="getDataIdFromPriceByProcId" resultType = "String">
-		SELECT 
-			DATA_ID 
-		FROM 
-			PROC_PRICE_INFO 
-		WHERE 
-			PROC_ID = #{procId}
-			AND IDX_ID = #{idxId}
-    </select>
-
-	<!-- use -->
-	<select id="getDataIdFromDeltaGammaByProcId" resultType = "String">
-		SELECT 
-			DATA_ID 
-		FROM 
-			PROC_DELTAGAMMA_INFO 
-		WHERE 
-			PROC_ID = #{procId}
-			AND IDX_ID = #{idxId}
-    </select>
-    
-	<select id="getProcPriceDataIdx" resultType = "String">
-		SELECT 
-			IFNULL(MAX(IDX) + 1,0) AS IDX 
-		FROM 
-			PROC_PRICE_DATA
-		WHERE
-			DT = #{dt}
-			AND PROC_ID = #{procId}	
-    </select>
-			
-	<select id="getProcDeltaGammaDataIdx" resultType = "String">
-		SELECT 
-			IFNULL(MAX(IDX) + 1,0) AS IDX 
-		FROM 
-			PROC_DELTAGAMMA_DATA
-		WHERE
-			PROC_ID = #{procId}	
-    </select>
 <!-- INSERT  -->
-	<!-- use -->
-	<insert id="insertDeltaGammaInfo">
-		CALL PC_INSERT_DELTAGAMMA_INFO(#{proc_id}, #{idx_id}, #{description})						
-    </insert>    
-    
-	<!-- use -->
-	<insert id="insertPriceInfo">
-		CALL PC_INSERT_PRICE_INFO(#{proc_id}, #{idx_id}, #{description})						
-    </insert> 
 	
 	<!-- use -->
 	<insert id="insertPrice">
 		INSERT INTO 
 			PROC_PRICE_DATA
-			(DT, PROC_ID, INSTRUMENT_CD, IDX, NONCALL_CD,			 
+			(DT, PROC_ID, INSTRUMENT_CD, NONCALL_CD,			 
 			PRICE, PAY_PRICE, RCV_PRICE,
 			CCY_CD, CRTN_TIME)
 		VALUES 
 			(#{dt}, 
 			#{procId}, 
 			#{instrumentCd},
-			#{idx}, 
 			#{nonCallCd},
 			#{price}, 
 			#{payPrice},
@@ -87,7 +36,7 @@
 	<insert id="insertDeltaGamma">
 		INSERT INTO 
 			PROC_DELTAGAMMA_DATA
-			(DT, PROC_ID, INSTRUMENT_CD, IDX, FACTOR_CD, 
+			(DT, PROC_ID, INSTRUMENT_CD, FACTOR_CD, 
 			GREEK_CD, NONCALL_CD,
 			GREEK,		
 			CCY_CD, CRTN_TIME)
@@ -95,7 +44,6 @@
 			(#{dt}, 
 			#{procId}, 
 			#{instrumentCd},
-			#{idx}, 
 			#{factorCd},
 			#{greekCd},
 			#{nonCallCd},
@@ -112,13 +60,12 @@
 	<insert id="insertDetailData">
 	    INSERT INTO
 	    	PROC_DETAIL_DATA
-	    	(DT, PROC_ID, INSTRUMENT_CD, IDX, VALUE_TYPE, NONCALL_CD,
+	    	(DT, PROC_ID, INSTRUMENT_CD, VALUE_TYPE, NONCALL_CD,
 	    	LEG_TYPE, PERIOD_NUM, VALUE1, VALUE2, CRTN_TIME)
 	    VALUES
 	    	(#{dt},
 	    	#{procId},
 	    	#{instrumentCd},
-	    	#{idx},
 	    	#{valueType},
 	    	#{nonCallCd},
 	    	#{legType},

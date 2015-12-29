@@ -17,21 +17,9 @@ public class ProcessGreeks extends AbstractProcess {
 
 	private boolean _calcBump = false;
 	
-	public ProcessGreeks(Date processDate, String procId, String idx) {
-		super(processDate, procId, idx);
-		//Insert DeltaGamma Info
-		HashMap paramMap = new HashMap();
-		paramMap.put("proc_id", _procId);
-		paramMap.put("idx_id", _idx);
-		String description = "default";
-		paramMap.put("description", description);
-		_procPriceDataDao.insertDeltaGammaInfo(paramMap);		
-		
-		//get a Market Data ID from proc Id
-		paramMap = new HashMap();
-		paramMap.put("procId", _procId);
-		paramMap.put("idxId", _idx);
-		_marketDataId = _procPriceDataDao.selectDataIdFromDeltaGammaByProcId(paramMap);
+	public ProcessGreeks(Date processDate, String procId) {
+		super(processDate, procId);	
+				
 	}
 	
 	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel) {	
@@ -160,8 +148,7 @@ public class ProcessGreeks extends AbstractProcess {
 			paramMap.put("nonCallCd", nonCallCd);
 			paramMap.put("dt", _processDate.getDt());
 			paramMap.put("procId", _procId);
-			paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());
-			paramMap.put("idx", _idx);
+			paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());			
 			paramMap.put("ccyCd", instrumentInfoModel.getCcyCd());	
 			if (_insertResult)
 				_procPriceDataDao.insertDeltaGamma(paramMap);

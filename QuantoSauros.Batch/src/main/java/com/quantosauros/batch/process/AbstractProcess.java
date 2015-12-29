@@ -27,10 +27,8 @@ public abstract class AbstractProcess {
 	protected Date _processDate;
 	//protected String _processInstTypeCd;
 	protected String _procId;
-	
-	protected String _idx;	
+			
 	protected List<InstrumentInfoModel> _infoDaoList;
-	protected String _marketDataId;
 	protected IRCurveContainer _irCurveContainer;	
 	protected HullWhiteVolatilitySurfaceCreator _surfaceContainer;
 	
@@ -45,10 +43,9 @@ public abstract class AbstractProcess {
 	protected double _epsilon;
 	protected boolean _insertResult = false;	
 	
-	public AbstractProcess(Date processDate, String procId, String idx) {
+	public AbstractProcess(Date processDate, String procId) {
 		_processDate = processDate;
-		_procId = procId;
-		_idx = idx;		
+		_procId = procId;		
 		if (this instanceof ProcessPrices){
 			_epsilon = 0;
 		} else if (this instanceof ProcessGreeks){
@@ -103,13 +100,13 @@ public abstract class AbstractProcess {
 					
 				} else {
 					String ircCd = (String) ircCdMap.get(key);
-					if (!_marketDataId.equals("0")){
-			        	//Specific Market Scenario
-			        	HashMap paramMap = new HashMap();        		
-						paramMap.put("marketDataId", _marketDataId);
-						paramMap.put("originCd", ircCd);
-						ircCd = _marketDataDao.selectIRCCodeFromMarketDataMap(paramMap);	        	
-					}
+//					if (!_marketDataId.equals("0")){
+//			        	//Specific Market Scenario
+//			        	HashMap paramMap = new HashMap();        		
+//						paramMap.put("marketDataId", _marketDataId);
+//						paramMap.put("originCd", ircCd);
+//						ircCd = _marketDataDao.selectIRCCodeFromMarketDataMap(paramMap);	        	
+//					}
 					
 					HashMap paramMap = new HashMap(); 
 					paramMap.put("ircCd", ircCd);

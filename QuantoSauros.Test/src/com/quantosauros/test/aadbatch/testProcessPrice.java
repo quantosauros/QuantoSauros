@@ -12,15 +12,13 @@ public class testProcessPrice extends TestBase {
 	public void test(){
 		//INPUT VARIABLES
 		//프로세스 ID
-		String procId = "101";
-		//인덱스 ID
-		String idxId = "102";
+		String procId = "0";		
 		//프로세스 시작일
-		Date startDate = Date.valueOf("20150428");
+		Date startDate = Date.valueOf("20131203");
 		//프로세스 마지막일
 		Date endDate = Date.valueOf("20150510");
 		//시뮬레이션 횟수				
-		int simNum = 500;
+		int simNum = 5000;
 		//모니터링 간격(0: 모든구간 1일간격 시뮬레이션, 1: 조밀하게 셋팅, 10 : 10일간격 베이스 셋팅, 30: 30일간격 베이스 셋팅)
 		int monitorFrequency = 1;
 		
@@ -31,11 +29,11 @@ public class testProcessPrice extends TestBase {
 			log("processDate: " + processDate.getDt());
 			
 			long start = System.currentTimeMillis();
-			ProcessPrices process = new ProcessPrices(processDate, procId, idxId);
+			ProcessPrices process = new ProcessPrices(processDate, procId);
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);		
 			//상품코드입력(미입력시 모든상품 계산)
-			process.setSpecificInstrument("APS002");
+//			process.setSpecificInstrument("APS002");
 			//DB기록 여부 입력(true:기록, false:미기록)
 			process.setInsertResults(false);
 			process.execute();

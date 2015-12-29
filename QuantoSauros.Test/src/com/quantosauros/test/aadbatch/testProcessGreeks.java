@@ -11,10 +11,9 @@ public class testProcessGreeks extends TestBase {
 
 	public void test(){
 		//INPUT VARIABLES
-		String procId = "101";
-		Date startDate = Date.valueOf("20150428");
-		Date endDate = Date.valueOf("20150512");
-		String idxId = "102";		
+		String procId = "0";
+		Date startDate = Date.valueOf("20131202");
+		Date endDate = Date.valueOf("20150512");				
 		int simNum = 5000;
 		boolean calcBump = false;
 		int monitorFrequency = 1;
@@ -26,13 +25,13 @@ public class testProcessGreeks extends TestBase {
 			
 			long start = System.currentTimeMillis();
 			ProcessGreeks process = new ProcessGreeks(
-					processDate, procId, idxId);
+					processDate, procId);
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);
 			process.setCalcBump(calcBump);
-			process.setSpecificInstrument("APS002");
+			//process.setSpecificInstrument("APS002");
 			//DB기록 여부 입력(true:기록, false:미기록)
-			process.setInsertResults(true);
+			process.setInsertResults(false);
 			process.execute();
 			
 			long end = System.currentTimeMillis();

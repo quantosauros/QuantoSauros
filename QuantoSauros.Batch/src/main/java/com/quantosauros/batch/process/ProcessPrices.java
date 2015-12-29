@@ -15,21 +15,9 @@ import com.quantosauros.jpl.result.ResultDto;
 
 public class ProcessPrices extends AbstractProcess {
 			
-	public ProcessPrices(Date processDate, String procId, String idx) {
-		super(processDate, procId, idx);
-		//Insert DeltaGamma Info
-		HashMap paramMap = new HashMap();
-		paramMap.put("proc_id", _procId);
-		paramMap.put("idx_id", _idx);
-		String description = "default";
-		paramMap.put("description", description);
-		_procPriceDataDao.insertPriceInfo(paramMap);				
+	public ProcessPrices(Date processDate, String procId) {
+		super(processDate, procId);			
 		
-		//get a Market Data ID from proc Id
-		paramMap = new HashMap();
-		paramMap.put("procId", _procId);
-		paramMap.put("idxId", _idx);
-		_marketDataId = _procPriceDataDao.selectDataIdFromPriceByProcId(paramMap);
 	}
 
 	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel){	
@@ -84,8 +72,7 @@ public class ProcessPrices extends AbstractProcess {
 		
     	paramMap.put("dt", _processDate.getDt());
     	paramMap.put("procId", _procId);
-		paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());
-		paramMap.put("idx", _idx);
+		paramMap.put("instrumentCd", instrumentInfoModel.getInstrumentCd());		
 		paramMap.put("nonCallCd", nonCallCd);
 		paramMap.put("price", originalValue);
 		paramMap.put("payPrice", payValue);
@@ -124,8 +111,7 @@ public class ProcessPrices extends AbstractProcess {
 						HashMap paramMap = new HashMap();
 						paramMap.put("dt", _processDate.getDt());
 				    	paramMap.put("procId", _procId);
-						paramMap.put("instrumentCd", instrumentCd);
-						paramMap.put("idx", _idx);
+						paramMap.put("instrumentCd", instrumentCd);						
 						paramMap.put("valueType", valueType);
 						paramMap.put("legType", legType);
 						paramMap.put("nonCallCd", nonCallCd);
@@ -147,8 +133,7 @@ public class ProcessPrices extends AbstractProcess {
 					HashMap paramMap = new HashMap();
 					paramMap.put("dt", _processDate.getDt());
 			    	paramMap.put("procId", _procId);
-					paramMap.put("instrumentCd", instrumentCd);
-					paramMap.put("idx", _idx);
+					paramMap.put("instrumentCd", instrumentCd);					
 					paramMap.put("valueType", valueType);
 					paramMap.put("nonCallCd", nonCallCd);
 					paramMap.put("legType", "");
