@@ -9,6 +9,5 @@ public interface PriceInfoDao {
 
 	List<PriceInfo> selectAllList(HashMap<String, Object> paramMap) throws Exception;
 	List<PriceInfo> selectListForChart(HashMap<String,Object> paramMap) throws Exception;
-	PriceInfo selectOne(HashMap<String, Object> paramMap) throws Exception;
 	
 }

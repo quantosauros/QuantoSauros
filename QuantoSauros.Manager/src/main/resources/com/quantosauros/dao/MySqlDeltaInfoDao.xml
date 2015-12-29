@@ -25,8 +25,7 @@
 		SYS_CD_MAP C
 	WHERE
 		A.FACTOR_CD = B.FACTOR_CD
-    	AND PROC_ID = #{procId}
-    	AND IDX = #{idxId}	
+    	AND PROC_ID = #{procId}    		
    		AND C.TYPE = '002'
 		AND C.SRC_CD = B.MRTY_CD
 		AND A.NONCALL_CD = #{nonCallCd}
@@ -42,8 +41,7 @@
 		SYS_CD_MAP C
 	WHERE
 		A.FACTOR_CD = B.FACTOR_CD
-	 	AND PROC_ID = #{procId}
-	 	AND IDX = #{idxId}	
+	 	AND PROC_ID = #{procId}	 	
 		AND C.TYPE = '002'
 		AND C.SRC_CD = B.MRTY_CD
 		AND DT = #{dt}
@@ -65,8 +63,7 @@
 	WHERE
 		A.FACTOR_CD = B.FACTOR_CD
 		AND C.SRC_CD = B.MRTY_CD
-	 	AND A.PROC_ID = #{procId}
-	 	AND A.IDX = #{idxId}	
+	 	AND A.PROC_ID = #{procId}	 	
 	 	AND A.GREEK_CD = #{greekCd}
 	 	AND B.IRC_CD = #{ircCd}
 		AND B.MRTY_CD = #{mrtyCd}

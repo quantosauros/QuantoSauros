@@ -60,16 +60,14 @@ public class highChartController {
 	public @ResponseBody String getPriceChart(HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
 		
-		String procId = request.getParameter("procId");
-		String idxId = request.getParameter("idxId");
+		String procId = request.getParameter("procId");		
 		String nonCallCd = request.getParameter("nonCallCd");
 		String instrumentCd = request.getParameter("instrumentCd");
 		Date startDate = Date.valueOf(request.getParameter("startDate").replace("-", ""));
 		Date endDate = Date.valueOf(request.getParameter("endDate").replace("-", ""));
 		
 		HashMap<String, Object> paramMap = new HashMap<>();
-		paramMap.put("procId", procId);
-		paramMap.put("idxId", idxId);
+		paramMap.put("procId", procId);		
 		paramMap.put("nonCallCd", nonCallCd);
 		paramMap.put("instrumentCd", instrumentCd);		
 		paramMap.put("startDate", startDate.getDt());
@@ -117,8 +115,7 @@ public class highChartController {
 	public @ResponseBody String getDeltaChart2(HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
 				
-		String procId = request.getParameter("procId");
-		String idxId = request.getParameter("idxId");		
+		String procId = request.getParameter("procId");		
 		String instrumentCd = request.getParameter("instrumentCd");
 		String greekCd = request.getParameter("greekCd");		
 		String ircCd = request.getParameter("ircCd");		
@@ -137,8 +134,7 @@ public class highChartController {
 		String[] xAxisValue = null;
 		for (int seriesIndex = 0; seriesIndex < seriesNum; seriesIndex++){
 			paramMap = new HashMap();
-			paramMap.put("procId", procId);
-			paramMap.put("idxId", idxId);
+			paramMap.put("procId", procId);			
 			paramMap.put("startDate", startDate);
 			paramMap.put("endDate", endDate);
 			paramMap.put("instrumentCd", instrumentCd);
@@ -186,8 +182,7 @@ public class highChartController {
 	public @ResponseBody String getDeltaChart(HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
 		
-		String procId = request.getParameter("procId");
-		String idxId = request.getParameter("idxId");		
+		String procId = request.getParameter("procId");			
 		String instrumentCd = request.getParameter("instrumentCd");
 		String greekCd = request.getParameter("greekCd");		
 		String ircCd = request.getParameter("ircCd");		
@@ -211,8 +206,7 @@ public class highChartController {
 		String[] xAxisValue = null;
 		for (int seriesIndex = 0; seriesIndex < seriesNum; seriesIndex++){
 			HashMap paramMap = new HashMap();
-			paramMap.put("procId", procId);
-			paramMap.put("idxId", idxId);
+			paramMap.put("procId", procId);			
 			paramMap.put("dt", dateArray.get(seriesIndex));
 			paramMap.put("instrumentCd", instrumentCd);
 			paramMap.put("greekCd", greekCd);

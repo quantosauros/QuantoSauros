@@ -30,15 +30,4 @@ public class MySqlDetailInfoDao implements DetailInfoDao {
 		}		
 	}
 
-	@Override
-	public DetailInfo selectOne(HashMap<String, Object> paramMap) throws Exception {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		try {
-			return sqlSession.selectOne("com.quantosauros.manager.dao.DetailInfoDao.selectList", paramMap);
-		} finally {
-			sqlSession.close();
-		}	
-	}
-
-	
 }

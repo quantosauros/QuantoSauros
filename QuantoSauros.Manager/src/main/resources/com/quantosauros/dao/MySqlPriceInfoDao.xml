@@ -19,8 +19,7 @@
     FROM 
     	PROC_PRICE_DATA
     WHERE
-    	PROC_ID = #{procId}
-    	AND IDX = #{idxId}
+    	PROC_ID = #{procId}    	
     	AND NONCALL_CD = #{nonCallCd}
   </select>
   
@@ -31,20 +30,9 @@
     	PROC_PRICE_DATA    
     WHERE 
     	PROC_ID = #{procId}
-    	AND IDX = #{idxId}
     	AND NONCALL_CD = #{nonCallCd}
     	AND INSTRUMENT_CD = #{instrumentCd}
     	AND DT &gt; #{startDate}
     	AND DT &lt; #{endDate}    	
   </select>
-  
-  <select id="selectOne" parameterType="string" resultMap="priceInfoResultMap">
-    SELECT 
-    	DT, INSTRUMENT_CD, PRICE, PAY_PRICE, RCV_PRICE, NON_EXERCISE_PRICE, CCY_CD
-    FROM 
-    	PROC_PRICE_DATA
-    WHERE
-    	DT= ${dt}
-    	AND INSTRUMENT_CD = #{instrumentCd}
-  </select>  
 </mapper>

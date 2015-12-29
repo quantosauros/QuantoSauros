@@ -59,11 +59,7 @@
 								</div>
 								<div class = "form-inline list-group-item">	
 									<label for="processIdInput"> Process ID </label>					
-									<input class="form-control" type="text" id="input-procId" name="procId" value ="101">
-								</div>
-								<div class = "form-inline list-group-item">	
-									<label for="idxIdInput"> Index ID </label>					
-									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="102">
+									<input class="form-control" type="text" id="input-procId" name="procId" value ="0">
 								</div>
 								<div class = "form-inline list-group-item">	
 									<label for="nonCallCdInput"> NonCall </label>					
@@ -215,8 +211,7 @@
     		//var tableEtc = $('#tableEtc');
     		var tableEtc = '#tableEtc';
     		var ajaxStr = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
-				+ '&procId=' + $('#input-procId').val()
-				+ '&idxId=' + $('#input-idxId').val()
+				+ '&procId=' + $('#input-procId').val()				
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&nonCallCd=' + $('#input-nonCallCd').val();
     		
@@ -236,14 +231,12 @@
         	//var tableRcv = $('#tableRcv');
         	
         	var ajaxStr1 = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
-				+ '&procId=' + $('#input-procId').val()
-				+ '&idxId=' + $('#input-idxId').val()
+				+ '&procId=' + $('#input-procId').val()				
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&legType=P' 
 				+ '&nonCallCd=' + $('#input-nonCallCd').val();
         	var ajaxStr2 = './json/detaillist?instrumentCd=' + $('#input-instrumentCd').val() 
-				+ '&procId=' + $('#input-procId').val()
-				+ '&idxId=' + $('#input-idxId').val()
+				+ '&procId=' + $('#input-procId').val()				
 				+ '&valueType=' + $('#input-valueType').val()
 				+ '&legType=R' 
 				+ '&nonCallCd=' + $('#input-nonCallCd').val();

@@ -21,8 +21,7 @@
     	PROC_DETAIL_DATA
     WHERE 
     	INSTRUMENT_CD = #{instrumentCd}
-    	AND PROC_ID = #{procId}
-    	AND IDX = #{idx}
+    	AND PROC_ID = #{procId}    	
     	AND VALUE_TYPE = #{valueType}
     	AND NONCALL_CD = #{nonCallCd}
    		<choose>  
@@ -31,18 +30,4 @@
         </when>
         </choose>      	    	
   </select>
-  
-  <select id="selectOne" parameterType="string" resultMap="detailInfoResultMap">
-    SELECT 
-    	DT, INSTRUMENT_CD, VALUE_TYPE, ISNONCALL, LEG_TYPE, PERIOD_NUM, VALUE1, VALUE2
-    FROM 
-    	PROC_DETAIL_DATA
-    WHERE 
-    	INSTRUMENT_CD = #{instrumentCd}
-    	AND PROC_ID = #{procId}
-    	AND IDX = #{idx}
-    	AND VALUE_TYPE = #{valueType}
-    	AND ISNONCALL = #{isNonCall}
-    	AND LEG_TYPE = #{legType}   
-  </select>  
 </mapper>

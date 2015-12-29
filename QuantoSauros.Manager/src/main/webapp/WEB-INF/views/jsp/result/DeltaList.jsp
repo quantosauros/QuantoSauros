@@ -55,11 +55,7 @@
 							<div class="panel-body">
 								<div class = "form-inline list-group-item">
 									<label for="processIdInput"> Process ID </label>
-									<input class="form-control" type="text" id="input-procId" name="procId" value ="101">
-								</div>		
-								<div class = "form-inline list-group-item">
-									<label for="idxIdInput"> Index ID </label>
-									<input class="form-control" type="text" id="input-idxId" name="idxId" value ="102">	
+									<input class="form-control" type="text" id="input-procId" name="procId" value ="0">
 								</div>
 								<div>
 									<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateTable();">	
@@ -152,8 +148,8 @@
 		var table1 = $('#table1');		
 		
 		var ajaxStr = './json/deltalist?procId=' 
-				+ $('#input-procId').val() 
-				+ '&idxId=' + $('#input-idxId').val();
+				+ $('#input-procId').val();
+				
 		createTable(table1, ajaxStr);
 		$('#resultSection')[0].hidden = false;
     };		

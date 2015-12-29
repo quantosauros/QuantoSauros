@@ -56,11 +56,7 @@
 								<div class="list-group">
 									<div class = "list-group-item">
 										<label for="processIdInput"> Process ID </label>
-										<span><input class="form-control" type="text" id="input-procId" name="procId" value ="101"></span>
-									</div>		
-									<div class = "list-group-item">
-										<label for="idxIdInput"> Index ID </label>
-										<span><input class="form-control" type="text" id="input-idxId" name="idxId" value ="102"></span>
+										<span><input class="form-control" type="text" id="input-procId" name="procId" value ="0"></span>
 									</div>
 									<div class = "list-group-item">
 										<label for="idxIdInput"> Instrument Code </label>
@@ -143,8 +139,7 @@
 	<script type="text/javascript">
 		function generateChart(){
 			var url = "./json/deltaChart2?procId="
-					+ $('#input-procId').val()
-					+ '&idxId=' + $('#input-idxId').val()
+					+ $('#input-procId').val()					
 					+ '&startDate=' + $('#input-startDate').val()
 					+ '&endDate=' + $('#input-endDate').val()
 					+ '&instrumentCd=' + $('#input-instrumentCd').val()

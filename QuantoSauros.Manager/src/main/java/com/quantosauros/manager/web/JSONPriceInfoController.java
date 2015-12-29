@@ -31,13 +31,11 @@ public class JSONPriceInfoController {
 			HttpServletRequest request, 
 			HttpServletResponse response) throws Exception{
 
-		String procId = request.getParameter("procId");
-		String idxId = request.getParameter("idxId");
+		String procId = request.getParameter("procId");		
 		String nonCallCd = "N";
 		
 		HashMap paramMap = new HashMap();
-		paramMap.put("procId", procId);
-		paramMap.put("idxId", idxId);
+		paramMap.put("procId", procId);		
 		paramMap.put("nonCallCd", nonCallCd);
 		List<PriceInfo> list = priceInfoDao.selectAllList(paramMap);
 		

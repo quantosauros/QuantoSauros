@@ -40,17 +40,4 @@ public class MySqlPriceInfoDao implements PriceInfoDao {
 			sqlSession.close();
 		}		
 	}
-
-	@Override
-	public PriceInfo selectOne(HashMap<String, Object> paramMap) throws Exception {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		try {
-			return sqlSession.selectOne("com.quantosauros.manager.dao.PriceInfoDao.selectOne", paramMap);
-		} finally {
-			sqlSession.close();
-		}	
-	}
-
-	
-	
 }

@@ -32,16 +32,14 @@ public class JSONDetailInfoController {
 			HttpServletResponse response) throws Exception {
 		
 		String instrumentCd = request.getParameter("instrumentCd");
-		String procId = request.getParameter("procId");
-		String idxId = request.getParameter("idxId");
+		String procId = request.getParameter("procId");		
 		String valueTypeInput = request.getParameter("valueType");	
 		String legType = request.getParameter("legType");
 		String nonCallCd = request.getParameter("nonCallCd");
 		
 		HashMap paramMap = new HashMap();
 		paramMap.put("instrumentCd", instrumentCd);
-		paramMap.put("procId", procId);
-		paramMap.put("idx", idxId);
+		paramMap.put("procId", procId);		
 		paramMap.put("valueType", valueTypeInput);
 		paramMap.put("nonCallCd", nonCallCd);
 		if (legType != null)
