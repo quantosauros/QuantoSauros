@@ -411,7 +411,7 @@ public class testAPSNoteWithCondiOnR1_2F extends TestBase {
 			}
 		}
 				
-		int monitorFrequency = 15;
+		int monitorFrequency = 0;
 		long seed = 12345L;
 		int simNum = 1000;
 		

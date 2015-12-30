@@ -211,8 +211,10 @@ public class testRASwap extends TestBase {
 		ProductInfo productInfo = new ProductInfo(
 				_issueDate, _maturityDate, _currency, true);
 				
+		int legNum = 1;
+		
 		//LEG SCHEDULE INFO
-		LegScheduleInfo[] legScheduleInfos = new LegScheduleInfo[2];
+		LegScheduleInfo[] legScheduleInfos = new LegScheduleInfo[legNum];
 		
 		PaymentPeriod[] periods1 = new PaymentPeriod[_startDates1.length];
 		for (int i = 0; i < _startDates1.length; i++){
@@ -222,68 +224,68 @@ public class testRASwap extends TestBase {
 		
 		legScheduleInfos[0] = new LegScheduleInfo(periods1, _dcf1);
 		
-		PaymentPeriod[] periods2 = new PaymentPeriod[_startDates2.length];
-		for (int i = 0; i < _startDates2.length; i++){
-			periods2[i] = new PaymentPeriod(
-					_startDates2[i], _startDates2[i], _endDates2[i], _endDates2[i]);
-		}
-		legScheduleInfos[1] = new LegScheduleInfo(periods2, _dcf2);
+//		PaymentPeriod[] periods2 = new PaymentPeriod[_startDates2.length];
+//		for (int i = 0; i < _startDates2.length; i++){
+//			periods2[i] = new PaymentPeriod(
+//					_startDates2[i], _startDates2[i], _endDates2[i], _endDates2[i]);
+//		}
+//		legScheduleInfos[1] = new LegScheduleInfo(periods2, _dcf2);
 		
 		//LEG DATA INFO
-		LegDataInfo[] legDataInfos = new LegDataInfo[2];
-		legDataInfos[0] = new LegDataInfo(_nextCouponDate);
-		legDataInfos[0].setCumulatedAccrualDays(0);
+		LegDataInfo[] legDataInfos = new LegDataInfo[legNum];
+//		legDataInfos[0] = new LegDataInfo(_nextCouponDate);
+//		legDataInfos[0].setCumulatedAccrualDays(0);
 		
-		legDataInfos[1] = new LegDataInfo(_nextCouponDate);
-		legDataInfos[1].setNextCouponRate(0.016);
+		legDataInfos[0] = new LegDataInfo(_nextCouponDate);
+		legDataInfos[0].setNextCouponRate(0.015);
 
 		//LEG AMORTIZATION INFO
-		LegAmortizationInfo[] legAmortizationInfos = new LegAmortizationInfo[2];
+		LegAmortizationInfo[] legAmortizationInfos = new LegAmortizationInfo[legNum];
 		legAmortizationInfos[0] = new LegAmortizationInfo(_principal1);
-		legAmortizationInfos[1] = new LegAmortizationInfo(_principal2);
+//		legAmortizationInfos[1] = new LegAmortizationInfo(_principal2);
 		
 		//LEG COUPON INFO
-		LegCouponInfo[] legCouponInfos = new LegCouponInfo[2];
+		LegCouponInfo[] legCouponInfos = new LegCouponInfo[legNum];
 		
-		CouponType[] couponType1 = new CouponType[_startDates1.length];
-		UnderlyingType underlyingType1 = UnderlyingType.R1;
-		ConditionType conditionType1 = ConditionType.R1;
-		
-		UnderlyingInfo[] payUndInfos = new UnderlyingInfo[]{
-				RateUnderlyingInfo.valueOf(ModelType.HW1F, 0.25, Frequency.valueOf("Q"), RateType.SPOT),
-		};
-				
-		int conditionNum = 1;
-		int referenceNum = 1;
-		double[][] upperLimits = new double[conditionNum][_startDates1.length];
-		double[][] lowerLimits = new double[conditionNum][_startDates1.length];
-		double[] inCouponRates = new double[_startDates1.length];
-		double[] outCouponRates = new double[_startDates1.length];
-		boolean hasCap = false;
-		double[] cap = null;
-		boolean hasFloor = false;
-		double[] floor = null;
-		double[][] leverages1 = new double[referenceNum][_startDates1.length];
-		double[] spreads1 = new double[_startDates1.length];
-		PayRcv payRcv1 = PayRcv.PAY;
-		
-		for (int i = 0; i < _startDates1.length; i++){
-			couponType1[i] = CouponType.ACCRUAL;
-			upperLimits[0][i] = 0.045; //0.05
-			lowerLimits[0][i] = 0.0;
-			inCouponRates[i] = 0.03;
-			outCouponRates[i] = 0;
-			leverages1[0][i] = 1;
-			spreads1[i] = 0;
-		}
-			
-		legCouponInfos[0] = new LegStructuredCouponInfo(payRcv1,
-				couponType1, underlyingType1, conditionType1, 
-				payUndInfos,
-				upperLimits, lowerLimits, 
-				inCouponRates, outCouponRates, 
-				hasCap, cap, hasFloor, floor, 
-				leverages1, spreads1);
+//		CouponType[] couponType1 = new CouponType[_startDates1.length];
+//		UnderlyingType underlyingType1 = UnderlyingType.R1;
+//		ConditionType conditionType1 = ConditionType.R1;
+//		
+//		UnderlyingInfo[] payUndInfos = new UnderlyingInfo[]{
+//				RateUnderlyingInfo.valueOf(ModelType.HW1F, 0.25, Frequency.valueOf("Q"), RateType.SPOT),
+//		};
+//				
+//		int conditionNum = 1;
+//		int referenceNum = 1;
+//		double[][] upperLimits = new double[conditionNum][_startDates1.length];
+//		double[][] lowerLimits = new double[conditionNum][_startDates1.length];
+//		double[] inCouponRates = new double[_startDates1.length];
+//		double[] outCouponRates = new double[_startDates1.length];
+//		boolean hasCap = false;
+//		double[] cap = null;
+//		boolean hasFloor = false;
+//		double[] floor = null;
+//		double[][] leverages1 = new double[referenceNum][_startDates1.length];
+//		double[] spreads1 = new double[_startDates1.length];
+//		PayRcv payRcv1 = PayRcv.PAY;
+//		
+//		for (int i = 0; i < _startDates1.length; i++){
+//			couponType1[i] = CouponType.ACCRUAL;
+//			upperLimits[0][i] = 0.045; //0.05
+//			lowerLimits[0][i] = 0.0;
+//			inCouponRates[i] = 0.03;
+//			outCouponRates[i] = 0;
+//			leverages1[0][i] = 1;
+//			spreads1[i] = 0;
+//		}
+//			
+//		legCouponInfos[0] = new LegStructuredCouponInfo(payRcv1,
+//				couponType1, underlyingType1, conditionType1, 
+//				payUndInfos,
+//				upperLimits, lowerLimits, 
+//				inCouponRates, outCouponRates, 
+//				hasCap, cap, hasFloor, floor, 
+//				leverages1, spreads1);
 		
 		CouponType[] couponType2 = new CouponType[_startDates2.length];
 		UnderlyingType underlyingType2 = UnderlyingType.R1;
@@ -294,14 +296,14 @@ public class testRASwap extends TestBase {
 		};
 		PayRcv payRcv2 = PayRcv.RCV;
 		double[] spreads2 = new double[_startDates2.length];
-		double[][] leverages2 = new double[referenceNum][_startDates2.length];
+		double[][] leverages2 = new double[1][_startDates2.length];
 		for (int i = 0; i < _startDates2.length; i++){
 			couponType2[i] = CouponType.RESET;
 			leverages2[0][i] = 1.0;
-			spreads2[i] = 0.001;
+			spreads2[i] = 0.0;
 		}
 		
-		legCouponInfos[1] = new LegFloatingCouponInfo(payRcv2,
+		legCouponInfos[0] = new LegFloatingCouponInfo(payRcv2,
 				couponType2, underlyingType2, conditionType2,
 				rcvUndInfos,
 				leverages2, spreads2);
@@ -322,12 +324,12 @@ public class testRASwap extends TestBase {
 			fxVolatilities[legIndex] = new double[undNum];
 			for (int undIndex = 0; undIndex < undNum; undIndex++){
 				fxAssetCorrelations[legIndex][undIndex] = 0;
-				fxVolatilities[legIndex][undIndex] = 0.1;
+				fxVolatilities[legIndex][undIndex] = 0;
 			}
 		}
 		int monitorFrequency = 1;
 		long seed = 12345L;
-		int simNum = 1000;
+		int simNum = 500;
 		
 		StructuredProduct product = new StructuredProduct(
 				_asOfDate,
@@ -341,25 +343,28 @@ public class testRASwap extends TestBase {
 				monitorFrequency,
 				seed, simNum);
 		
-		MarketInfo[][] legUnderlyingInfos = new MarketInfo[2][];
+		MarketInfo[][] legUnderlyingInfos = new MarketInfo[legNum][];
+//		legUnderlyingInfos[0] = new MarketInfo[1];
+//		legUnderlyingInfos[0][0] = new RateMarketInfo(
+//				_structuredLegCurve1, _structuredLegHWParam1, _structuredLegHWVol1,
+//				fxAssetCorrelations[0][0], fxVolatilities[0][0]
+//		);
 		legUnderlyingInfos[0] = new MarketInfo[1];
 		legUnderlyingInfos[0][0] = new RateMarketInfo(
-				_structuredLegCurve1, _structuredLegHWParam1, _structuredLegHWVol1,
-				fxAssetCorrelations[0][0], fxVolatilities[0][0]
-		);
-		legUnderlyingInfos[1] = new MarketInfo[1];
-		legUnderlyingInfos[1][0] = new RateMarketInfo(
 				_swapLegCurve, _swapLegHWParam, _swapLegHWVol,
-				fxAssetCorrelations[1][0], fxVolatilities[1][0]
+				fxAssetCorrelations[0][0], fxVolatilities[0][0]
 		);
 		
 		//01
 		double r1r2 = 1; double r1r3 = 1; double r2r3 = 1; 
 		
 		double[][] correlations = new double[][]{
-			{1, r1r2, r1r3,}, 
-			{r1r2, 1, r2r3,}, 
-			{r1r3, r2r3, 1,},
+//			{1, r1r2, r1r3,}, 
+//			{r1r2, 1, r2r3,}, 
+//			{r1r3, r2r3, 1,},
+			{1, r1r2,}, 
+			{r1r2, 1,}, 
+			
 		};
 				
 		RateMarketInfo discountUnderlyingInfo = new RateMarketInfo(
@@ -370,11 +375,11 @@ public class testRASwap extends TestBase {
 				correlations);
 		
 		Money leg1Price = product.getLegPrice(0);
-		Money leg2Price = product.getLegPrice(1);
+//		Money leg2Price = product.getLegPrice(1);
 		
 		System.out.println(price);
 		System.out.println(leg1Price);
-		System.out.println(leg2Price);
+//		System.out.println(leg2Price);
 		
 		int[] exerciseIndex = product.getExerciseIndex();
 		DescriptiveStatistics stats = new DescriptiveStatistics();		
@@ -401,8 +406,6 @@ public class testRASwap extends TestBase {
 			}
 		}
 		
-		
-		int legNum = legUnderlyingInfos.length;
 		int[] undNum = new int[legNum];
 				
 		double[][][] leverages = new double[legNum][][];
@@ -449,8 +452,11 @@ public class testRASwap extends TestBase {
 				product.getDeferredCouponResetIndex(),
 				product.getMonitorFrequencies(), product.getTenors(), 
 				product.getHasExercise(), product.getExerciseIndex(), 
-				legIrCurves, legIrTenors, legIrMeanReversions, legPayoffs, 
+				legIrCurves, legIrTenors, legIrMeanReversions,
+				product.getLegModelTypes(),
+				legPayoffs, 
 				_discountCurve, _discountHWParam.getMeanReversion1F(), 
+				product.getDiscountModelType(),
 				product.getDiscounts(), 
 				leverages, product.getRestrictionInfo(),
 				lowerLimit, upperLimit, coupon,
@@ -625,7 +631,7 @@ public class testRASwap extends TestBase {
 			InterestRateCurve upCurve = new InterestRateCurve(_asOfDate, upSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
 			InterestRateCurve downCurve = new InterestRateCurve(_asOfDate, downSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
 
-			legUnderlyingInfos[1][0] = new RateMarketInfo(
+			legUnderlyingInfos[0][0] = new RateMarketInfo(
 					upCurve, _swapLegHWParam, _swapLegHWVol			
 			);
 			discountUnderlyingInfo = new RateMarketInfo(
@@ -635,7 +641,7 @@ public class testRASwap extends TestBase {
 					discountUnderlyingInfo,
 					correlations);
 			
-			legUnderlyingInfos[1][0] = new RateMarketInfo(
+			legUnderlyingInfos[0][0] = new RateMarketInfo(
 					downCurve, _swapLegHWParam, _swapLegHWVol			
 			);
 			discountUnderlyingInfo = new RateMarketInfo(

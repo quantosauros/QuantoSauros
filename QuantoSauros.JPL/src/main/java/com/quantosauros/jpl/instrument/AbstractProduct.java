@@ -3,6 +3,7 @@ package com.quantosauros.jpl.instrument;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.hullwhite.HWVolatilitySurface;
@@ -118,5 +119,11 @@ public abstract class AbstractProduct {
 	}
 	public boolean hasPrincipalExchange(){
 		return _pricer.hasPrincipalExchange();
+	}
+	public ModelType getDiscountModelType(){
+		return _pricer.getDiscountModelType();
+	}
+	public ModelType[][] getLegModelTypes(){
+		return _pricer.getLegModelTypes();
 	}
 }

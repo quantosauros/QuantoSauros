@@ -408,4 +408,20 @@ public abstract class AbstractPricer {
 	public boolean hasPrincipalExchange(){
 		return _productInfo.hasPrincipalExchange();
 	}
+	public ModelType getDiscountModelType(){
+		return _discModelType;
+	}
+	public ModelType[][] getLegModelTypes(){
+		ModelType[][] modelTypes = new ModelType[_legNum][];
+		for (int legIndex = 0; legIndex < _legNum; legIndex++){
+			int undNum = _undNum[legIndex];
+			modelTypes[legIndex] = new ModelType[undNum];
+			for (int undIndex = 0; undIndex < undNum; undIndex++){
+				modelTypes[legIndex][undIndex] = 
+						_legCouponInfos[legIndex].getUnderlyingInfo(undIndex).getModelType();
+			}
+			
+		}
+		return modelTypes; 
+	}
 }

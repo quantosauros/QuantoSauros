@@ -68,73 +68,6 @@ public class AADEngine {
 	protected AbstractAAD _aad;	
 	protected int _legNum;
 	protected int[] _undNum;
-//	
-//	public enum GreekType {
-//		FLOAT1, FLOAT2, DISCOUNT, SWAP
-//	}
-//	
-	public AADEngine(
-			Money principal,
-			boolean hasPrincipalExchange,
-			DayCountFraction dcf,
-			int simNum, int periodNum, int[] underyingNum, 
-			int deferredCouponResetIndex, 
-			int[] monitorFrequency,
-			ArrayList<ArrayList<Double>> tenors,
-			boolean hasExercise, int[] exerciseIndex,
-			//FloatLeg Information
-			InterestRateCurve[][] legIrCurves,
-			double[][] legIrTenors,
-			double[][] legIrMeanReversions,
-			double[][][] legPayoffs,			
-			//Discount Information
-			InterestRateCurve discountCurve,			
-			double discountMeanReversion,
-			double[][] discountFactor,
-			//average
-			double[][][] leverage,
-			boolean[][] restriction,	
-			//condition
-			double[][][] lowerLimits, double[][][] upperLimits,
-			double[][][] coupon,
-			double[][][][][] refRates) {
-
-		_principal = principal;
-		_hasPrincipalExchange = hasPrincipalExchange;
-		_dcf = dcf;
-		_simNum = simNum;
-		_periodNum = periodNum;		
-		_deferredCouponResetIndex = deferredCouponResetIndex;
-		_monitorFrequency = monitorFrequency;
-		_tenors = tenors;
-		_hasExercise = hasExercise;
-		_exerciseIndex = exerciseIndex; 
-		//FloatLeg Information		
-		_legIrCurves = legIrCurves;
-		_legIrMeanReversions = legIrMeanReversions;
-		_legIrTenors = legIrTenors;
-		_legPayoffs = legPayoffs;
-		//Discount Information
-		_discountCurve = discountCurve;
-		_discountMeanReversion = discountMeanReversion;
-		_discountFactor = discountFactor;
-		//average
-		_leverage = leverage;
-		_restriction = restriction;
-		//condition
-		_lowerLimits = lowerLimits;
-		_upperLimits = upperLimits;
-		_coupon = coupon;
-		_refRates = refRates;
-		
-		_indexDetector = new int[_periodNum][];	
-		_couponResetIndex = new int[_periodNum];
-		_periodTenors = new double[_periodNum];
-		_legNum = _legIrCurves.length;
-		_undNum = underyingNum;
-		
-		genSensitivities();
-	}
 	
 	public AADEngine(
 			Money principal,
@@ -280,8 +213,8 @@ public class AADEngine {
 					_dcf, _indexDetector, _couponResetIndex, 
 					_hasExercise, _exerciseIndex, _stepTime, _periodTenors, 
 					_simNum, _periodNum, 
-					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legPayoffs, 
-					_discountCurve, _discountMeanReversion, _discountFactor, 
+					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legModelTypes, _legPayoffs, 
+					_discountCurve, _discountMeanReversion, _discModelType, _discountFactor, 
 					_leverage, _restriction, 
 					_lowerLimits, _upperLimits, 
 					_coupon, _refRates);
@@ -326,7 +259,7 @@ public class AADEngine {
 			double epsilon, int legIndex, int underlyingIndex){
 		
 		if (_aad == null){
-			_aad = new AbstractAAD(_dcf, _indexDetector, _couponResetIndex, 
+			_aad = new AbstractAAD(_hasPrincipalExchange, _dcf, _indexDetector, _couponResetIndex, 
 					_hasExercise, _exerciseIndex, _stepTime, _periodTenors, 
 					_simNum, _periodNum, 
 					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legModelTypes, _legPayoffs, 
@@ -369,7 +302,7 @@ public class AADEngine {
 	//for YTM
 	public double[] getDiscountDelta(HashMap changedIrCurves){
 		if (_aad == null){
-			_aad = new AbstractAAD(_dcf, _indexDetector, _couponResetIndex, 
+			_aad = new AbstractAAD(_hasPrincipalExchange, _dcf, _indexDetector, _couponResetIndex, 
 					_hasExercise, _exerciseIndex, _stepTime, _periodTenors, 
 					_simNum, _periodNum, 
 					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legModelTypes,_legPayoffs, 
@@ -416,8 +349,8 @@ public class AADEngine {
 					_dcf, _indexDetector, _couponResetIndex, 
 					_hasExercise, _exerciseIndex, _stepTime, _periodTenors, 
 					_simNum, _periodNum, 
-					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legPayoffs, 
-					_discountCurve, _discountMeanReversion, _discountFactor, 
+					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legModelTypes, _legPayoffs, 
+					_discountCurve, _discountMeanReversion, _discModelType, _discountFactor, 
 					_leverage, _restriction, 
 					_lowerLimits, _upperLimits, 
 					_coupon, _refRates);

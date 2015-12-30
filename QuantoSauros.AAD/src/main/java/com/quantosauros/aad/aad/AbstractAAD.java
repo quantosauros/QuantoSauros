@@ -83,70 +83,6 @@ public class AbstractAAD {
 			InterestRateCurve[][] legIrCurves,
 			double[][] legIrTenors,
 			double[][] legIrMeanReversions,
-			double[][][] legPayoffs,			
-			//Discount Information
-			InterestRateCurve discountCurve,			
-			double discountMeanReversion,
-			double[][] discountFactor,
-			//average
-			double[][][] leverage,
-			boolean[][] restriction,	
-			//condition
-			double[][][] lowerLimits, double[][][] upperLimits,
-			double[][][] coupon,
-			double[][][][][] refRates) {
-		//_numOfAsset = floatCurve.length;
-		_hasPrincipalExchange = hasPrincipalExchange;
-		_sensiNum = stepTime.size();
-		int[] tmpIndexDectetor = indexDetector[indexDetector.length - 1];
-		_originalLength = tmpIndexDectetor[tmpIndexDectetor.length - 1];
-		_legNum = legIrCurves.length;
-		
-		//leg Information
-		_legIrCurves = legIrCurves;
-		_legIrTenors = legIrTenors;
-		_legIrMeanReversions = legIrMeanReversions;
-		_legPayoffs = legPayoffs;
-		
-		//discount Information
-		_discountCurve = discountCurve;
-		_discountMeanReversion = discountMeanReversion;
-		_discountFactor = discountFactor;
-				
-		//average
-		_leverage = leverage;
-		_restriction = restriction;	
-		//condition
-		_lowerLimits = lowerLimits;
-		_upperLimits = upperLimits;
-		_coupon = coupon;
-		_refRates = refRates;
-		
-		_indexDetector = indexDetector;
-		_couponResetIndex = couponResetIndex;
-		_periodTenors = periodTenors;
-		_simNum = simNum;
-		_periodNum = periodNum;
-		_stepTime = stepTime;
-		_exerciseIndex = exerciseIndex;
-		_hasExercise = hasExercise;
-		_dcf = dcf;
-		
-	}
-	
-	public AbstractAAD(
-			DayCountFraction dcf,
-			//indices, tenors
-			int[][] indexDetector,
-			int[] couponResetIndex, 
-			boolean hasExercise, int[] exerciseIndex,
-			ArrayList<Double> stepTime,
-			double[] periodTenors,			
-			int simNum, int periodNum,
-			//FloatLeg Information
-			InterestRateCurve[][] legIrCurves,
-			double[][] legIrTenors,
-			double[][] legIrMeanReversions,
 			ModelType[][] legModelTypes,
 			double[][][] legPayoffs,			
 			//Discount Information
@@ -161,6 +97,7 @@ public class AbstractAAD {
 			double[][][] lowerLimits, double[][][] upperLimits,
 			double[][][] coupon,
 			double[][][][][] refRates) {
+		_hasPrincipalExchange = hasPrincipalExchange;
 		//_numOfAsset = floatCurve.length;
 		_sensiNum = stepTime.size();
 		int[] tmpIndexDectetor = indexDetector[indexDetector.length - 1];
