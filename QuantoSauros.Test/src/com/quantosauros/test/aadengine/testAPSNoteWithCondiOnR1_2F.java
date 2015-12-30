@@ -575,7 +575,8 @@ public class testAPSNoteWithCondiOnR1_2F extends TestBase {
 			}
 		}		
 		AADEngine engine = new AADEngine(
-				product.getPrincipal(legIndex1), 
+				product.getPrincipal(legIndex1),
+				product.hasPrincipalExchange(),
 				product.getDCF(legIndex1),				
 				simNum, product.getPeriodNum(), product.getUnderlyingNum(), 
 				product.getDeferredCouponResetIndex(),

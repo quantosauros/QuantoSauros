@@ -407,10 +407,17 @@ public class StructuredPricer extends AbstractPricer{
 			useExerciseIndex = true;
 		}
 		
+		double principal = 0.0;
+		if (_productInfo.hasPrincipalExchange()){
+			principal = 1.0;
+		}
+		
 		//1. 만기 payoff에 원금 넣어주기
 		for (int legIndex = 0; legIndex < _legNum; legIndex++){
-			for (int simIndex = 0; simIndex < _simNum; simIndex++){				
-				_payoff[legIndex][simIndex][_periodNum] = 1;				
+			for (int simIndex = 0; simIndex < _simNum; simIndex++){	
+									
+				_payoff[legIndex][simIndex][_periodNum] = principal;
+				
 				if (!useExerciseIndex){
 					_exerciseIndex[simIndex] = _periodNum;
 				}
@@ -423,7 +430,7 @@ public class StructuredPricer extends AbstractPricer{
 			//Determine the Exercise			
 			boolean hasExerciseAtThisPeriod = _data.getHasExercise(periodIndex);				
 			if (hasExerciseAtThisPeriod){
-				double exercisePrice = _optionInfo.getExercisePrices()[0];
+				double exercisePrice = principal;
 				if (!useExerciseIndex){
 					double[][][] X = new double[_legNum][][];						
 					double[][] Y = new double[_legNum][_simNum];					
@@ -464,8 +471,8 @@ public class StructuredPricer extends AbstractPricer{
 						double rcvContiValue = 0;
 						double payContiValue = 0;
 						if (_legNum == 1 ){
-							rcvContiValue = _rcvIndex == 1 ? _optionInfo.getExercisePrices()[periodIndex] : contiValue[_rcvIndex][simIndex];
-							payContiValue = _payIndex == 1 ? _optionInfo.getExercisePrices()[periodIndex] : contiValue[_payIndex][simIndex];
+							rcvContiValue = _rcvIndex == 1 ? principal : contiValue[_rcvIndex][simIndex];
+							payContiValue = _payIndex == 1 ? principal : contiValue[_payIndex][simIndex];
 						} else {
 							rcvContiValue = contiValue[_rcvIndex][simIndex];
 							payContiValue = contiValue[_payIndex][simIndex];
@@ -474,14 +481,14 @@ public class StructuredPricer extends AbstractPricer{
 						if (_optionInfo.getOptionType().equals(OptionType.CALL)){							
 							if (rcvContiValue - payContiValue < 0){
 								for (int legIndex = 0; legIndex < _legNum; legIndex++){
-									_payoff[legIndex][simIndex][periodIndex + 1] = 1;
+									_payoff[legIndex][simIndex][periodIndex + 1] = principal;
 								}	 	 						
 	 	 						_exerciseIndex[simIndex] = periodIndex;
 							}							
 						} else if (_optionInfo.getOptionType().equals(OptionType.PUT)){
 							if (rcvContiValue - payContiValue > 0){
 								for (int legIndex = 0; legIndex < _legNum; legIndex++){
-									_payoff[legIndex][simIndex][periodIndex + 1] = 1;
+									_payoff[legIndex][simIndex][periodIndex + 1] = principal;
 								}	 	 						
 	 	 						_exerciseIndex[simIndex] = periodIndex;
 							}
@@ -492,7 +499,7 @@ public class StructuredPricer extends AbstractPricer{
 					for (int simIndex = 0; simIndex < _simNum; simIndex++) {	
 						if (_exerciseIndex[simIndex] == periodIndex) {
 							for (int legIndex = 0; legIndex < _legNum; legIndex++){
-								_payoff[legIndex][simIndex][periodIndex + 1] = 1;
+								_payoff[legIndex][simIndex][periodIndex + 1] = principal;
 							}
 						} 							
 					}

@@ -405,4 +405,7 @@ public abstract class AbstractPricer {
 	public double[][] getLSMCParams(int legIndex){
 		return _lsmcParams[legIndex];
 	}
+	public boolean hasPrincipalExchange(){
+		return _productInfo.hasPrincipalExchange();
+	}
 }

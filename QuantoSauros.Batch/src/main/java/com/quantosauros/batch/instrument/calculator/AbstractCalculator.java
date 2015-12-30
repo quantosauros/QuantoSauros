@@ -276,7 +276,9 @@ public class AbstractCalculator {
 				}
 				
 				_aadEngine = new AADEngine(
-						_instance.getPrincipal(0), _instance.getDCF(0), 
+						_instance.getPrincipal(0), 
+						_instance.hasPrincipalExchange(),
+						_instance.getDCF(0), 
 						_simNum, _instance.getPeriodNum(), _instance.getUnderlyingNum(),
 						_instance.getDeferredCouponResetIndex(), 
 						_instance.getMonitorFrequencies(), 
@@ -339,7 +341,9 @@ public class AbstractCalculator {
 				}
 				
 				_nonCallaadEngine = new AADEngine(
-						_instance.getPrincipal(0), _instance.getDCF(0), 
+						_instance.getPrincipal(0),
+						_instance.hasPrincipalExchange(),
+						_instance.getDCF(0), 
 						_simNum, _instance.getPeriodNum(), _instance.getUnderlyingNum(),
 						_instance.getDeferredCouponResetIndex(), 
 						_instance.getMonitorFrequencies(), 

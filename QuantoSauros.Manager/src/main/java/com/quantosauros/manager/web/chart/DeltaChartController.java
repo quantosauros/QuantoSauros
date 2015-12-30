@@ -80,7 +80,7 @@ public class DeltaChartController {
 		for (int seriesIndex = 0; seriesIndex < seriesNum; seriesIndex++){
 			String dt = dateArray.get(seriesIndex); 
 			List<DeltaInfo> list = deltaInfoService.selectDeltaForChart(procId, 
-					dt, instrumentCd, greekCd, ircCd);
+					dt, instrumentCd, greekCd, ircCd, nonCallCd);
 			
 			int valueNum = list.size();
 			seriesValues[seriesIndex] = new Number[valueNum];

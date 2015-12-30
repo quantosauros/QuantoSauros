@@ -29,14 +29,14 @@ public class DeltaInfoServiceImpl implements DeltaInfoService {
 	
 	@Override
 	public List<DeltaInfo> selectDeltaForChart(String procId, String dt, 
-			String instrumentCd, String greekCd, String ircCd) {
+			String instrumentCd, String greekCd, String ircCd, String nonCallCd) {
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("procId", procId);
 		paramMap.put("dt", dt);
 		paramMap.put("instrumentCd", instrumentCd);
 		paramMap.put("greekCd", greekCd);
 		paramMap.put("ircCd", ircCd);		
-		
+		paramMap.put("nonCallCd", nonCallCd);
 		
 		return deltaInfoDao.selectDeltaForChart(paramMap);
 	}

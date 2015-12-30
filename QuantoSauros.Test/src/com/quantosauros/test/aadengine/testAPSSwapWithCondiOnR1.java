@@ -551,6 +551,7 @@ public class testAPSSwapWithCondiOnR1 extends TestBase {
 		int legIndex1 = 0;
 		AADEngine engine = new AADEngine(
 				product.getPrincipal(legIndex1), 
+				product.hasPrincipalExchange(),
 				product.getDCF(legIndex1),				
 				simNum, product.getPeriodNum(), product.getUnderlyingNum(), 
 				product.getDeferredCouponResetIndex(),

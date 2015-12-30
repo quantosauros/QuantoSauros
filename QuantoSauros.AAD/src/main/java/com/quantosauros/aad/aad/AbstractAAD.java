@@ -65,10 +65,12 @@ public class AbstractAAD {
 	private double[][][] _coupon;
 	//[legIndex][undIndex][simIndex][periodIndex][timeIndex]
 	private double[][][][][] _refRates;
+	private boolean _hasPrincipalExchange;
 	
 	private boolean _debug = false;
 	
 	public AbstractAAD(
+			boolean hasPrincipalExchange,
 			DayCountFraction dcf,
 			//indices, tenors
 			int[][] indexDetector,
@@ -94,6 +96,7 @@ public class AbstractAAD {
 			double[][][] coupon,
 			double[][][][][] refRates) {
 		//_numOfAsset = floatCurve.length;
+		_hasPrincipalExchange = hasPrincipalExchange;
 		_sensiNum = stepTime.size();
 		int[] tmpIndexDectetor = indexDetector[indexDetector.length - 1];
 		_originalLength = tmpIndexDectetor[tmpIndexDectetor.length - 1];
@@ -508,6 +511,8 @@ public class AbstractAAD {
 							}
 				
 							double tmpPrincipal = (backStepIndex == periodNum) ? 1 : 0;
+							tmpPrincipal = _hasPrincipalExchange ? tmpPrincipal : 0;
+							
 							for (int discLegIndex = 0; discLegIndex < _legNum; discLegIndex++){
 								int flag = (discLegIndex == 0) ? 1 : - 1;
 								_sensiResult[simIndex][0] += flag *
@@ -529,6 +534,7 @@ public class AbstractAAD {
 						}
 			
 						double tmpPrincipal = (backStepIndex == _periodNum - 1) ? 1 : 0;
+						tmpPrincipal = _hasPrincipalExchange ? tmpPrincipal : 0;
 						
 						for (int discLegIndex = 0; discLegIndex < _legNum; discLegIndex++){
 							int flag = (discLegIndex == 0) ? 1 : - 1;

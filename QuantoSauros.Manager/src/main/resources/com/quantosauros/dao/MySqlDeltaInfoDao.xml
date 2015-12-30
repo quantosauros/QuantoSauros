@@ -48,6 +48,7 @@
 		AND INSTRUMENT_CD = #{instrumentCd}
 		AND GREEK_CD = #{greekCd}
 		AND IRC_CD = #{ircCd}
+		AND A.NONCALL_CD = #{nonCallCd}
 	ORDER BY IRC_CD, MRTY_LIST_CD
   </select>
   

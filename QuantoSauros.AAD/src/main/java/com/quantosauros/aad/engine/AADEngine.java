@@ -17,6 +17,7 @@ import com.quantosauros.common.interestrate.InterestRateCurve;
 
 public class AADEngine {
 
+	protected boolean _hasPrincipalExchange;
 	protected int _periodNum;	
 	protected int _simNum;
 	protected int _deferredCouponResetIndex;
@@ -73,7 +74,9 @@ public class AADEngine {
 //	}
 //	
 	public AADEngine(
-			Money principal, DayCountFraction dcf,
+			Money principal,
+			boolean hasPrincipalExchange,
+			DayCountFraction dcf,
 			int simNum, int periodNum, int[] underyingNum, 
 			int deferredCouponResetIndex, 
 			int[] monitorFrequency,
@@ -97,6 +100,7 @@ public class AADEngine {
 			double[][][][][] refRates) {
 
 		_principal = principal;
+		_hasPrincipalExchange = hasPrincipalExchange;
 		_dcf = dcf;
 		_simNum = simNum;
 		_periodNum = periodNum;		
@@ -133,7 +137,9 @@ public class AADEngine {
 	}
 	
 	public AADEngine(
-			Money principal, DayCountFraction dcf,
+			Money principal,
+			boolean hasPrincipalExchange,
+			DayCountFraction dcf,
 			int simNum, int periodNum, int[] underyingNum, 
 			int deferredCouponResetIndex, 
 			int[] monitorFrequency,
@@ -159,6 +165,7 @@ public class AADEngine {
 			double[][][][][] refRates) {
 
 		_principal = principal;
+		_hasPrincipalExchange = hasPrincipalExchange;
 		_dcf = dcf;
 		_simNum = simNum;
 		_periodNum = periodNum;		
@@ -269,7 +276,8 @@ public class AADEngine {
 			int legIndex, int underlyingIndex){
 		
 		if (_aad == null){
-			_aad = new AbstractAAD(_dcf, _indexDetector, _couponResetIndex, 
+			_aad = new AbstractAAD(_hasPrincipalExchange,
+					_dcf, _indexDetector, _couponResetIndex, 
 					_hasExercise, _exerciseIndex, _stepTime, _periodTenors, 
 					_simNum, _periodNum, 
 					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legPayoffs, 
@@ -404,7 +412,8 @@ public class AADEngine {
 	//for spot
 	public double[] getDiscountDelta(double epsilon){
 		if (_aad == null){
-			_aad = new AbstractAAD(_dcf, _indexDetector, _couponResetIndex, 
+			_aad = new AbstractAAD(_hasPrincipalExchange,
+					_dcf, _indexDetector, _couponResetIndex, 
 					_hasExercise, _exerciseIndex, _stepTime, _periodTenors, 
 					_simNum, _periodNum, 
 					_legIrCurves, _legIrTenors, _legIrMeanReversions, _legPayoffs, 

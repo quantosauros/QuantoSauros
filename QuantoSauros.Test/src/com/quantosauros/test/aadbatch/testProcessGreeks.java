@@ -11,11 +11,11 @@ public class testProcessGreeks extends TestBase {
 
 	public void test(){
 		//INPUT VARIABLES
-		String procId = "1";
+		String procId = "2";
 		Date startDate = Date.valueOf("20131202");
-		Date endDate = Date.valueOf("20131205");				
-		int simNum = 5000;
-		boolean calcBump = false;
+		Date endDate = Date.valueOf("20131203");				
+		int simNum = 100;
+		boolean calcBump = true;
 		int monitorFrequency = 1;
 		
 		Calendar cal = SouthKoreaCalendar.getCalendar(1);
