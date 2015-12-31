@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 2. 동적 SQL 적용 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantosauros.manager.dao.ScenarioInfo">
+  <resultMap type="scenarioInfo" id="scenarioInfoResultMap">    
+    <result column="SCENARIO_ID"      property="scenarioId"/>
+    <result column="SCENARIO_NM"      property="scenarioNM"/>
+    <result column="DESCRIPTION"      property="description"/>    
+    <result column="CRTN_TIME"      property="crtnTime"/>
+  </resultMap>
+  
+  <select id="selectScenarioInfo" parameterType="map" resultMap="scenarioInfoResultMap">
+	SELECT 		
+		SCENARIO_ID, SCENARIO_NM,
+		DESCRIPTION, CRTN_TIME
+	FROM		
+		SCENARIO_INFO	
+  </select>
+  
+  <select id="findById" parameterType="map" resultMap="scenarioInfoResultMap">
+	SELECT 		
+		SCENARIO_ID, SCENARIO_NM,
+		DESCRIPTION, CRTN_TIME
+	FROM		
+		SCENARIO_INFO	
+	WHERE
+		SCENARIO_ID = #{scenarioId}		
+  </select>
+  
+  <select id="maxScenarioId" resultType="String">
+  	SELECT MAX(SCENARIO_ID) + 1 AS MAX_SCENARIO_ID FROM SCENARIO_INFO
+  </select>
+  
+  <insert id="insertScenarioInfo">
+  	INSERT INTO SCENARIO_INFO
+		(SCENARIO_ID, SCENARIO_NM, DESCRIPTION, CRTN_TIME) 
+	VALUES(
+		#{scenarioId}, #{scenarioNM}, #{description}, now()
+	)	
+  </insert>
+  
+  <update id="updateScenarioInfo">
+  	UPDATE SCENARIO_INFO
+  	SET
+  		SCENARIO_ID = #{scenarioId},
+  		SCENARIO_NM = #{scenarioNM},
+  		DESCRIPTION = #{description},
+  		CRTN_TIME = now()
+  	WHERE
+  		SCENARIO_ID = #{scenarioId}
+  		
+  </update>
+  
+  <delete id="deleteScenarioInfo">
+  	DELETE FROM 
+  		SCENARIO_INFO
+  	WHERE
+  		SCENARIO_ID = #{scenarioId}
+  </delete>
+</mapper>

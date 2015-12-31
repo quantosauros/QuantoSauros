@@ -35,6 +35,7 @@ public class MySqlProductLegDataDao implements ProductLegDataDao{
 			sqlSession.insert("com.quantosauros.manager.dao.ProductLegData.insertProductLegData", params);
 			
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}

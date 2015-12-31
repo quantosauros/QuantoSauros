@@ -49,6 +49,7 @@ public class MySqlProductLegDao implements ProductLegDao{
 			sqlSession.insert("com.quantosauros.manager.dao.ProductLeg.insertProductLeg", params);
 			
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}
@@ -57,6 +58,7 @@ public class MySqlProductLegDao implements ProductLegDao{
 		try {
 			sqlSession.insert("com.quantosauros.manager.dao.ProductLeg.insertProductLeg", params);
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}

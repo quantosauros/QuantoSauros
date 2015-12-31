@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 2. 동적 SQL 적용 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantosauros.manager.dao.ProcessInfo">
+  <resultMap type="processInfo" id="processInfoResultMap">            
+    <result column="PROC_ID"      property="procId"/>
+    <result column="PROC_NM"      property="procNM"/>
+    <result column="DESCRIPTION"      property="description"/>
+    <result column="SCENARIO_ID"      property="scenarioId"/>
+    <result column="SCENARIO_NM"      property="scenarioNM"/>
+    <result column="PORTFOLIO_ID"      property="portfolioId"/>
+    <result column="PORTFOLIO_NM"      property="portfolioNM"/>    
+    <result column="CRTN_TIME"      property="crtnTime"/>
+  </resultMap>
+  
+  <select id="selectProcessInfo" parameterType="map" resultMap="processInfoResultMap">
+	SELECT 
+		A.PROC_ID, A.PROC_NM, A.DESCRIPTION,
+		A.SCENARIO_ID, B.SCENARIO_NM,
+		A.PORTFOLIO_ID, C.PORTFOLIO_NM,
+		A.CRTN_TIME
+	FROM 
+		PROCESS_INFO A,
+		SCENARIO_INFO B,
+		PORTFOLIO_INFO C
+	WHERE
+		A.SCENARIO_ID = B.SCENARIO_ID
+		AND A.PORTFOLIO_ID = C.PORTFOLIO_ID
+  </select>
+  
+  <select id="findByProcId" parameterType="map" resultMap="processInfoResultMap">
+	SELECT 
+		A.PROC_ID, A.PROC_NM, A.DESCRIPTION,
+		A.SCENARIO_ID, B.SCENARIO_NM,
+		A.PORTFOLIO_ID, C.PORTFOLIO_NM,
+		A.CRTN_TIME
+	FROM 
+		PROCESS_INFO A,
+		SCENARIO_INFO B,
+		PORTFOLIO_INFO C
+	WHERE
+		A.SCENARIO_ID = B.SCENARIO_ID
+		AND A.PORTFOLIO_ID = C.PORTFOLIO_ID	
+		AND A.PROC_ID = #{procId}
+  </select>
+  
+  <select id="maxProcId" resultType="String">
+  	SELECT MAX(PROC_ID) + 1 AS MAX_PROC_ID FROM PROCESS_INFO
+  </select>
+  
+  <insert id="insertProcessInfo">
+  	INSERT INTO PROCESS_INFO
+		(PROC_ID, SCENARIO_ID, PORTFOLIO_ID, PROC_NM, DESCRIPTION, CRTN_TIME) 
+	VALUES(
+		#{procId}, #{scenarioId}, #{portfolioId}, #{procNM}, #{description}, now()
+	)	
+  </insert>
+  
+  <update id="updateProcessInfo">
+  	UPDATE PROCESS_INFO
+  	SET
+  		SCENARIO_ID = #{scenarioId},
+  		PORTFOLIO_ID = #{portfolioId},
+  		PROC_NM = #{procNM},
+  		DESCRIPTION = #{description},
+  		CRTN_TIME = now()
+  	WHERE
+  		PROC_ID = #{procId}
+  		
+  </update>
+  
+  <delete id="deleteProcessInfo">
+  	DELETE FROM 
+  		PROCESS_INFO
+  	WHERE
+  		PROC_ID = #{procId}
+  </delete>
+</mapper>

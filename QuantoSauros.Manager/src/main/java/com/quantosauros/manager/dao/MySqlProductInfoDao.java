@@ -42,6 +42,7 @@ public class MySqlProductInfoDao implements ProductInfoDao{
 		try {
 			sqlSession.insert("com.quantosauros.manager.dao.ProductInfo.insertProductInfo", params);
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}

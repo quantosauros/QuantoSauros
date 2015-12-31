@@ -52,6 +52,7 @@ public class MySqlProductScheduleDao implements ProductScheduleDao{
 					params);
 			
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}
@@ -62,6 +63,7 @@ public class MySqlProductScheduleDao implements ProductScheduleDao{
 					"com.quantosauros.manager.dao.ProductSchedule.insertProductSchedule",
 					params);
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}
