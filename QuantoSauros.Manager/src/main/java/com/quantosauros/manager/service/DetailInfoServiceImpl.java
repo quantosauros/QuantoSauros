@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.quantosauros.manager.dao.DetailInfoDao;
-import com.quantosauros.manager.model.DetailInfo;
+import com.quantosauros.manager.dao.results.DetailInfoDao;
+import com.quantosauros.manager.model.results.DetailInfo;
 
 @Service("detailInfoService")
 public class DetailInfoServiceImpl implements DetailInfoService {

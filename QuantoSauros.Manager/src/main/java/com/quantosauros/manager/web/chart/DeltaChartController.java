@@ -1,7 +1,6 @@
 package com.quantosauros.manager.web.chart;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,7 +18,7 @@ import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.SouthKoreaCalendar;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.manager.chart.CreateHighChart;
-import com.quantosauros.manager.model.DeltaInfo;
+import com.quantosauros.manager.model.results.DeltaInfo;
 import com.quantosauros.manager.service.DeltaInfoService;
 
 @Controller

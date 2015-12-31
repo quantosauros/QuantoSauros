@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.quantosauros.manager.model.DeltaInfo;
 import com.quantosauros.manager.model.JSONDataTablesModel;
+import com.quantosauros.manager.model.results.DeltaInfo;
 import com.quantosauros.manager.service.DeltaInfoService;
 
 @Controller

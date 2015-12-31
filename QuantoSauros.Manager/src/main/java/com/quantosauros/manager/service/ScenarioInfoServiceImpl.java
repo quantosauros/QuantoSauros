@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.quantosauros.manager.dao.ScenarioInfoDao;
-import com.quantosauros.manager.model.ScenarioInfo;
+import com.quantosauros.manager.dao.settings.ScenarioInfoDao;
+import com.quantosauros.manager.model.settings.ScenarioInfo;
 
 @Service("scenarioInfoService")
 public class ScenarioInfoServiceImpl implements ScenarioInfoService {

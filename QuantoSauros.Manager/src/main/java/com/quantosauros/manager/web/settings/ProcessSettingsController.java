@@ -1,6 +1,7 @@
 package com.quantosauros.manager.web.settings;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.quantosauros.manager.model.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfo;
 import com.quantosauros.manager.service.ProcessInfoService;
+import com.quantosauros.manager.service.ScenarioInfoService;
 
 @Controller
 public class ProcessSettingsController {
@@ -22,10 +25,16 @@ public class ProcessSettingsController {
 	private final Logger logger = Logger.getLogger(ProcessSettingsController.class);
 	
 	public ProcessInfoService processInfoService;
+	public ScenarioInfoService scenarioInfoService;
 	
 	@Autowired
 	public void setProcessInfoService(ProcessInfoService processInfoService){
 		this.processInfoService = processInfoService;
+	}
+	
+	@Autowired
+	public void setScenarioInfoService(ScenarioInfoService scenarioInfoService){
+		this.scenarioInfoService = scenarioInfoService;
 	}
 	
 	@RequestMapping(value = "/settings/process", method = RequestMethod.GET)
@@ -77,10 +86,7 @@ public class ProcessSettingsController {
 		ProcessInfo processInfo = processInfoService.findByProcId(procId);
 		model.addAttribute("processInfo", processInfo);
 		
-		Map<String, String> scenarioList = new LinkedHashMap<>();
-		scenarioList.put("0", "Normal");
-		scenarioList.put("1", "Abnormal");
-		model.addAttribute("scenarioList", scenarioList);		
+		popluateModel(model);
 		
 		return "settings/processform";		
 	}
@@ -94,12 +100,27 @@ public class ProcessSettingsController {
 		//set default value		
 		processInfo.setPortfolioId("0");
 		processInfo.setScenarioId("0");
-		processInfo.setProcNM("프로세스 이름을 적어주세요.");
-		processInfo.setDescription("간단한 프로세스 설명을 적어주세요.");
+		processInfo.setProcNM("");
+		processInfo.setDescription("");
 				
 		model.addAttribute("processInfo", processInfo);
+		popluateModel(model);
 		
 		return "settings/processform";
 	}
-	
+	private void popluateModel(Model model){
+		//scenario list
+		List<ScenarioInfo> scenarioInfoList = scenarioInfoService.selectScenarioInfo();
+		
+		Map<String, String> scenarioList = new LinkedHashMap<>();
+		for (int i = 0; i < scenarioInfoList.size(); i++){
+			ScenarioInfo scenarioInfo = scenarioInfoList.get(i);
+			String id = scenarioInfo.getScenarioId();
+			String name = scenarioInfo.getScenarioId() + ". " + 
+					scenarioInfo.getScenarioNM()+ "(" + 
+					scenarioInfo.getDescription() + ")";
+			scenarioList.put(id, name);
+		}		
+		model.addAttribute("scenarioList", scenarioList);	
+	}
 }

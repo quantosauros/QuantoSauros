@@ -2,7 +2,7 @@ package com.quantosauros.manager.service;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.ScenarioInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfo;
 
 public interface ScenarioInfoService {
 

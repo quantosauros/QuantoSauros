@@ -19,10 +19,10 @@ import com.quantosauros.common.Frequency;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.date.PaymentPeriodGenerator;
-import com.quantosauros.manager.dao.ProductInfoDao;
-import com.quantosauros.manager.dao.ProductLegDao;
-import com.quantosauros.manager.dao.ProductOptionScheduleDao;
-import com.quantosauros.manager.dao.ProductScheduleDao;
+import com.quantosauros.manager.dao.products.ProductInfoDao;
+import com.quantosauros.manager.dao.products.ProductLegDao;
+import com.quantosauros.manager.dao.products.ProductOptionScheduleDao;
+import com.quantosauros.manager.dao.products.ProductScheduleDao;
 import com.quantosauros.manager.model.ScheduleInfo;
 
 @Controller

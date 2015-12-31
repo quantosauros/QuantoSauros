@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.quantosauros.manager.dao.DeltaInfoDao;
-import com.quantosauros.manager.model.DeltaInfo;
+import com.quantosauros.manager.dao.results.DeltaInfoDao;
+import com.quantosauros.manager.model.results.DeltaInfo;
 
 @Service("deltaInfoService")
 public class DeltaInfoServiceImpl implements DeltaInfoService {

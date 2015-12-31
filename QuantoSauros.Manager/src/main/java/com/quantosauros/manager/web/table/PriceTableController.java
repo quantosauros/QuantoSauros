@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantosauros.manager.model.JSONDataTablesModel;
-import com.quantosauros.manager.model.PriceInfo;
+import com.quantosauros.manager.model.results.PriceInfo;
 import com.quantosauros.manager.service.PriceInfoService;
 
 @Controller

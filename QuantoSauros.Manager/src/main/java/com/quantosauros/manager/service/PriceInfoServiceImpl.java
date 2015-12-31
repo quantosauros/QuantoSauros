@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.quantosauros.manager.dao.PriceInfoDao;
-import com.quantosauros.manager.model.PriceInfo;
+import com.quantosauros.manager.dao.results.PriceInfoDao;
+import com.quantosauros.manager.model.results.PriceInfo;
 
 @Service("priceInfoService")
 public class PriceInfoServiceImpl implements PriceInfoService {

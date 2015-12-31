@@ -2,7 +2,7 @@ package com.quantosauros.manager.service;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.DetailInfo;
+import com.quantosauros.manager.model.results.DetailInfo;
 
 public interface DetailInfoService {
 

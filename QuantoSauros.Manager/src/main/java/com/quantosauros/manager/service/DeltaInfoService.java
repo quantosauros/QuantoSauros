@@ -2,7 +2,7 @@ package com.quantosauros.manager.service;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.DeltaInfo;
+import com.quantosauros.manager.model.results.DeltaInfo;
 
 public interface DeltaInfoService {
 

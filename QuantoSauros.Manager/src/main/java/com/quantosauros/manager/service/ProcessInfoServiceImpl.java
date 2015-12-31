@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.quantosauros.manager.dao.ProcessInfoDao;
-import com.quantosauros.manager.model.ProcessInfo;
+import com.quantosauros.manager.dao.settings.ProcessInfoDao;
+import com.quantosauros.manager.model.settings.ProcessInfo;
 
 @Service("processInfoService")
 public class ProcessInfoServiceImpl implements ProcessInfoService {
