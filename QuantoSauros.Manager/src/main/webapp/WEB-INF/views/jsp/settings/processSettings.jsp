@@ -32,7 +32,7 @@
 							<th>Scenario</th>							
 							<th>Portfolio</th>							
 							<th>Description</th>
-							<th>Created Date</th>
+							<th>Last Updated Date</th>
 						</tr>
 					</thead>
 					<c:forEach var="processInfo" items="${processInfo}">
