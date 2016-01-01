@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.quantosauros.manager.model.settings.PortfolioInfo;
 import com.quantosauros.manager.model.settings.ProcessInfo;
 import com.quantosauros.manager.model.settings.ScenarioInfo;
-import com.quantosauros.manager.service.ProcessInfoService;
-import com.quantosauros.manager.service.ScenarioInfoService;
+import com.quantosauros.manager.service.settings.PortfolioInfoService;
+import com.quantosauros.manager.service.settings.ProcessInfoService;
+import com.quantosauros.manager.service.settings.ScenarioInfoService;
 
 @Controller
 public class ProcessSettingsController {
@@ -26,10 +28,16 @@ public class ProcessSettingsController {
 	
 	public ProcessInfoService processInfoService;
 	public ScenarioInfoService scenarioInfoService;
+	public PortfolioInfoService portfolioInfoService;
 	
 	@Autowired
 	public void setProcessInfoService(ProcessInfoService processInfoService){
 		this.processInfoService = processInfoService;
+	}
+	
+	@Autowired
+	public void setPortfolioInfoService(PortfolioInfoService portfolioInfoService){
+		this.portfolioInfoService = portfolioInfoService;
 	}
 	
 	@Autowired
@@ -111,16 +119,29 @@ public class ProcessSettingsController {
 	private void popluateModel(Model model){
 		//scenario list
 		List<ScenarioInfo> scenarioInfoList = scenarioInfoService.selectScenarioInfo();
-		
 		Map<String, String> scenarioList = new LinkedHashMap<>();
 		for (int i = 0; i < scenarioInfoList.size(); i++){
 			ScenarioInfo scenarioInfo = scenarioInfoList.get(i);
 			String id = scenarioInfo.getScenarioId();
-			String name = scenarioInfo.getScenarioId() + ". " + 
+			String name = id + ". " + 
 					scenarioInfo.getScenarioNM()+ "(" + 
 					scenarioInfo.getDescription() + ")";
 			scenarioList.put(id, name);
 		}		
-		model.addAttribute("scenarioList", scenarioList);	
+		model.addAttribute("scenarioList", scenarioList);
+		
+		//portfolio list
+		List<PortfolioInfo> portfolioInfoList = portfolioInfoService.getLists();
+		Map<String, String> portfolioList = new LinkedHashMap<>();
+		for (int i = 0; i < portfolioInfoList.size(); i++){
+			PortfolioInfo portfolioInfo = portfolioInfoList.get(i);
+			String id = portfolioInfo.getPortfolioId();
+			String name = id + ". " + 
+					portfolioInfo.getPortfolioNM()+ "(" + 
+					portfolioInfo.getDescription() + ")";
+			portfolioList.put(id, name);
+		}		
+		model.addAttribute("portfolioList", portfolioList);		
+		
 	}
 }

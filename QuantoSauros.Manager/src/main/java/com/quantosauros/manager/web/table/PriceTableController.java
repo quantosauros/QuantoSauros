@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantosauros.manager.model.JSONDataTablesModel;
 import com.quantosauros.manager.model.results.PriceInfo;
-import com.quantosauros.manager.service.PriceInfoService;
+import com.quantosauros.manager.service.results.PriceInfoService;
 
 @Controller
 public class PriceTableController {

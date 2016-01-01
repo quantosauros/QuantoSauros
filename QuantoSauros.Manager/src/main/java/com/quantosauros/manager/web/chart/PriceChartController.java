@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.googlecode.wickedcharts.highcharts.options.SeriesType;
 import com.quantosauros.manager.chart.CreateHighChart;
 import com.quantosauros.manager.model.results.PriceInfo;
-import com.quantosauros.manager.service.PriceInfoService;
+import com.quantosauros.manager.service.results.PriceInfoService;
 
 @Controller
 public class PriceChartController {

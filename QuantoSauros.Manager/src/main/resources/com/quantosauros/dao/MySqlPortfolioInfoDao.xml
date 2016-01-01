@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 2. 동적 SQL 적용 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantosauros.manager.dao.PortfolioInfo">
+  <resultMap type="portfolioInfo" id="portfolioInfoResultMap">    
+    <result column="PORTFOLIO_ID"      property="portfolioId"/>
+    <result column="PORTFOLIO_NM"      property="portfolioNM"/>
+    <result column="DESCRIPTION"      property="description"/>    
+    <result column="CRTN_TIME"      property="crtnTime"/>
+  </resultMap>
+  
+  <select id="selectPortfolioInfo" parameterType="map" resultMap="portfolioInfoResultMap">
+	SELECT 		
+		PORTFOLIO_ID, PORTFOLIO_NM, DESCRIPTION, CRTN_TIME
+	FROM		
+		PORTFOLIO_INFO	
+  </select>
+  
+  <select id="getOneById" parameterType="map" resultMap="portfolioInfoResultMap">
+	SELECT 		
+		PORTFOLIO_ID, PORTFOLIO_NM, DESCRIPTION, CRTN_TIME
+	FROM		
+		PORTFOLIO_INFO	
+	WHERE
+		PORTFOLIO_ID = #{portfolioId}		
+  </select>
+  
+  <select id="getMaxPortfolioId" resultType="String">
+  	SELECT MAX(PORTFOLIO_ID) + 1 AS MAX_PORTFOLIO_ID FROM PORTFOLIO_INFO
+  </select>
+  
+  <insert id="insertPortfolioInfo">
+  	INSERT INTO PORTFOLIO_INFO
+		(PORTFOLIO_ID, PORTFOLIO_NM, DESCRIPTION, CRTN_TIME) 
+	VALUES(
+		#{portfolioId}, #{portfolioNM}, #{description}, now()
+	)	
+  </insert>
+  
+  <update id="updatePortfolioInfo">
+  	UPDATE PORTFOLIO_INFO
+  	SET
+  		PORTFOLIO_ID = #{portfolioId},
+  		PORTFOLIO_NM = #{portfolioNM},
+  		DESCRIPTION = #{description},
+  		CRTN_TIME = now()
+  	WHERE
+  		PORTFOLIO_ID = #{portfolioId}
+  		
+  </update>
+  
+  <delete id="deletePortfolioInfo">
+  	DELETE FROM 
+  		PORTFOLIO_INFO
+  	WHERE
+  		PORTFOLIO_ID = #{portfolioId}
+  </delete>
+</mapper>

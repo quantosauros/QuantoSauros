@@ -8,6 +8,8 @@
 <spring:url value="/deltaChart" var="urlDeltaChart" />
 <spring:url value="/deltaChart2" var="urlDeltaChart2" />
 <spring:url value="/settings/process" var="urlProcessSetting" />
+<spring:url value="/settings/scenario" var="urlScenarioSetting" />
+<spring:url value="/settings/portfolio" var="urlPortfolioSetting" />
 <spring:url value="#" var="urlDetailChart" />
 
 <!-- Navigation -->
@@ -45,7 +47,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href=""><i class="fa fa-bar-chart-o fa-fw"></i> Result Charts <span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Result Charts <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="${urlPriceChart}">Price Charts</a>
@@ -65,7 +67,18 @@
                     <a href="#"><i class="fa fa-edit fa-fw"></i> Calculator </a>
                 </li>
                 <li>
-                    <a href="${urlProcessSetting}"><i class="fa fa-edit fa-fw"></i> Process Setting </a>
+                	<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Settings <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="${urlProcessSetting}">Process Setting</a>
+                        </li>
+                        <li>
+                            <a href="${urlScenarioSetting}">Scenario Setting</a>
+                        </li>
+                        <li>
+                            <a href="${urlPortfolioSetting}">Portfolio Setting</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

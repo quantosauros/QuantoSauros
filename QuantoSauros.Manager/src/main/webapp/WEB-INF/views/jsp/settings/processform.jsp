@@ -33,6 +33,16 @@
 
 					<form:hidden path="procId" />
 					
+					<spring:bind path="procNM">
+						<div class="form-group">
+							<label class="col-sm-2 control-label"> Process Name </label>
+							<div class="col-sm-10">
+								<form:input path="procNM" type="text" class="form-control" id="procNM" placeholder="Process Name" />
+								<form:errors path="procNM" class="control-label" />
+							</div>
+						</div>
+					</spring:bind>
+					
 					<spring:bind path="scenarioId">
 						<div class="form-group">
 							<label class="col-sm-2 control-label"> Scenario ID </label>
@@ -47,23 +57,14 @@
 					<spring:bind path="portfolioId">
 						<div class="form-group">
 							<label class="col-sm-2 control-label"> Portfolio ID </label>
-							<div class="col-sm-10">
-								<form:input path="portfolioId" type="text" class="form-control" id="portfolioId" placeholder="Portfolio ID" />
-								<form:errors path="portfolioId" class="control-label" />
+							<div class="col-sm-5">
+								<form:select path="portfolioId" class="form-control">									
+									<form:options items="${portfolioList}" />
+								</form:select>
 							</div>
 						</div>
 					</spring:bind>
-					
-					<spring:bind path="procNM">
-						<div class="form-group">
-							<label class="col-sm-2 control-label"> Process Name </label>
-							<div class="col-sm-10">
-								<form:input path="procNM" type="text" class="form-control" id="procNM" placeholder="Process Name" />
-								<form:errors path="procNM" class="control-label" />
-							</div>
-						</div>
-					</spring:bind>
-					
+										
 					<spring:bind path="description">
 						<div class="form-group">
 							<label class="col-sm-2 control-label"> Description </label>

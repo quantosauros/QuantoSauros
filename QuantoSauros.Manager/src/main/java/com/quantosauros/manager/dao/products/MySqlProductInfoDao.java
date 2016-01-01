@@ -1,6 +1,7 @@
 package com.quantosauros.manager.dao.products;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -18,9 +19,9 @@ public class MySqlProductInfoDao implements ProductInfoDao{
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
-	
+
 	@Override
-	public void insertProductInfo(ProductInfo productInfo) throws Exception {
+	public void insertProductInfo(ProductInfo productInfo){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			Map params = new HashMap<String, String>();
@@ -37,7 +38,7 @@ public class MySqlProductInfoDao implements ProductInfoDao{
 			sqlSession.close();
 		}
 	}
-	public void insertProductInfo(Map params) throws Exception {
+	public void insertProductInfo(Map params){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			sqlSession.insert("com.quantosauros.manager.dao.ProductInfo.insertProductInfo", params);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantosauros.manager.model.JSONDataTablesModel;
 import com.quantosauros.manager.model.results.DeltaInfo;
-import com.quantosauros.manager.service.DeltaInfoService;
+import com.quantosauros.manager.service.results.DeltaInfoService;
 
 @Controller
 public class DeltaTableController {

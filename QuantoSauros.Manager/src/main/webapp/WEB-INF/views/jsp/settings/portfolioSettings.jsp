@@ -12,7 +12,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header"> Process Setting </h1>
+					<h1 class="page-header"> Portfolio Setting </h1>
 				</div>
 			</div>
 			<div class="row">
@@ -27,30 +27,26 @@
 				<table class="table table-striped">
 					<thead>					
 						<tr>
-							<th>Process ID</th>
-							<th>Process Name</th>
-							<th>Scenario</th>							
-							<th>Portfolio</th>							
+							<th>Portfolio ID</th>
+							<th>Portfolio Name</th>	
 							<th>Description</th>
 							<th>Last Updated Date</th>
 							<th><div class="form-group">
-								<spring:url value="/settings/process/add" var="urlAddProcess" />
-								<button class="btn btn-success pull-right" onclick="location.href='${urlAddProcess}'">Add</button>
+								<spring:url value="/settings/portfolio/add" var="urlAddPortfolio" />
+								<button class="btn btn-success pull-right" onclick="location.href='${urlAddPortfolio}'">Add</button>
 								</div>
 							</th>
 						</tr>
 					</thead>
-					<c:forEach var="processInfo" items="${processInfo}">
+					<c:forEach var="portfolioInfo" items="${portfolioInfo}">
 						<tr>
-							<td>${processInfo.procId}</td>
-							<td>${processInfo.procNM}</td>
-							<td>${processInfo.scenarioId}. ${processInfo.scenarioNM}</td>							
-							<td>${processInfo.portfolioId}. ${processInfo.portfolioNM}</td>							
-							<td>${processInfo.description}</td>
-							<td>${processInfo.crtnTime}</td>
+							<td>${portfolioInfo.portfolioId}</td>
+							<td>${portfolioInfo.portfolioNM}</td>
+							<td>${portfolioInfo.description}</td>
+							<td>${portfolioInfo.crtnTime}</td>
 							<td>
-								<spring:url value="/settings/process/${processInfo.procId}/update" var="updateUrl" />
-								<spring:url value="/settings/process/${processInfo.procId}/delete" var="deleteUrl" />								
+								<spring:url value="/settings/portfolio/${portfolioInfo.portfolioId}/update" var="updateUrl" />
+								<spring:url value="/settings/portfolio/${portfolioInfo.portfolioId}/delete" var="deleteUrl" />
 								<button class="btn btn-primary btn-xs" onclick="location.href='${updateUrl}'">
 									UPDATE
 								</button>

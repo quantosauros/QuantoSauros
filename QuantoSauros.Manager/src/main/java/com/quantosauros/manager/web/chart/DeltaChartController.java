@@ -19,7 +19,7 @@ import com.quantosauros.common.calendar.SouthKoreaCalendar;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.manager.chart.CreateHighChart;
 import com.quantosauros.manager.model.results.DeltaInfo;
-import com.quantosauros.manager.service.DeltaInfoService;
+import com.quantosauros.manager.service.results.DeltaInfoService;
 
 @Controller
 public class DeltaChartController {

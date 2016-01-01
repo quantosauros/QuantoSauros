@@ -1,4 +1,4 @@
-package com.quantosauros.manager.service;
+package com.quantosauros.manager.service.settings;
 
 import java.util.List;
 

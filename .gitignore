@@ -1,0 +1,5 @@
+QuantoSauros.AAD/.settings/org.eclipse.jdt.core.prefs
+*.lock
+QuantoSauros.AAD/.gradle/2.2.1/taskArtifacts/fileHashes.bin
+*.bin
+QuantoSauros.Batch/.settings/org.eclipse.jdt.core.prefs
