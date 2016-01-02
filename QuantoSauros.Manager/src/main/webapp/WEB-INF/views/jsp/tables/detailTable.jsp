@@ -7,7 +7,8 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="../fragments/header.jsp" />
-	
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
+
 <body>
 	<div id="wrapper">	
 		<!-- Navigator -->
@@ -28,7 +29,7 @@
 							<div class="panel-body">
 								<div class = "form-inline list-group-item">																							
 									<label for="processIdInput"> Process ID </label>
-									<form:select path="processList" items="${processList}" class="form-control" id="input-procId" name="procId" />																																				
+									<form:select path="processList" items="${processList}" class="form-control" id="input-procId" name="procId" />																																													
 								</div>															
 								<div class = "form-inline list-group-item">	
 									<label for="instrumentCdInput"> Instrument Code </label>
@@ -144,8 +145,7 @@
 	<script src="//cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>	
 	<script src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
-
+	
 	<!-- java scripts -->
     <script type ="text/javascript">
     function createTable(tableName, ajaxStr){

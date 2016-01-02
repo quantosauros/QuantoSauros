@@ -28,34 +28,7 @@
 				</c:choose>
 				<br />
 							
-				<spring:url value="/settings/portfolio" var="portfolioActionUrl" />
-				<%-- <form:form class="form-horizontal" method="post" name="formInfo" modelAttribute="portfolioInfo" action="${portfolioActionUrl}">
-				<form:form class="form-horizontal" method="post" name="formInfo" modelAttribute="portfolioInfo">
-								
-					<form:hidden path="portfolioId" />
-					
-					<spring:bind path="portfolioNM">
-						<div class="form-group">
-							<label class="col-sm-2 control-label"> Portfolio Name </label>
-							<div class="col-sm-10">
-								<form:input path="portfolioNM" type="text" class="form-control" id="portfolioNM" placeholder="Portfolio Name" />
-								<form:errors path="portfolioNM" class="control-label" />
-							</div>
-						</div>
-					</spring:bind>		
-					
-					<spring:bind path="portfolioInfo.description">
-						<div class="form-group">
-							<label class="col-sm-2 control-label"> Description </label>
-							<div class="col-sm-10">
-								<form:input path="description" type="text" class="form-control" id="description" placeholder="Description" />
-								<form:errors path="description" class="control-label" />
-							</div>
-						</div>
-					</spring:bind>		
-					<button type="submit" class="btn-lg btn-primary pull-right">Add</button>													
-				</form:form> --%>
-				
+				<spring:url value="/settings/portfolio" var="portfolioActionUrl" />								
 				<form:form class="form-horizontal" method="post" name="formData" modelAttribute="portfolioDataForm"  action="${portfolioActionUrl}">
 					<input type="hidden" name="portfolioId" value="${portfolioInfo.portfolioId}">
 					

@@ -52,12 +52,22 @@ public class ProcessPricer {
 		
 	}
 	
+	public Money getPrice(){
+		//Price
+		return _calculator.getPrice(_processDate,
+				_irCurveContainer, _surfaceContainer, "");		 
+	}
+	
+	public Money getLegPrice(int legIndex){
+		return _calculator.getLegPrice(legIndex);
+	}
+	
 	public void execute(){
 
 		//Price
 		Money price = _calculator.getPrice(
 				_processDate, _irCurveContainer, _surfaceContainer, "");
-		System.out.println(price);
+				
 		
 		//Delta
 //		Iterator itr = new ArrayList(
@@ -158,7 +168,9 @@ public class ProcessPricer {
 	public void setProductInfo(ProductInfo productInfo){
 		this._calculator.setProductInfo(productInfo);
 	}
-	
+	public int getLegNumber(){
+		return _calculator.getLegCouponInfo().length;
+	}
 	public int getUnderlyingNum(int legIndex){
 		return _calculator.getLegCouponInfo()[legIndex].getUnderlyingNumber();
 	}

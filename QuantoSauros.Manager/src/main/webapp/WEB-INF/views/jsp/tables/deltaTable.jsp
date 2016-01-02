@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="../fragments/header.jsp" />
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
 
 <body>
 	<div id="wrapper">	
@@ -85,7 +86,6 @@
 	<script src="//cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>	
 	<script src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
 
 	<!-- java scripts -->
 	<script type ="text/javascript">

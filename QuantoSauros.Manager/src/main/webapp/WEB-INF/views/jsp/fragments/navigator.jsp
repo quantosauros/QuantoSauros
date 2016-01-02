@@ -10,7 +10,7 @@
 <spring:url value="/settings/process" var="urlProcessSetting" />
 <spring:url value="/settings/scenario" var="urlScenarioSetting" />
 <spring:url value="/settings/portfolio" var="urlPortfolioSetting" />
-<spring:url value="#" var="urlDetailChart" />
+<spring:url value="/pricer" var="urlPricer" />
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -58,13 +58,10 @@
                         <li>
                             <a href="${urlDeltaChart2}">Delta Charts2</a>
                         </li>
-                        <li>
-                            <a href="${urlDetailChart}">Detail Charts</a>
-                        </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-edit fa-fw"></i> Calculator </a>
+                    <a href="${urlPricer}"><i class="fa fa-desktop fa-fw"></i> Pricer </a>
                 </li>
                 <li>
                 	<a href="#"><i class="fa fa-tasks fa-fw"></i> Settings <span class="fa arrow"></span></a>
