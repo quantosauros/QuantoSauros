@@ -1,9 +1,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <spring:url value="/" var="urlHome" />
 <spring:url value="/registration" var="urlRegistration" />
-<spring:url value="/priceTable" var="urlPriceTable" />
-<spring:url value="/deltaTable" var="urlDeltaTable" />
-<spring:url value="/detailTable" var="urlDetailTable" />
+<spring:url value="/tables/price" var="urlPriceTable" />
+<spring:url value="/tables/delta" var="urlDeltaTable" />
+<spring:url value="/tables/detail" var="urlDetailTable" />
 <spring:url value="/priceChart" var="urlPriceChart" />
 <spring:url value="/deltaChart" var="urlDeltaChart" />
 <spring:url value="/deltaChart2" var="urlDeltaChart2" />
@@ -67,7 +67,7 @@
                     <a href="#"><i class="fa fa-edit fa-fw"></i> Calculator </a>
                 </li>
                 <li>
-                	<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Settings <span class="fa arrow"></span></a>
+                	<a href="#"><i class="fa fa-tasks fa-fw"></i> Settings <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="${urlProcessSetting}">Process Setting</a>

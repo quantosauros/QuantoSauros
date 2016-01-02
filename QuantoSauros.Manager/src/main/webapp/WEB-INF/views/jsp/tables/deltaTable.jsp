@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>     
 <!DOCTYPE html>
 <html>
 <jsp:include page="../fragments/header.jsp" />
@@ -23,9 +26,9 @@
 									<h3 class="panel-title"> Delta Control Panel </h3>
 								</div>
 							<div class="panel-body">
-								<div class = "form-inline list-group-item">
+								<div class = "form-inline list-group-item">																							
 									<label for="processIdInput"> Process ID </label>
-									<input class="form-control" type="text" id="input-procId" name="procId" value ="0">
+									<form:select path="processList" items="${processList}" class="form-control" id="input-procId" name="procId" />																																				
 								</div>
 								<div>
 									<input class="btn btn-success" type ="submit" id ="executeButton" value ='Execute' onclick="generateTable();">	
@@ -74,27 +77,33 @@
 	<jsp:include page="../fragments/footer.jsp" />
 	
 	<!-- DataTables JavaScript -->
-    <script src="resources/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="resources/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>	
-	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>
+    <spring:url value="/resources/bower_components/datatables/media/js/jquery.dataTables.min.js" var="dataTableJs" />
+    <spring:url value="/resources/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js" var="dataTablesBootstrap" />
+        
+    <script src="${dataTableJs}"></script>
+    <script src="${dataTablesBootstrap}"></script>
+	<script src="//cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>	
+	<script src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
-	
-    <!-- Custom Theme JavaScript -->
-    <script src="resources/dist/js/sb-admin-2.js"></script>
-	
+
 	<!-- java scripts -->
 	<script type ="text/javascript">
-    function createTable(tableVariable, ajaxStr){    	
-    	tableVariable.DataTable({
+    function generateTable(){
+		var table = $('#table1').DataTable();		
+		
+		var ajaxStr = '../tables/delta/json?procId=' 
+				+ $('#input-procId').val();
+		if (table) table.destroy();
+		
+		table = $('#table1').DataTable({
 			dom: 'Bfrtip',
 			buttons: [
 	            'copy',
 	            'excel'		            
     		],
     		pageLength: 30,
-            "order": [[0, "asc"], [1, "asc"], [2, "asc"], [3, "asc"], [5, "asc"]],	            
+            order: [[0, "asc"], [1, "asc"], [2, "asc"], [3, "asc"], [5, "asc"]],	            
             ajax: ajaxStr,
             responsive: true,
             columns: [
@@ -108,14 +117,7 @@
                 { data: 'greek'},                           
             ]
         });
-    }
-    function generateTable(){
-		var table1 = $('#table1');		
 		
-		var ajaxStr = './deltaTable/json?procId=' 
-				+ $('#input-procId').val();
-				
-		createTable(table1, ajaxStr);
 		$('#resultSection')[0].hidden = false;
     };		
 	</script>    
