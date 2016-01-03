@@ -20,10 +20,12 @@ import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
+import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
 import com.quantosauros.jpl.dto.LegScheduleInfo;
 import com.quantosauros.jpl.dto.OptionInfo;
 import com.quantosauros.jpl.dto.ProductInfo;
+import com.quantosauros.jpl.dto.market.MarketInfo;
 import com.quantosauros.jpl.dto.underlying.UnderlyingInfo;
 
 public class ProcessPricer {
@@ -161,7 +163,13 @@ public class ProcessPricer {
 		}
 		return tmpMap;
 	}
-		
+	
+	public void setProcessDate(Date processDate){
+		this._processDate = processDate;
+	}
+	public int getPayLegIndex(){
+		return _calculator.getPayIndex();
+	}
 	public ProductInfo getProductInfo(){
 		return _calculator.getProductInfo();				
 	}
@@ -169,90 +177,44 @@ public class ProcessPricer {
 		this._calculator.setProductInfo(productInfo);
 	}
 	public int getLegNumber(){
-		return _calculator.getLegCouponInfo().length;
-	}
+		return _calculator.getLegNum();
+	}	
 	public int getUnderlyingNum(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getUnderlyingNumber();
+		return _calculator.getLegCouponInfo(legIndex).getUnderlyingNumber();
 	}
 	public int getConditionNum(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getConditionNumber();
+		return _calculator.getLegCouponInfo(legIndex).getConditionNumber();
 	}
-	public CouponType[] getCouponTypes(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getCouponType();
+	public LegCouponInfo getLegCouponInfo(int legIndex){
+		return _calculator.getLegCouponInfo(legIndex);
 	}
-	public UnderlyingType getUnderlyingType(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getUnderlyingType();
+	public void setLegCouponInfo(int legIndex, LegCouponInfo legCouponInfo){
+		_calculator.setLegCouponInfo(legIndex, legCouponInfo);
 	}
-	public ConditionType getConditionType(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getConditionType();
+	public LegScheduleInfo getLegScheduleInfo(int legIndex){
+		return _calculator.getLegScheduleInfo(legIndex);
 	}
-	public PayRcv getPayRcv(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getPayRcv();			
+	public void setLegScheduleInfo(int legIndex, LegScheduleInfo legScheduleInfo){
+		this._calculator.setLegScheduleInfo(legIndex, legScheduleInfo);
 	}
-	public boolean hasLeverage(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].hasLeverage();
+	public LegAmortizationInfo getLegAmortizationInfo(int legIndex){
+		return _calculator.getLegAmortizationInfo(legIndex);
 	}
-	public double[] getLeverages(int legIndex, int underlyingIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getLeverages(underlyingIndex);
+	public void setLegAmortizationInfo(int legIndex, LegAmortizationInfo legAmortizationInfo){
+		this._calculator.setLegAmortizationInfo(legIndex, legAmortizationInfo);
 	}
-	public boolean hasCap(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].hasCap();
+	public LegDataInfo getLegDataInfo(int legIndex){
+		return _calculator.getLegDataInfo(legIndex);
 	}
-	public double[] getCap(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getCap();
+	public void setLegDataInfo(int legIndex, LegDataInfo legDataInfo){
+		this._calculator.setLegDataInfo(legIndex, legDataInfo);
 	}
-	public boolean hasFloor(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].hasFloor();
+	public MarketInfo getLegMarketInfo(int legIndex, int undIndex){
+		return _calculator.getLegMarketInfo(legIndex, undIndex);
 	}
-	public double[] getFloor(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getFloor();
+	public void setLegMarketInfo(int legIndex, int undIndex, MarketInfo marketInfo){
+		_calculator.setLegMarketInfo(legIndex, undIndex, marketInfo);
 	}
-	public boolean hasInOutCouponRates(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].hasInOutCouponRates();
-	}
-	public double[] getInCouponRates(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getInCouponRates();
-	}
-	public double[] getOutCouponRates(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getOutCouponRates();
-	}
-	public double[][] getUpperLimits(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getUpperLimits();
-	}
-	public double[][] getLowerLimits(int legIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getLowerLimits();
-	}
-	public UnderlyingInfo getUnderlyingInfo(int legIndex, int undIndex){
-		return _calculator.getLegCouponInfo()[legIndex].getUnderlyingInfo(undIndex);
-	}
-	public LegScheduleInfo[] getLegScheduleInfo(){
-		return _calculator.getLegScheduleInfo();
-	}
-	public void setLegScheduleInfos(LegScheduleInfo[] legScheduleInfos){
-		this._calculator.setLegScheduleInfos(legScheduleInfos);
-	}
-	public LegAmortizationInfo[] getLegAmortizationInfo(){
-		return _calculator.getLegAmortizationInfo();
-	}
-	public void setLegAmortizationInfos(LegAmortizationInfo[] legAmortizationInfos){
-		this._calculator.setLegAmortizationInfos(legAmortizationInfos);
-	}
-	public LegDataInfo[] getLegDataInfo(){
-		return _calculator.getLegDataInfo();
-	}
-	public void setLegDataInfos(LegDataInfo[] legDataInfos){
-		this._calculator.setLegDataInfos(legDataInfos);
-	}
-
-	public OptionType getOptionType(){
-		return _calculator.getOptionInfo().getOptionType();
-	}
-	public void setOptionType(OptionType optionType){
-		OptionInfo optionInfo = _calculator.getOptionInfo();
-		optionInfo.setOptionType(optionType);
-		_calculator.setOptionInfo(optionInfo);		
-	}
-	public void setProcessDate(Date processDate){
-		this._processDate = processDate;
-	}
+	
+	
 }

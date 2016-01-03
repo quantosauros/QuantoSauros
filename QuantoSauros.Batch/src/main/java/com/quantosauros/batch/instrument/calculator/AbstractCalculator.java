@@ -59,7 +59,7 @@ public class AbstractCalculator {
 	OptionInfo _optionInfo;	
 		
 	//market data
-	RateMarketInfo _discountUnderlyingInfo;
+	RateMarketInfo _discountMarketnfo;
 	MarketInfo[][] _legMarketInfos;
 	double[][] _quantoCorrelations;
 	double[][] _quantoVolatilities;
@@ -210,7 +210,7 @@ public class AbstractCalculator {
 			}
 		}
 		
-		_discountUnderlyingInfo = new RateMarketInfo(
+		_discountMarketnfo = new RateMarketInfo(
 				irCurveContainer.getIrCurve(_riskFactorMap.get(RiskFactor.DISC_IRC_CD), flag),
 				(HullWhiteParameters) _riskFactorMap.get(RiskFactor.DISC_HWPARAMS),
 //				hwSurfaceContainer.getHWVolatility(_riskFactorMap.get(RiskFactor.DISC_HWVOL))
@@ -219,7 +219,7 @@ public class AbstractCalculator {
 		
 		double[][] correlations = (double[][]) _riskFactorMap.get(RiskFactor.CORRELATION);
 				
-		return _instance.getPrice(_legMarketInfos, _discountUnderlyingInfo, correlations);
+		return _instance.getPrice(_legMarketInfos, _discountMarketnfo, correlations);
 
 	}
 	
@@ -289,8 +289,8 @@ public class AbstractCalculator {
 						legIrTenors, legIrMeanReversions,
 						_instance.getLegModelTypes(),
 						legPayoffs, 
-						_discountUnderlyingInfo.getInterestRateCurve(),
-						_discountUnderlyingInfo.getHullWhiteParameters().getMeanReversion1F(),
+						_discountMarketnfo.getInterestRateCurve(),
+						_discountMarketnfo.getHullWhiteParameters().getMeanReversion1F(),
 //						_discountIrCurve, _discountHWParams.getMeanReversion1F(),
 						_instance.getDiscountModelType(),
 						_instance.getDiscounts(), 
@@ -356,8 +356,8 @@ public class AbstractCalculator {
 						legIrTenors, legIrMeanReversions,
 						_instance.getLegModelTypes(),
 						legPayoffs, 
-						_discountUnderlyingInfo.getInterestRateCurve(),
-						_discountUnderlyingInfo.getHullWhiteParameters().getMeanReversion1F(),
+						_discountMarketnfo.getInterestRateCurve(),
+						_discountMarketnfo.getHullWhiteParameters().getMeanReversion1F(),
 //						_discountIrCurve, _discountHWParams.getMeanReversion1F(), 
 						_instance.getDiscountModelType(),
 						_instance.getDiscounts(), 
@@ -506,38 +506,53 @@ public class AbstractCalculator {
 	public void setProductInfo(ProductInfo productInfo){
 		this._productInfo = productInfo;
 	}
-	public LegCouponInfo[] getLegCouponInfo(){
-		return _legCouponInfos;
+	public LegCouponInfo getLegCouponInfo(int legIndex){
+		return _legCouponInfos[legIndex];
 	}
-	public void setLegCouponInfo(LegCouponInfo[] legCouponInfos){
-		this._legCouponInfos = legCouponInfos;
+	public void setLegCouponInfo(int legIndex, LegCouponInfo legCouponInfo){
+		this._legCouponInfos[legIndex] = legCouponInfo;
 	}
-	public LegScheduleInfo[] getLegScheduleInfo(){
-		return _legScheduleInfos;
+	public LegScheduleInfo getLegScheduleInfo(int legIndex){
+		return _legScheduleInfos[legIndex];
 	}
-	public void setLegScheduleInfos(LegScheduleInfo[] legScheduleInfos){
-		this._legScheduleInfos = legScheduleInfos;
+	public void setLegScheduleInfo(int legIndex, LegScheduleInfo legScheduleInfo){
+		this._legScheduleInfos[legIndex] = legScheduleInfo;
 	}
-	public LegAmortizationInfo[] getLegAmortizationInfo(){
-		return _legAmortizationInfos;
+	public LegAmortizationInfo getLegAmortizationInfo(int legIndex){
+		return _legAmortizationInfos[legIndex];
 	}
-	public void setLegAmortizationInfos(LegAmortizationInfo[] legAmortizationInfos){
-		this._legAmortizationInfos = legAmortizationInfos;
+	public void setLegAmortizationInfo(int legIndex, LegAmortizationInfo legAmortizationInfo){
+		this._legAmortizationInfos[legIndex] = legAmortizationInfo;
 	}
-	public LegDataInfo[] getLegDataInfo(){
-		return _legDataInfos;
+	public LegDataInfo getLegDataInfo(int legIndex){
+		return _legDataInfos[legIndex];
 	}
-	public void setLegDataInfos(LegDataInfo[] legDataInfos){
-		this._legDataInfos = legDataInfos;
+	public void setLegDataInfo(int legIndex, LegDataInfo legDataInfo){
+		this._legDataInfos[legIndex] = legDataInfo;
 	}
 	public OptionInfo getOptionInfo(){
 		return _optionInfo;
 	}
 	public void setOptionInfo(OptionInfo optionInfo){
-		this._optionInfo = optionInfo;
+		this._optionInfo = optionInfo;		
+	}
+	public MarketInfo getLegMarketInfo(int legIndex, int undIndex){
+		return _legMarketInfos[legIndex][undIndex];
+	}
+	public void setLegMarketInfo(int legIndex, int undIndex, MarketInfo marketInfo){
+		this._legMarketInfos[legIndex][undIndex] = marketInfo;
+	}
+	public RateMarketInfo getDiscountMarketInfo(){
+		return _discountMarketnfo;
 	}
 	public void setAsOfDate(Date asOfDate){
 		_asOfDate = asOfDate;
 		_seed = VariableCreator.getRandomSeed(_instrumentCd, _asOfDate);
+	}
+	public int getLegNum(){
+		return _instance.getLegNum();
+	}
+	public int getPayLegIndex(){
+		return _instance.getPayIndex();
 	}
 }

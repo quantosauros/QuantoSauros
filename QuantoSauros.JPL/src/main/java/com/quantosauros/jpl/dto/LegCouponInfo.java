@@ -175,6 +175,9 @@ public class LegCouponInfo extends AbstractInfo {
 	public UnderlyingInfo getUnderlyingInfo(int undIndex){
 		return _underlyingInfos[undIndex];
 	}
+	public double[][] getLeverageAll(){
+		return _leverages;
+	}
 	public String toString(){
 		StringBuffer buf = new StringBuffer();
 		buf.append("\r\n");
