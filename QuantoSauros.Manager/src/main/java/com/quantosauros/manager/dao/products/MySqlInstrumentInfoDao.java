@@ -1,5 +1,6 @@
 package com.quantosauros.manager.dao.products;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -23,6 +24,17 @@ public class MySqlInstrumentInfoDao implements InstrumentInfoDao {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			return sqlSession.selectList("com.quantosauros.manager.dao.InstrumentInfo.selectInstrumentInfo");
+		} finally {
+			sqlSession.close();
+		}
+	}
+	public InstrumentInfo getOne(String instrumentCd) {
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		try {			
+			HashMap<String , Object> paramMap = new HashMap<>();
+			paramMap.put("instrumentCd", instrumentCd);
+			return sqlSession.selectOne("com.quantosauros.manager.dao.InstrumentInfo.selectOneByInstrumentCd",
+					paramMap);
 		} finally {
 			sqlSession.close();
 		}

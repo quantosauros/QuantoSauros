@@ -1,6 +1,8 @@
 package com.quantosauros.batch.process;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +14,15 @@ import com.quantosauros.batch.instrument.marketDataCreator.HullWhiteVolatilitySu
 import com.quantosauros.batch.instrument.marketDataCreator.IRCurveContainer;
 import com.quantosauros.batch.types.CcyType;
 import com.quantosauros.batch.types.RiskFactorType;
-import com.quantosauros.common.TypeDef.ConditionType;
-import com.quantosauros.common.TypeDef.CouponType;
-import com.quantosauros.common.TypeDef.OptionType;
-import com.quantosauros.common.TypeDef.PayRcv;
-import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
 import com.quantosauros.jpl.dto.LegScheduleInfo;
-import com.quantosauros.jpl.dto.OptionInfo;
 import com.quantosauros.jpl.dto.ProductInfo;
 import com.quantosauros.jpl.dto.market.MarketInfo;
-import com.quantosauros.jpl.dto.underlying.UnderlyingInfo;
+import com.quantosauros.jpl.dto.market.RateMarketInfo;
 
 public class ProcessPricer {
 
@@ -36,6 +32,10 @@ public class ProcessPricer {
 	protected double _epsilon = 0.0001;
 	protected Date _processDate;
 	protected MarketDataDao _marketDataDao = new MySqlMarketDataDao();
+	
+	protected ArrayList<double[]> _delta;
+	protected ArrayList<String> _riskFactors;
+	protected ArrayList<String[]> _vertex;
 	
 	public ProcessPricer(Date processDate, String instrumentCd, 
 			int monitorFrequency, int simNum) {
@@ -64,37 +64,38 @@ public class ProcessPricer {
 		return _calculator.getLegPrice(legIndex);
 	}
 	
-	public void execute(){
-
-		//Price
-		Money price = _calculator.getPrice(
-				_processDate, _irCurveContainer, _surfaceContainer, "");
-				
+	public void genDelta(){
+		//Delta [riskfactor][vertex]
+		_delta = new ArrayList<>();
+		_riskFactors = new ArrayList<>();
+		_vertex = new ArrayList<>();
 		
-		//Delta
-//		Iterator itr = new ArrayList(
-//				new HashSet(_calculator.getRiskFactorCdMap())).iterator();		
-//		//CALCULATE DELTA
-//		while (itr.hasNext()){
-//			Object itrNext = itr.next();
-//			if(itrNext.getClass() == String.class){
-//				String ircCd = (String) itrNext;
-//								
-//				//Price
-//				Money price = _calculator.getPrice(
-//						_processDate, _irCurveContainer, _surfaceContainer, "");
-//				System.out.println(price);				
-//				
-//				//AAD
-//				HashMap changedIRCurves = _irCurveContainer.getScenarioCurves(ircCd);
-//				
-//				double[] AADGreeks = _calculator.getAADGreek(
-//						ircCd, _irCurveContainer, changedIRCurves, false);								
-//				
-//				for (int i = 0; i < AADGreeks.length; i++){
-//					System.out.println(AADGreeks[i]);
-//				}
-//				
+		int rfIndex = 0;
+		Iterator itr = new ArrayList(
+				new HashSet(_calculator.getRiskFactorCdMap())).iterator();		
+		//CALCULATE DELTA
+		while (itr.hasNext()){
+			Object itrNext = itr.next();
+			if(itrNext.getClass() == String.class){
+				String ircCd = (String) itrNext;
+				_riskFactors.add(ircCd);
+				
+				//Price
+				Money price = _calculator.getPrice(
+						_processDate, _irCurveContainer, _surfaceContainer, "");
+				System.out.println(price);				
+				
+				//AAD
+				HashMap changedIRCurves = _irCurveContainer.getScenarioCurves(ircCd);
+				
+				double[] AADGreeks = _calculator.getAADGreek(
+						ircCd, _irCurveContainer, changedIRCurves, false);				
+				_delta.add(AADGreeks);
+								
+				_vertex.add(_irCurveContainer.getVertexStr(ircCd));
+				
+				
+				rfIndex++;
 //				if (_calculator.getHasExercise()){					
 //					_calculator.setHasExercise(false);
 //					//Price
@@ -109,12 +110,19 @@ public class ProcessPricer {
 //							ircCd, _irCurveContainer, changedIRCurves, true);
 //					_calculator.setHasExercise(true);
 //					
-//					for (int i = 0; i < nonCallAADResult.length; i++){
-//						System.out.println(nonCallAADResult[i]);
-//					}
 //				}
-//			}
-//		}		
+			}
+		}
+	}
+	
+	public ArrayList<double[]> getDelta(){
+		return _delta;
+	}
+	public ArrayList<String[]> getVertex(){
+		return _vertex;
+	}
+	public ArrayList<String> getRiskFactors(){
+		return _riskFactors;
 	}
 	
 	private HashMap genCurveContainer(List ircCdList){
@@ -216,5 +224,11 @@ public class ProcessPricer {
 		_calculator.setLegMarketInfo(legIndex, undIndex, marketInfo);
 	}
 	
+	public RateMarketInfo getDiscountMarketInfo(){
+		return _calculator.getDiscountMarketInfo();
+	}
+	public void setDiscountMarketInfo(RateMarketInfo discountMarketInfo){
+		_calculator.setDiscountMarketInfo(discountMarketInfo);
+	}
 	
 }

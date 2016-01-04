@@ -7,5 +7,5 @@ import com.quantosauros.manager.model.products.InstrumentInfo;
 public interface InstrumentInfoDao {
 
 	List<InstrumentInfo> getLists();
-	
+	InstrumentInfo getOne(String instrumentCd);
 }

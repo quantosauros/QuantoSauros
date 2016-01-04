@@ -9,7 +9,7 @@ public class testProductDataGenerator extends TestBase {
 	public void test(){
 		
 		Date asOfDate = Date.valueOf("20141202");
-		String instrumentCd = "RASWAP001";
+		String instrumentCd = "APSSWAP002";
 		String countryCd = "KR";
 		
 		ProductDataGenerator productDataGenerator = 

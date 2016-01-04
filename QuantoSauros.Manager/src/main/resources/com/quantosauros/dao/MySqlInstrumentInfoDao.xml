@@ -24,4 +24,16 @@
 		INSTRUMENT_INFO_VIEW	
   </select>
   
+  <select id="selectOneByInstrumentCd" parameterType="map" resultMap="instrumentInfoResultMap">
+	SELECT 		
+		INSTRUMENT_CD, CCY_CD, 
+		ISSUE_DT, MRTY_DT, 
+		PAY_LEG_TYPE_CD, RCV_LEG_TYPE_CD, 
+		OPTION_TYPE_CD
+	FROM		
+		INSTRUMENT_INFO_VIEW
+	WHERE
+		INSTRUMENT_CD = #{instrumentCd}
+  </select>
+  
 </mapper>

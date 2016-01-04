@@ -23,4 +23,9 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
 		return instrumentInfoDao.getLists();
 	}
 
+	@Override
+	public InstrumentInfo getOne(String instrumentCd) {		
+		return instrumentInfoDao.getOne(instrumentCd);
+	}
+	
 }

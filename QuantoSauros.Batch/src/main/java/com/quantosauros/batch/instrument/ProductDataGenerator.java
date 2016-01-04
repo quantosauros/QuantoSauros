@@ -302,12 +302,12 @@ public class ProductDataGenerator {
 				nextDt = calendar.adjustDate(nextDt.plusDays(1), BusinessDayConvention.FOLLOWING);
 				_session.insert("InsertProduct.insertProductLegData", paramMap);
 				System.out.println(dt);
-//				System.out.println(paramMap.get("dt")+ ", " +
-//						paramMap.get("payRcvCd") + ", " +
-//						paramMap.get("nextCouponPayDt") + ", " +
-//						paramMap.get("nextCoupon") + ", " +
-//						paramMap.get("accrualDayCnt") + ", " + 
-//						paramMap.get("accumulateAvgCoupon") + ", ");
+				System.out.println(paramMap.get("dt")+ ", " +
+						paramMap.get("payRcvCd") + ", " +
+						paramMap.get("nextCouponPayDt") + ", " +
+						paramMap.get("nextCoupon") + ", " +
+						paramMap.get("accrualDayCnt") + ", " + 
+						paramMap.get("accumulateAvgCoupon") + ", ");
 				
 			}						
 		}   

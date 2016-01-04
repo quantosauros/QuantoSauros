@@ -141,4 +141,13 @@ public class IRCurveContainer {
 		}
 		return vertex;		
 	}
+	public String[] getVertexStr(String ircCd){
+		InterestRateCurve irCurve = (InterestRateCurve)_irCurveMap.get(ircCd);		
+		InterestRate[] irs = irCurve.getSpotRates();
+		String[] vertex = new String[irs.length];
+		for (int i =0 ; i < vertex.length; i++){
+			vertex[i] = irs[i].getVertex().toString();
+		}
+		return vertex;	
+	}
 }

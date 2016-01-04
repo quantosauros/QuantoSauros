@@ -545,6 +545,9 @@ public class AbstractCalculator {
 	public RateMarketInfo getDiscountMarketInfo(){
 		return _discountMarketnfo;
 	}
+	public void setDiscountMarketInfo(RateMarketInfo discountMarketInfo){
+		this._discountMarketnfo = discountMarketInfo;
+	}
 	public void setAsOfDate(Date asOfDate){
 		_asOfDate = asOfDate;
 		_seed = VariableCreator.getRandomSeed(_instrumentCd, _asOfDate);

@@ -136,8 +136,8 @@ public class LegPeriodPricerModel {
 		
 		for (int periodIndex = 0; periodIndex < periodNum; periodIndex++){
 			String tmpCouponType = couponType[periodIndex];
-			DecimalFormat df = new DecimalFormat("##0.000");
-			String tmpSpread = df.format(spreads[periodIndex]);
+			DecimalFormat df = new DecimalFormat("##0.00");
+			String tmpSpread = df.format(spreads[periodIndex] * 100);
 			
 			if (tmpCouponType.equals("RESET")){
 				if (underlyingType.equals(UnderlyingType.R1)){
@@ -148,9 +148,10 @@ public class LegPeriodPricerModel {
 					//ERROR
 				}				
 			} else if (tmpCouponType.equals("ACCRUAL")){
+				
 				coupon[periodIndex] = 
-						"In: " + inCouponRates[periodIndex] +
-						", Out: " + outCouponRates[periodIndex];						
+						"In: " + df.format(inCouponRates[periodIndex] * 100) + "%" +
+						", Out: " + df.format(outCouponRates[periodIndex] * 100) + "%";						
 			} else if (tmpCouponType.equals("AVERAGE")){
 				if (underlyingType.equals(UnderlyingType.R1)){
 					coupon[periodIndex] = 
@@ -174,15 +175,91 @@ public class LegPeriodPricerModel {
 	public void genCondition(ConditionType conditionType){
 		int periodNum = couponType.length;
 		condition = new String[periodNum];
+		DecimalFormat df = new DecimalFormat("##0.00");
+		
 		for (int periodIndex = 0; periodIndex < periodNum; periodIndex++){
 			if (conditionType.equals(ConditionType.NONE)){
-				condition[periodIndex] = "";
+				condition[periodIndex] = "NO Condition";
 			} else if (conditionType.equals(ConditionType.R1)){
-				String tmpLowerBound1 = Double.toString(lowerLimits[0][periodIndex]);
-				String tmpUpperBound1 = Double.toString(upperLimits[0][periodIndex]);
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+								
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R1 < " 
+						+ tmpUpperBound1 + "%";
+			} else if (conditionType.equals(ConditionType.R2)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+								
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R2 < " 
+						+ tmpUpperBound1 + "%";
+			} else if (conditionType.equals(ConditionType.R3)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+								
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R3 < " 
+						+ tmpUpperBound1 + "%";
+			} else if (conditionType.equals(ConditionType.R1mR2)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+								
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R1 - R2 < " 
+						+ tmpUpperBound1 + "%";
 				
+			} else if (conditionType.equals(ConditionType.R2mR3)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+								
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R2 - R3 < " 
+						+ tmpUpperBound1 + "%";
+			} else if (conditionType.equals(ConditionType.R1nR2)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+				String tmpLowerBound2 = df.format(lowerLimits[1][periodIndex] * 100);
+				String tmpUpperBound2 = df.format(upperLimits[1][periodIndex] * 100);
 				
-				condition[periodIndex] = "";
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R1 < " 
+						+ tmpUpperBound1 + "%"
+						+ tmpLowerBound2 + "% < R2 < " 
+						+ tmpUpperBound2 + "%";
+			} else if (conditionType.equals(ConditionType.R1nR3)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+				String tmpLowerBound2 = df.format(lowerLimits[1][periodIndex] * 100);
+				String tmpUpperBound2 = df.format(upperLimits[1][periodIndex] * 100);
+				
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R1 < " 
+						+ tmpUpperBound1 + "%"
+						+ tmpLowerBound2 + "% < R3 < " 
+						+ tmpUpperBound2 + "%";				
+			} else if (conditionType.equals(ConditionType.R2nR3)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+				String tmpLowerBound2 = df.format(lowerLimits[1][periodIndex] * 100);
+				String tmpUpperBound2 = df.format(upperLimits[1][periodIndex] * 100);
+				
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R2 < " 
+						+ tmpUpperBound1 + "%"
+						+ tmpLowerBound2 + "% < R3 < " 
+						+ tmpUpperBound2 + "%";
+			} else if (conditionType.equals(ConditionType.R1nR2mR3)){
+				String tmpLowerBound1 = df.format(lowerLimits[0][periodIndex] * 100);
+				String tmpUpperBound1 = df.format(upperLimits[0][periodIndex] * 100);
+				String tmpLowerBound2 = df.format(lowerLimits[1][periodIndex] * 100);
+				String tmpUpperBound2 = df.format(upperLimits[1][periodIndex] * 100);
+				
+				condition[periodIndex] = 
+						tmpLowerBound1 + "% < R1 < " 
+						+ tmpUpperBound1 + "%"
+						+ tmpLowerBound2 + "% < R2 - R3< " 
+						+ tmpUpperBound2 + "%";
 			}
 		}
 		
