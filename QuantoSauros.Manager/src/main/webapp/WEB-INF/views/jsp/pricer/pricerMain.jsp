@@ -290,23 +290,108 @@
 									</c:forEach>
                             	</div>
                             	<div class="tab-pane fade" id="market">
-                            		<div class="col-lg-12">
+                            		<c:forEach var="marketInfoPricerModel" items="${legPricerModelForm.marketInfoPricerModels}" varStatus="status">
+                            			<div class="col-lg-4">
+                            				<div class="panel panel-primary form-group">
+												<div class="panel-heading">
+													<h3 class="panel-title"> ${legPricerModelForm.legInfoPricerModels[status.index].payRcv} Leg Market Information </h3>
+												</div>
+												<div class="panel-body">
+													<c:forEach var="interestRateCurveModel" items="${marketInfoPricerModel.interestRateCurveModels}" varStatus="curveIndex">
+														<div class="list-group">
+															<div class = "list-group-item">																
+																<label> Underlying ${curveIndex.index} </label>
+																<br>
+																<label>Date</label>
+																${interestRateCurveModel.date}																																
+																<br>
+																<label>Day Count Convention</label>
+																${interestRateCurveModel.dcf}
+																<br>
+																<table class="table table-striped">
+																	<thead>
+																		<tr>
+																			<th>Vertex</th>
+																			<th>Rate</th>
+																			<th>Rate Type</th>																			
+																		</tr>
+																	</thead>
+																	<c:forEach items="${interestRateCurveModel.rate}" varStatus="rateIndex">
+																		<tr>																																
+																			<td>${interestRateCurveModel.vertex[rateIndex.index]}</td>
+																			<td>${interestRateCurveModel.rate[rateIndex.index]}</td>
+																			<td>${interestRateCurveModel.rateType[rateIndex.index]}</td>
+																		</tr>																												
+																	</c:forEach>	
+																</table>
+															</div>
+															<div class = "list-group-item">																
+																<label>Mean Reversion 1F </label>																
+																${marketInfoPricerModel.meanReversion1F[curveIndex.index]}
+																<br>
+																<label>Mean Reversion 2F 1</label>
+																${marketInfoPricerModel.meanReversion2F1[curveIndex.index]}
+																<br>
+																<label>Mean Reversion 2F 2</label>
+																${marketInfoPricerModel.meanReversion2F2[curveIndex.index]}
+																<br>
+																<label>Mean Reversion 2F Correlation</label>
+																${marketInfoPricerModel.correlation[curveIndex.index]}
+																<br>
+															</div>
+														</div>														
+													</c:forEach>
+												</div>
+											</div>
+                            			</div>
+                            		</c:forEach>
+                            		<div class="col-lg-4">
                             			<div class="panel panel-primary form-group">
 											<div class="panel-heading">
-												<h3 class="panel-title"> Market Information </h3>
+												<h3 class="panel-title"> Discount Market Information </h3>
 											</div>
 											<div class="panel-body">
-												TO BE IMPLEMENTED
-												${discountRateCurveModel.date}
-												<br>
-												${discountRateCurveModel.dcf}
-												<br>
-												<c:forEach var="discRateCurveModel" items="${discountRateCurveModel.rate}" varStatus="discIndex">
-													${discountRateCurveModel.vertex[discIndex.index]}
-													${discountRateCurveModel.rate[discIndex.index]}
-													${discountRateCurveModel.rateType[discIndex.index]}
-													<br>
-												</c:forEach>
+												<div class="list-group">
+													<div class = "list-group-item">
+														<label>Date</label>
+														${discMarketInfoPricerModel.interestRateCurveModels[0].date}
+														<br>
+														<label>Day Count Convention</label>
+														${discMarketInfoPricerModel.interestRateCurveModels[0].dcf}
+														<br>
+														<table class="table table-striped">
+															<thead>
+																<tr>
+																	<th>Vertex</th>
+																	<th>Rate</th>
+																	<th>Rate Type</th>																			
+																</tr>
+															</thead>
+															<c:forEach items="${discMarketInfoPricerModel.interestRateCurveModels[0].rate}" varStatus="discIndex">
+																<tr>														
+																	<td>${discMarketInfoPricerModel.interestRateCurveModels[0].vertex[discIndex.index]}</td>
+																	<td>${discMarketInfoPricerModel.interestRateCurveModels[0].rate[discIndex.index]}</td>
+																	<td>${discMarketInfoPricerModel.interestRateCurveModels[0].rateType[discIndex.index]}</td>
+																</tr>
+															</c:forEach>
+														</table>	
+													</div>
+													<div class = "list-group-item">
+														<label>Mean Reversion 1F </label>
+														${discMarketInfoPricerModel.meanReversion1F[0]}
+														<br>
+														<label>Mean Reversion 2F 1</label>
+														${discMarketInfoPricerModel.meanReversion2F1[0]}
+														<br>
+														<label>Mean Reversion 2F 2</label>
+														${discMarketInfoPricerModel.meanReversion2F2[0]}
+														<br>
+														<label>Mean Reversion 2F Correlation</label>
+														${discMarketInfoPricerModel.correlation[0]}
+														<br>
+													</div>
+												</div>
+																							
 											</div>
 										</div>                            			
                             		</div>                            		

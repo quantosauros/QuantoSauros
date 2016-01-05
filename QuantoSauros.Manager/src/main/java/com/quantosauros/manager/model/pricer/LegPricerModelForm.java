@@ -1,22 +1,27 @@
 package com.quantosauros.manager.model.pricer;
 
-import java.util.List;
-
 public class LegPricerModelForm {
 
-	private List<LegInfoPricerModel> legInfoPricerModels;
-	private List<LegPeriodPricerModel> legPeriodPricerModels;
+	private LegInfoPricerModel[] legInfoPricerModels;
+	private LegPeriodPricerModel[] legPeriodPricerModels;
+	private MarketInfoPricerModel[] marketInfoPricerModels;
 	
-	public void setLegInfoPricerModels(List<LegInfoPricerModel> legInfoPricerModels){
+	public void setLegInfoPricerModels(LegInfoPricerModel[] legInfoPricerModels){
 		this.legInfoPricerModels = legInfoPricerModels;
 	}
-	public List<LegInfoPricerModel> getLegInfoPricerModels(){
+	public LegInfoPricerModel[] getLegInfoPricerModels(){
 		return legInfoPricerModels;
 	}
-	public void setLegPeriodPricerModels(List<LegPeriodPricerModel> legPeriodPricerModels){
+	public void setLegPeriodPricerModels(LegPeriodPricerModel[] legPeriodPricerModels){
 		this.legPeriodPricerModels = legPeriodPricerModels;
 	}
-	public List<LegPeriodPricerModel> getLegPeriodPricerModels(){
+	public LegPeriodPricerModel[] getLegPeriodPricerModels(){
 		return legPeriodPricerModels;
+	}
+	public void setMarketInfoPricerModels(MarketInfoPricerModel[] marketInfoPricerModels){
+		this.marketInfoPricerModels = marketInfoPricerModels;
+	}
+	public MarketInfoPricerModel[] getMarketInfoPricerModels(){
+		return marketInfoPricerModels;
 	}
 }

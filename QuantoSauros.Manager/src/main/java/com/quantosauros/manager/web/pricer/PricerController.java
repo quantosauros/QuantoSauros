@@ -21,6 +21,7 @@ import com.quantosauros.common.TypeDef.CouponType;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.PaymentPeriod;
+import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.interestrate.InterestRate;
 import com.quantosauros.common.interestrate.InterestRateCurve;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
@@ -28,6 +29,8 @@ import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
 import com.quantosauros.jpl.dto.LegScheduleInfo;
 import com.quantosauros.jpl.dto.ProductInfo;
+import com.quantosauros.jpl.dto.market.EquityMarketInfo;
+import com.quantosauros.jpl.dto.market.MarketInfo;
 import com.quantosauros.jpl.dto.market.RateMarketInfo;
 import com.quantosauros.jpl.dto.underlying.EquityUnderlyingInfo;
 import com.quantosauros.jpl.dto.underlying.FXUnderlyingInfo;
@@ -37,6 +40,7 @@ import com.quantosauros.manager.model.pricer.InterestRateCurveModel;
 import com.quantosauros.manager.model.pricer.LegInfoPricerModel;
 import com.quantosauros.manager.model.pricer.LegPeriodPricerModel;
 import com.quantosauros.manager.model.pricer.LegPricerModelForm;
+import com.quantosauros.manager.model.pricer.MarketInfoPricerModel;
 import com.quantosauros.manager.model.pricer.ProductInfoPricerModel;
 import com.quantosauros.manager.model.pricer.UnderlyingInfoPricerModel;
 import com.quantosauros.manager.model.products.InstrumentInfo;
@@ -159,34 +163,49 @@ public class PricerController {
 			
 			//LegPricerModelForm
 			LegPricerModelForm legPricerModelForm = new LegPricerModelForm();		
-			List<LegInfoPricerModel> legInfoPricerModels = new ArrayList<>();
-			List<LegPeriodPricerModel> legPeriodPricerModels = new ArrayList<>();
+			LegInfoPricerModel[] legInfoPricerModels = new LegInfoPricerModel[legNum];
+			LegPeriodPricerModel[] legPeriodPricerModels = new LegPeriodPricerModel[legNum];
+			
+			//MarketInfoPricerModel
+			MarketInfoPricerModel[] marketInfoPricerModels = new MarketInfoPricerModel[legNum];
 			
 			for (int legIndex = 0; legIndex < legNum; legIndex++){
 				int undNum = _processPricer.getUnderlyingNum(legIndex);
 				
 				LegInfoPricerModel legInfoPricerModel = new LegInfoPricerModel();
-				LegPeriodPricerModel legPeriodPricerModel = new LegPeriodPricerModel();
-							
-				//legDataInfo
+				
+				//LegInfos
+				LegCouponInfo legCouponInfo = _processPricer.getLegCouponInfo(legIndex);
 				LegDataInfo legDataInfo = _processPricer.getLegDataInfo(legIndex);
+				LegScheduleInfo legScheduleInfo = _processPricer.getLegScheduleInfo(legIndex);
+				LegAmortizationInfo legAmortizationInfo = _processPricer.getLegAmortizationInfo(legIndex);
+				
 				legInfoPricerModel.setNextCouponDt(legDataInfo.getNextCouponDate().getDt());
 				legInfoPricerModel.setNextCouponRate(legDataInfo.getNextCouponRate());
 				legInfoPricerModel.setCumulatedAccrualDays(legDataInfo.getCumulatedAccrualDays());
-				legInfoPricerModel.setCumulatedAvgCoupon(legDataInfo.getCumulatedAvgCoupon());
-				
-				//legCouponInfo
-				LegCouponInfo legCouponInfo = _processPricer.getLegCouponInfo(legIndex);
+				legInfoPricerModel.setCumulatedAvgCoupon(legDataInfo.getCumulatedAvgCoupon());				
 				legInfoPricerModel.setPayRcv(legCouponInfo.getPayRcv().toString());
 				legInfoPricerModel.setUnderlyingType(legCouponInfo.getUnderlyingType().toString());
 				legInfoPricerModel.setConditionType(legCouponInfo.getConditionType().toString());
 				legInfoPricerModel.setHasCap(legCouponInfo.hasCap());
 				legInfoPricerModel.setHasFloor(legCouponInfo.hasFloor());
-				//underlyingInfo
-				UnderlyingInfoPricerModel[] underlyingInfoPricerModels = new UnderlyingInfoPricerModel[undNum]; 
+				legInfoPricerModel.setDcf(legScheduleInfo.getDCF().toString());
+				legInfoPricerModel.setPrincipal(legAmortizationInfo.getPrincipal().getAmount());
+				
+				//UnderlyingInfoPricerModel & InterestRateCurveModel
+				UnderlyingInfoPricerModel[] underlyingInfoPricerModels = new UnderlyingInfoPricerModel[undNum];
+				
+				marketInfoPricerModels[legIndex] = new MarketInfoPricerModel();
+				InterestRateCurveModel[] legIrCurveModel = new InterestRateCurveModel[undNum];
+				double[] meanReversion1F = new double[undNum];
+				double[] meanReversion2F1 = new double[undNum];
+				double[] meanReversion2F2 = new double[undNum];
+				double[] correlation = new double[undNum];
 				for (int undIndex = 0; undIndex < undNum; undIndex++){
+					//UNDERLYING INFO
 					UnderlyingInfo underlyingInfo = legCouponInfo.getUnderlyingInfo(undIndex);				
 					underlyingInfoPricerModels[undIndex] = new UnderlyingInfoPricerModel();
+					
 					if (underlyingInfo instanceof RateUnderlyingInfo){
 						//Rate
 						underlyingInfoPricerModels[undIndex].setRateType(
@@ -211,27 +230,57 @@ public class PricerController {
 					
 					underlyingInfoPricerModels[undIndex].setModelType(underlyingInfo.getModelType().toString());
 					
-				}
+					//MARKETINFO					
+					MarketInfo legMarketInfo = _processPricer.getLegMarketInfo(legIndex, undIndex);					
+					if (legMarketInfo instanceof RateMarketInfo){
+						//InterestRateCurveModel
+						InterestRateCurve irCurve = ((RateMarketInfo)legMarketInfo).getInterestRateCurve();
+						
+						legIrCurveModel[undIndex] = new InterestRateCurveModel();
+						legIrCurveModel[undIndex].setCompoundFreq(
+								irCurve.getCompoundingFrequency().toString());
+						legIrCurveModel[undIndex].setDate(irCurve.getDate().toString());
+						legIrCurveModel[undIndex].setDcf(irCurve.getDayCountFraction().toString());
+						InterestRate[] discountIrRates = irCurve.getSpotRates();
+						int irNum = discountIrRates.length;
+						String[] rateTypes = new String[irNum];
+						double[] rates = new double[irNum];
+						String[] vertex = new String[irNum];
+						for (int irIndex = 0; irIndex < irNum; irIndex++){
+							rates[irIndex] = discountIrRates[irIndex].getRate();
+							vertex[irIndex] = discountIrRates[irIndex].getVertex().toString();
+							rateTypes[irIndex] = discountIrRates[irIndex].getFactorCode();
+						}			
+						legIrCurveModel[undIndex].setRateType(rateTypes);
+						legIrCurveModel[undIndex].setRate(rates);
+						legIrCurveModel[undIndex].setVertex(vertex);
+						
+						//
+						HullWhiteParameters hwParams =((RateMarketInfo)legMarketInfo).getHullWhiteParameters();
+						meanReversion1F[undIndex] = hwParams.getHullWhiteVolatility1F();
+						meanReversion2F1[undIndex] = hwParams.getHullWhiteVolatility1_2F();
+						meanReversion2F2[undIndex] = hwParams.getHullWhiteVolatility2_2F();
+						correlation[undIndex] = hwParams.getCorrelation();
+					} else if (legMarketInfo instanceof EquityMarketInfo){
+						//TODO
+						
+					}					
+					
+				}				
 				legInfoPricerModel.setUnderlyingInfoPricerModels(underlyingInfoPricerModels);
+				legInfoPricerModels[legIndex] = legInfoPricerModel;
+								
+				marketInfoPricerModels[legIndex].setInterestRateCurveModels(legIrCurveModel);
+				marketInfoPricerModels[legIndex].setMeanReversion1F(meanReversion1F);
+				marketInfoPricerModels[legIndex].setMeanReversion2F1(meanReversion2F1);
+				marketInfoPricerModels[legIndex].setMeanReversion2F2(meanReversion2F2);
+				marketInfoPricerModels[legIndex].setCorrelation(correlation);
 				
-				//legScheduleInfo
-				LegScheduleInfo legScheduleInfo = _processPricer.getLegScheduleInfo(legIndex);
-				legInfoPricerModel.setDcf(legScheduleInfo.getDCF().toString());
-				
-				
-				
-				//legAmortizationInfo
-				LegAmortizationInfo legAmortizationInfo = _processPricer.getLegAmortizationInfo(legIndex);
-				legInfoPricerModel.setPrincipal(legAmortizationInfo.getPrincipal().getAmount());
-				
-				legInfoPricerModels.add(legInfoPricerModel);
-				
-				//legPeriodPricerModel
+				//LEG PERIOD PRICER MODEL
+				LegPeriodPricerModel legPeriodPricerModel = new LegPeriodPricerModel();
 				PaymentPeriod[] paymentPeriods = legScheduleInfo.getPaymentPeriods();
 				CouponType[] couponTypes = legCouponInfo.getCouponType();
 				
-//				legCouponInfo.getUpperLimits();
-//				legCouponInfo.getLowerLimits();
 				int periodNum = paymentPeriods.length;
 				
 				String[] couponTypeStr = new String[periodNum];
@@ -245,6 +294,7 @@ public class PricerController {
 					paymentDt[periodIndex] = paymentPeriods[periodIndex].getPaymentDate().getDt();
 					couponTypeStr[periodIndex] = couponTypes[periodIndex].toString();
 				}
+				
 				legPeriodPricerModel.setCouponType(couponTypeStr);
 				legPeriodPricerModel.setStartDt(startDt);
 				legPeriodPricerModel.setEndDt(endDt);
@@ -261,20 +311,25 @@ public class PricerController {
 				legPeriodPricerModel.genCoupon(legCouponInfo.getUnderlyingType());
 				legPeriodPricerModel.genCondition(legCouponInfo.getConditionType());
 				
-				legPeriodPricerModels.add(legPeriodPricerModel);
+				legPeriodPricerModels[legIndex] = legPeriodPricerModel;
 			}		
 			legPricerModelForm.setLegInfoPricerModels(legInfoPricerModels);
-			legPricerModelForm.setLegPeriodPricerModels(legPeriodPricerModels);		
+			legPricerModelForm.setLegPeriodPricerModels(legPeriodPricerModels);	
+			legPricerModelForm.setMarketInfoPricerModels(marketInfoPricerModels);
 			redirectAttributes.addFlashAttribute("legPricerModelForm", legPricerModelForm);
 			
-			//Market Information
+			//Discount Market Information
+			MarketInfoPricerModel discMarketInfoPricerModel = new MarketInfoPricerModel();
 			RateMarketInfo discountMarketInfo = _processPricer.getDiscountMarketInfo();
-			InterestRateCurve discountRateCurve = discountMarketInfo.getInterestRateCurve();
+			//IR Curve
+			InterestRateCurve discountRateCurve = discountMarketInfo.getInterestRateCurve();			
 			
-			InterestRateCurveModel discountRateCurveModel = new InterestRateCurveModel();
-			discountRateCurveModel.setCompoundFreq(discountRateCurve.getCompoundingFrequency().toString());
-			discountRateCurveModel.setDate(discountRateCurve.getDate().toString());
-			discountRateCurveModel.setDcf(discountRateCurve.getDayCountFraction().toString());
+			InterestRateCurveModel[] discountRateCurveModel = new InterestRateCurveModel[]{
+					new InterestRateCurveModel(),
+			};
+			discountRateCurveModel[0].setCompoundFreq(discountRateCurve.getCompoundingFrequency().toString());
+			discountRateCurveModel[0].setDate(discountRateCurve.getDate().toString());
+			discountRateCurveModel[0].setDcf(discountRateCurve.getDayCountFraction().toString());
 			InterestRate[] discountIrRates = discountRateCurve.getSpotRates();
 			int irNum = discountIrRates.length;
 			String[] rateTypes = new String[irNum];
@@ -285,10 +340,19 @@ public class PricerController {
 				vertex[irIndex] = discountIrRates[irIndex].getVertex().toString();
 				rateTypes[irIndex] = discountIrRates[irIndex].getFactorCode();
 			}			
-			discountRateCurveModel.setRateType(rateTypes);
-			discountRateCurveModel.setRate(rates);
-			discountRateCurveModel.setVertex(vertex);
-			redirectAttributes.addFlashAttribute("discountRateCurveModel", discountRateCurveModel);
+			discountRateCurveModel[0].setRateType(rateTypes);
+			discountRateCurveModel[0].setRate(rates);
+			discountRateCurveModel[0].setVertex(vertex);			
+			//hw params
+			HullWhiteParameters discHWParams = discountMarketInfo.getHullWhiteParameters();
+			
+			discMarketInfoPricerModel.setInterestRateCurveModels(discountRateCurveModel);
+			discMarketInfoPricerModel.setMeanReversion1F(new double[]{discHWParams.getMeanReversion1F()});
+			discMarketInfoPricerModel.setMeanReversion2F1(new double[]{discHWParams.getMeanReversion1_2F()});
+			discMarketInfoPricerModel.setMeanReversion2F2(new double[]{discHWParams.getMeanReversion2_2F()});
+			discMarketInfoPricerModel.setCorrelation(new double[]{discHWParams.getCorrelation()});
+			
+			redirectAttributes.addFlashAttribute("discMarketInfoPricerModel", discMarketInfoPricerModel);
 			
 			//etc
 			redirectAttributes.addFlashAttribute("selectedInstrumentCd", instrumentCd);
