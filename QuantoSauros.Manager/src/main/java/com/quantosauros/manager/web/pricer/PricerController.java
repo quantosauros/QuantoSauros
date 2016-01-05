@@ -376,7 +376,7 @@ public class PricerController {
 			InstrumentInfo instrumentInfo = instrumentInfoList.get(index);
 			String instrumentCd = instrumentInfo.getInstrumentCd();			
 			
-			instrumentList.put(Integer.toString(index), instrumentCd);			
+			instrumentList.put(instrumentCd, instrumentCd);			
 		}
 		model.addAttribute("instrumentList", instrumentList);
 		if(!model.containsAttribute("processDt")){

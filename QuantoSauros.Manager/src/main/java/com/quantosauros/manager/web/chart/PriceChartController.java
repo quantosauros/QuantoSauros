@@ -1,6 +1,8 @@
 package com.quantosauros.manager.web.chart;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.googlecode.wickedcharts.highcharts.options.SeriesType;
 import com.quantosauros.manager.chart.CreateHighChart;
+import com.quantosauros.manager.model.products.InstrumentInfo;
 import com.quantosauros.manager.model.results.PriceInfo;
+import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.service.products.InstrumentInfoService;
 import com.quantosauros.manager.service.results.PriceInfoService;
+import com.quantosauros.manager.service.settings.ProcessInfoService;
 
 @Controller
 public class PriceChartController {
@@ -22,16 +28,27 @@ public class PriceChartController {
 	private final Logger logger = Logger.getLogger(PriceChartController.class);
 
 	private PriceInfoService priceInfoService;
+	private ProcessInfoService processInfoService;
+	private InstrumentInfoService instrumentInfoService;
 	
 	@Autowired
 	public void setPriceInfoService(PriceInfoService priceInfoService){
 		this.priceInfoService = priceInfoService;
 	}
 	
+	@Autowired
+	public void setProcessInfoService(ProcessInfoService processInfoService){
+		this.processInfoService = processInfoService;
+	}
+	@Autowired
+	public void setInstrumentInfoService(InstrumentInfoService instrumentInfoService){
+		this.instrumentInfoService = instrumentInfoService;
+	}
+	
 	@RequestMapping(value = "/priceChart", method = RequestMethod.GET)
 	public String priceChartIndex(Model model){
 		logger.debug("priceChartIndex()");
-		
+		populateModel(model);
 		return "/chart/PriceChart";
 	}
 	
@@ -84,5 +101,31 @@ public class PriceChartController {
 				
 		return highChartJSON;
 		
+	}
+	private void populateModel(Model model){
+		//ProcessInfoList
+		List<ProcessInfo> processInfoList = processInfoService.selectProcessInfo();
+		Map<String, String> processList = new LinkedHashMap<>();
+		for (int index = 0; index < processInfoList.size(); index++){
+			ProcessInfo processInfo = processInfoList.get(index);
+			String procId = processInfo.getProcId();
+			String procNM = processInfo.getProcNM();
+			
+			processList.put(procId, procId + ". " + procNM);			
+		}
+		model.addAttribute("processList", processList);		
+		//Instrument Code
+		List<InstrumentInfo> instrumentInfoList = instrumentInfoService.getLists();
+		Map<String, String> instrumentList = new LinkedHashMap<>();
+		for (int index = 0; index < instrumentInfoList.size(); index++){
+			InstrumentInfo instrumentInfo = instrumentInfoList.get(index);
+			String instrumentCd = instrumentInfo.getInstrumentCd();			
+			
+			instrumentList.put(instrumentCd, instrumentCd);			
+		}
+		model.addAttribute("instrumentList", instrumentList);
+		if(!model.containsAttribute("processDt")){
+			model.addAttribute("processDt", "2013-12-02");
+		}
 	}
 }

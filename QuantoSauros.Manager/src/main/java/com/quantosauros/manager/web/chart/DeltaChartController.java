@@ -1,7 +1,9 @@
 package com.quantosauros.manager.web.chart;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,12 @@ import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.SouthKoreaCalendar;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.manager.chart.CreateHighChart;
+import com.quantosauros.manager.model.products.InstrumentInfo;
 import com.quantosauros.manager.model.results.DeltaInfo;
+import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.service.products.InstrumentInfoService;
 import com.quantosauros.manager.service.results.DeltaInfoService;
+import com.quantosauros.manager.service.settings.ProcessInfoService;
 
 @Controller
 public class DeltaChartController {
@@ -27,23 +33,33 @@ public class DeltaChartController {
 	private final Logger logger = Logger.getLogger(DeltaChartController.class);
 	
 	private DeltaInfoService deltaInfoService;
+	private ProcessInfoService processInfoService;
+	private InstrumentInfoService instrumentInfoService;
 	
 	@Autowired
 	public void setDeltaInfoService(DeltaInfoService deltaInfoService){
 		this.deltaInfoService = deltaInfoService;
 	}
 	
+	@Autowired
+	public void setProcessInfoService(ProcessInfoService processInfoService){
+		this.processInfoService = processInfoService;
+	}
+	@Autowired
+	public void setInstrumentInfoService(InstrumentInfoService instrumentInfoService){
+		this.instrumentInfoService = instrumentInfoService;
+	}
 	@RequestMapping(value = "/deltaChart", method = RequestMethod.GET)
 	public String deltaChartIndex(Model model){
 		logger.debug("deltaChartIndex()");
-		
+		populateModel(model);
 		return "/chart/DeltaChart";
 	}
 	
 	@RequestMapping(value = "/deltaChart2", method = RequestMethod.GET)
 	public String deltaChart2Index(Model model){
 		logger.debug("deltaChart2Index()");
-		
+		populateModel(model);
 		return "/chart/DeltaChart2";
 	}
 	
@@ -175,7 +191,32 @@ public class DeltaChartController {
 		
 	}
 	
-	
+	private void populateModel(Model model){
+		//ProcessInfoList
+		List<ProcessInfo> processInfoList = processInfoService.selectProcessInfo();
+		Map<String, String> processList = new LinkedHashMap<>();
+		for (int index = 0; index < processInfoList.size(); index++){
+			ProcessInfo processInfo = processInfoList.get(index);
+			String procId = processInfo.getProcId();
+			String procNM = processInfo.getProcNM();
+			
+			processList.put(procId, procId + ". " + procNM);			
+		}
+		model.addAttribute("processList", processList);		
+		//Instrument Code
+		List<InstrumentInfo> instrumentInfoList = instrumentInfoService.getLists();
+		Map<String, String> instrumentList = new LinkedHashMap<>();
+		for (int index = 0; index < instrumentInfoList.size(); index++){
+			InstrumentInfo instrumentInfo = instrumentInfoList.get(index);
+			String instrumentCd = instrumentInfo.getInstrumentCd();			
+			
+			instrumentList.put(instrumentCd, instrumentCd);			
+		}
+		model.addAttribute("instrumentList", instrumentList);
+		if(!model.containsAttribute("processDt")){
+			model.addAttribute("processDt", "2013-12-02");
+		}
+	}
 	
 	
 }

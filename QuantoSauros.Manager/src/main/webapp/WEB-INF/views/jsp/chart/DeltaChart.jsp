@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %> 
 <!DOCTYPE html>
 <html>
 <jsp:include page="../fragments/header.jsp" />
@@ -26,11 +29,11 @@
 								<div class="list-group">
 									<div class = "list-group-item">
 										<label for="processIdInput"> Process ID </label>
-										<span><input class="form-control" type="text" id="input-procId" name="procId" value ="0"></span>
+										<form:select path="processList" items="${processList}" class="form-control" id="input-procId" name="procId" />
 									</div>
 									<div class = "list-group-item">
-										<label for="idxIdInput"> Instrument Code </label>
-										<span><input class="form-control" type="text" id="input-instrumentCd" name="instrumentCd" value ="APSSWAP001"></span>	
+										<label for="idxIdInput"> Instrument Code </label>										
+										<form:select path="instrumentList" items="${instrumentList}" class="form-control" id="input-instrumentCd" name="instrumentCd" />	
 									</div>
 									<div class = "list-group-item">
 										<label for="idxIdInput"> Greek Code </label>
@@ -113,6 +116,7 @@
 				chart1 = new Highcharts.Chart(data);					
 			});
 			$('#chartDiv')[0].hidden = false;
+			location.href = "#chartDiv";
 		};		
 	</script>	
 </body>
