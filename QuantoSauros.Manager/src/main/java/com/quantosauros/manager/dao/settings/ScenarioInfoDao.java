@@ -2,15 +2,15 @@ package com.quantosauros.manager.dao.settings;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.settings.ScenarioInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfoModel;
 
 public interface ScenarioInfoDao {
 
-	List<ScenarioInfo> getLists();
-	ScenarioInfo getScenarioInfoById(String scenarioId);
+	List<ScenarioInfoModel> getLists();
+	ScenarioInfoModel getScenarioInfoById(String scenarioId);
 	String getMaxScenarioId();
-	void insertScenarioInfo(ScenarioInfo scenarioInfo);
-	void updateScenarioInfo(ScenarioInfo scenarioInfo);
+	void insertScenarioInfo(ScenarioInfoModel scenarioInfo);
+	void updateScenarioInfo(ScenarioInfoModel scenarioInfo);
 	void deleteScenarioInfo(String scenarioId);
 	
 }

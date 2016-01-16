@@ -17,7 +17,7 @@ import com.googlecode.wickedcharts.highcharts.options.SeriesType;
 import com.quantosauros.manager.chart.CreateHighChart;
 import com.quantosauros.manager.model.products.InstrumentInfo;
 import com.quantosauros.manager.model.results.PriceInfo;
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 import com.quantosauros.manager.service.products.InstrumentInfoService;
 import com.quantosauros.manager.service.results.PriceInfoService;
 import com.quantosauros.manager.service.settings.ProcessInfoService;
@@ -104,10 +104,10 @@ public class PriceChartController {
 	}
 	private void populateModel(Model model){
 		//ProcessInfoList
-		List<ProcessInfo> processInfoList = processInfoService.selectProcessInfo();
+		List<ProcessInfoModel> processInfoList = processInfoService.selectProcessInfo();
 		Map<String, String> processList = new LinkedHashMap<>();
 		for (int index = 0; index < processInfoList.size(); index++){
-			ProcessInfo processInfo = processInfoList.get(index);
+			ProcessInfoModel processInfo = processInfoList.get(index);
 			String procId = processInfo.getProcId();
 			String procNM = processInfo.getProcNM();
 			

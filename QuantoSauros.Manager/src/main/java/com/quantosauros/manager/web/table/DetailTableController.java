@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.quantosauros.manager.model.JSONDataTablesModel;
 import com.quantosauros.manager.model.products.InstrumentInfo;
 import com.quantosauros.manager.model.results.DetailInfo;
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 import com.quantosauros.manager.service.products.InstrumentInfoService;
 import com.quantosauros.manager.service.results.DetailInfoService;
 import com.quantosauros.manager.service.settings.ProcessInfoService;
@@ -72,10 +72,10 @@ public class DetailTableController {
 	}	
 	
 	private void populateModel(Model model){
-		List<ProcessInfo> processInfoList = processInfoService.selectProcessInfo();
+		List<ProcessInfoModel> processInfoList = processInfoService.selectProcessInfo();
 		Map<String, String> processList = new LinkedHashMap<>();
 		for (int index = 0; index < processInfoList.size(); index++){
-			ProcessInfo processInfo = processInfoList.get(index);
+			ProcessInfoModel processInfo = processInfoList.get(index);
 			String procId = processInfo.getProcId();
 			String procNM = processInfo.getProcNM();
 			

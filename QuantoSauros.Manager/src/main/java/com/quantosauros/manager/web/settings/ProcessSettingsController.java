@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.quantosauros.manager.model.settings.PortfolioInfo;
-import com.quantosauros.manager.model.settings.ProcessInfo;
-import com.quantosauros.manager.model.settings.ScenarioInfo;
+import com.quantosauros.manager.model.settings.PortfolioInfoModel;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
+import com.quantosauros.manager.model.settings.ScenarioInfoModel;
 import com.quantosauros.manager.service.settings.PortfolioInfoService;
 import com.quantosauros.manager.service.settings.ProcessInfoService;
 import com.quantosauros.manager.service.settings.ScenarioInfoService;
@@ -48,25 +48,25 @@ public class ProcessSettingsController {
 	@RequestMapping(value = "/settings/process", method = RequestMethod.GET)
 	public String processSettingsIndex(Model model){
 		logger.debug("processSettingsIndex()");
-		model.addAttribute("processInfo", processInfoService.selectProcessInfo());		
+		model.addAttribute("processInfoModel", processInfoService.selectProcessInfo());		
 		return "/settings/processSettings";
 	}
 	
 	@RequestMapping(value = "/settings/process", method = RequestMethod.POST)
 	public String processSettingsInsertOrUpdate(
-			@ModelAttribute("processInfoForm") ProcessInfo processInfo,
+			@ModelAttribute("processInfoForm") ProcessInfoModel processInfoModel,
 			Model model, final RedirectAttributes redirectAttributes){
 		
 		logger.debug("processSettingsInsertOrUpdate()");
 		
 		redirectAttributes.addFlashAttribute("css", "success");
-		if (processInfo.isNew()){
+		if (processInfoModel.isNew()){
 			redirectAttributes.addFlashAttribute("msg", "Process added successfully!");
 		} else {
 			redirectAttributes.addFlashAttribute("msg", "Process updated successfully!");
 		}
 				
-		processInfoService.saveOrUpdate(processInfo);
+		processInfoService.saveOrUpdate(processInfoModel);
 		
 		return "redirect:/settings/process";
 	}
@@ -91,8 +91,8 @@ public class ProcessSettingsController {
 		
 		logger.debug("updateProcessInfo()" + procId);
 		
-		ProcessInfo processInfo = processInfoService.findByProcId(procId);
-		model.addAttribute("processInfo", processInfo);
+		ProcessInfoModel processInfoModel = processInfoService.findByProcId(procId);
+		model.addAttribute("processInfoModel", processInfoModel);
 		
 		popluateModel(model);
 		
@@ -103,25 +103,25 @@ public class ProcessSettingsController {
 	public String showAddProcessInfoForm(Model model){
 		logger.debug("showAddProcessInfoForm()");
 		
-		ProcessInfo processInfo = new ProcessInfo();
+		ProcessInfoModel processInfoModel = new ProcessInfoModel();
 		
 		//set default value		
-		processInfo.setPortfolioId("0");
-		processInfo.setScenarioId("0");
-		processInfo.setProcNM("");
-		processInfo.setDescription("");
+		processInfoModel.setPortfolioId("0");
+		processInfoModel.setScenarioId("0");
+		processInfoModel.setProcNM("");
+		processInfoModel.setDescription("");
 				
-		model.addAttribute("processInfo", processInfo);
+		model.addAttribute("processInfoModel", processInfoModel);
 		popluateModel(model);
 		
 		return "settings/processform";
 	}
 	private void popluateModel(Model model){
 		//scenario list
-		List<ScenarioInfo> scenarioInfoList = scenarioInfoService.selectScenarioInfo();
+		List<ScenarioInfoModel> scenarioInfoModels = scenarioInfoService.selectScenarioInfo();
 		Map<String, String> scenarioList = new LinkedHashMap<>();
-		for (int i = 0; i < scenarioInfoList.size(); i++){
-			ScenarioInfo scenarioInfo = scenarioInfoList.get(i);
+		for (int i = 0; i < scenarioInfoModels.size(); i++){
+			ScenarioInfoModel scenarioInfo = scenarioInfoModels.get(i);
 			String id = scenarioInfo.getScenarioId();
 			String name = id + ". " + 
 					scenarioInfo.getScenarioNM()+ "(" + 
@@ -131,10 +131,10 @@ public class ProcessSettingsController {
 		model.addAttribute("scenarioList", scenarioList);
 		
 		//portfolio list
-		List<PortfolioInfo> portfolioInfoList = portfolioInfoService.getLists();
+		List<PortfolioInfoModel> portfolioInfoList = portfolioInfoService.getLists();
 		Map<String, String> portfolioList = new LinkedHashMap<>();
 		for (int i = 0; i < portfolioInfoList.size(); i++){
-			PortfolioInfo portfolioInfo = portfolioInfoList.get(i);
+			PortfolioInfoModel portfolioInfo = portfolioInfoList.get(i);
 			String id = portfolioInfo.getPortfolioId();
 			String name = id + ". " + 
 					portfolioInfo.getPortfolioNM()+ "(" + 

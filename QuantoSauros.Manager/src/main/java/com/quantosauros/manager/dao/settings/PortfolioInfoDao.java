@@ -2,20 +2,20 @@ package com.quantosauros.manager.dao.settings;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.settings.PortfolioData;
-import com.quantosauros.manager.model.settings.PortfolioInfo;
+import com.quantosauros.manager.model.settings.PortfolioDataModel;
+import com.quantosauros.manager.model.settings.PortfolioInfoModel;
 
 public interface PortfolioInfoDao {
 
-	List<PortfolioInfo> getLists();
-	PortfolioInfo getOneById(String portfolioId);
+	List<PortfolioInfoModel> getLists();
+	PortfolioInfoModel getOneById(String portfolioId);
 	String getMaxPortfolioId();
-	void insertPortfolioInfo(PortfolioInfo portfolioInfo);
-	void updatePortfolioInfo(PortfolioInfo portfolioInfo);
+	void insertPortfolioInfo(PortfolioInfoModel portfolioInfoModel);
+	void updatePortfolioInfo(PortfolioInfoModel portfolioInfoModel);
 	void deletePortfolioInfo(String portfolioId);
 	
-	List<PortfolioData> getDataListsById(String portfolioId);	
-	void insertPortfolioData(PortfolioData portfolioData);	
+	List<PortfolioDataModel> getDataListsById(String portfolioId);	
+	void insertPortfolioData(PortfolioDataModel portfolioDataModel);	
 	void deletePortfolioData(String portfolioId);
 	
 }

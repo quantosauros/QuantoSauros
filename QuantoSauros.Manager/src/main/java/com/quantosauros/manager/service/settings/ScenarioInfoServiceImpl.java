@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantosauros.manager.dao.settings.ScenarioInfoDao;
-import com.quantosauros.manager.model.settings.ScenarioInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfoModel;
 
 @Service("scenarioInfoService")
 public class ScenarioInfoServiceImpl implements ScenarioInfoService {
@@ -19,13 +19,13 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService {
 	}
 	
 	@Override
-	public List<ScenarioInfo> selectScenarioInfo() {
+	public List<ScenarioInfoModel> selectScenarioInfo() {
 		// TODO Auto-generated method stub
 		return scenarioInfoDao.getLists();
 	}
 	
 	@Override
-	public ScenarioInfo findById(String scenarioId) {
+	public ScenarioInfoModel findById(String scenarioId) {
 		// TODO Auto-generated method stub
 		return scenarioInfoDao.getScenarioInfoById(scenarioId);
 	}
@@ -37,12 +37,12 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService {
 	}
 	
 	@Override
-	public void saveOrUpdate(ScenarioInfo scenarioInfo) {
-		if (findById(scenarioInfo.getScenarioId()) == null){
-			scenarioInfo.setScenarioId(scenarioInfoDao.getMaxScenarioId());			
-			scenarioInfoDao.insertScenarioInfo(scenarioInfo);
+	public void saveOrUpdate(ScenarioInfoModel scenarioInfoModel) {
+		if (findById(scenarioInfoModel.getScenarioId()) == null){
+			scenarioInfoModel.setScenarioId(scenarioInfoDao.getMaxScenarioId());			
+			scenarioInfoDao.insertScenarioInfo(scenarioInfoModel);
 		} else {
-			scenarioInfoDao.updateScenarioInfo(scenarioInfo);
+			scenarioInfoDao.updateScenarioInfo(scenarioInfoModel);
 		}		
 	}
 	

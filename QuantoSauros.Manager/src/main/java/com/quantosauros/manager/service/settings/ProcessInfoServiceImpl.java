@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantosauros.manager.dao.settings.ProcessInfoDao;
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 
 @Service("processInfoService")
 public class ProcessInfoServiceImpl implements ProcessInfoService {
@@ -18,17 +18,17 @@ public class ProcessInfoServiceImpl implements ProcessInfoService {
 		this.processInfoDao = processInfoDao;
 	}
 	
-	public List<ProcessInfo> selectProcessInfo(){
+	public List<ProcessInfoModel> selectProcessInfo(){
 		return processInfoDao.selectProcessInfo();
 	}
 	public String getMaxProcId(){
 		return processInfoDao.getMaxProcId();
 	}
-	public ProcessInfo findByProcId(String procId){
+	public ProcessInfoModel findByProcId(String procId){
 		return processInfoDao.findByProcId(procId);
 	}
 	
-	public void saveOrUpdate(ProcessInfo processInfo){
+	public void saveOrUpdate(ProcessInfoModel processInfo){
 		if (findByProcId(processInfo.getProcId()) == null){
 			processInfo.setProcId(processInfoDao.getMaxProcId());			
 			processInfoDao.insertProcessInfo(processInfo);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.quantosauros.manager.model.settings.ScenarioInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfoModel;
 import com.quantosauros.manager.service.settings.ScenarioInfoService;
 
 @Controller
@@ -28,25 +28,25 @@ public class ScenarioSettingsController {
 	@RequestMapping(value = "/settings/scenario", method = RequestMethod.GET)
 	public String scenarioSettingsIndex(Model model){
 		logger.debug("scenarioSettingsIndex()");
-		model.addAttribute("scenarioInfo", scenarioInfoService.selectScenarioInfo());		
+		model.addAttribute("scenarioInfoModels", scenarioInfoService.selectScenarioInfo());		
 		return "/settings/scenarioSettings";
 	}
 	
 	@RequestMapping(value = "/settings/scenario", method = RequestMethod.POST)
 	public String scenarioSettingsInsertOrUpdate(
-			@ModelAttribute("scenarioInfoForm") ScenarioInfo scenarioInfo,
+			@ModelAttribute("scenarioInfoForm") ScenarioInfoModel scenarioInfoModel,
 			Model model, final RedirectAttributes redirectAttributes){
 		
 		logger.debug("scenarioSettingsInsertOrUpdate()");
 		
 		redirectAttributes.addFlashAttribute("css", "success");
-		if (scenarioInfo.isNew()){
+		if (scenarioInfoModel.isNew()){
 			redirectAttributes.addFlashAttribute("msg", "Process added successfully!");
 		} else {
 			redirectAttributes.addFlashAttribute("msg", "Process updated successfully!");
 		}
 				
-		scenarioInfoService.saveOrUpdate(scenarioInfo);
+		scenarioInfoService.saveOrUpdate(scenarioInfoModel);
 		
 		return "redirect:/settings/scenario";
 	}
@@ -71,8 +71,8 @@ public class ScenarioSettingsController {
 		
 		logger.debug("updateScenarioInfo()" + scenarioId);
 		
-		ScenarioInfo scenarioInfo = scenarioInfoService.findById(scenarioId);
-		model.addAttribute("scenarioInfo", scenarioInfo);
+		ScenarioInfoModel scenarioInfoModel = scenarioInfoService.findById(scenarioId);
+		model.addAttribute("scenarioInfoModel", scenarioInfoModel);
 		
 		return "settings/scenarioform";		
 	}
@@ -81,14 +81,14 @@ public class ScenarioSettingsController {
 	public String showAddScenarioInfoForm(Model model){
 		logger.debug("showAddScenarioInfoForm()");
 		
-		ScenarioInfo scenarioInfo = new ScenarioInfo();
+		ScenarioInfoModel scenarioInfoModel = new ScenarioInfoModel();
 		
 		//set default value		
-		scenarioInfo.setScenarioId("0");		
-		scenarioInfo.setScenarioNM("");
-		scenarioInfo.setDescription("");
+		scenarioInfoModel.setScenarioId("0");		
+		scenarioInfoModel.setScenarioNM("");
+		scenarioInfoModel.setDescription("");
 				
-		model.addAttribute("scenarioInfo", scenarioInfo);
+		model.addAttribute("scenarioInfoModel", scenarioInfoModel);
 		
 		return "settings/scenarioform";
 	}

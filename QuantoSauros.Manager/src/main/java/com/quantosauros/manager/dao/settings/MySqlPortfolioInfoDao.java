@@ -8,8 +8,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.settings.PortfolioData;
-import com.quantosauros.manager.model.settings.PortfolioInfo;
+import com.quantosauros.manager.model.settings.PortfolioDataModel;
+import com.quantosauros.manager.model.settings.PortfolioInfoModel;
 
 @Component("portfolioInfoDao")
 public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
@@ -21,7 +21,7 @@ public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
 	}	
 	
 	@Override
-	public List<PortfolioInfo> getLists() {
+	public List<PortfolioInfoModel> getLists() {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			return sqlSession.selectList("com.quantosauros.manager.dao.PortfolioInfo.selectPortfolioInfo");
@@ -30,7 +30,7 @@ public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
 		}
 	}
 	@Override
-	public PortfolioInfo getOneById(String portfolioId) {
+	public PortfolioInfoModel getOneById(String portfolioId) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			HashMap<String, Object> paramMap = new HashMap<>();
@@ -51,13 +51,13 @@ public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
 		}
 	}
 	@Override
-	public void insertPortfolioInfo(PortfolioInfo portfolioInfo) {
+	public void insertPortfolioInfo(PortfolioInfoModel portfolioInfoModel) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();
-			paramMap.put("portfolioId", portfolioInfo.getPortfolioId());			
-			paramMap.put("portfolioNM", portfolioInfo.getPortfolioNM());
-			paramMap.put("description", portfolioInfo.getDescription());			
+			paramMap.put("portfolioId", portfolioInfoModel.getPortfolioId());			
+			paramMap.put("portfolioNM", portfolioInfoModel.getPortfolioNM());
+			paramMap.put("description", portfolioInfoModel.getDescription());			
 			
 			sqlSession.insert("com.quantosauros.manager.dao.PortfolioInfo.insertPortfolioInfo",
 					paramMap);
@@ -68,13 +68,13 @@ public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
 		
 	}
 	@Override
-	public void updatePortfolioInfo(PortfolioInfo portfolioInfo) {
+	public void updatePortfolioInfo(PortfolioInfoModel portfolioInfoModel) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();
-			paramMap.put("portfolioId", portfolioInfo.getPortfolioId());			
-			paramMap.put("portfolioNM", portfolioInfo.getPortfolioNM());
-			paramMap.put("description", portfolioInfo.getDescription());			
+			paramMap.put("portfolioId", portfolioInfoModel.getPortfolioId());			
+			paramMap.put("portfolioNM", portfolioInfoModel.getPortfolioNM());
+			paramMap.put("description", portfolioInfoModel.getDescription());			
 			
 			sqlSession.update("com.quantosauros.manager.dao.PortfolioInfo.updatePortfolioInfo",
 					paramMap);
@@ -99,7 +99,7 @@ public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
 	}
 	
 	@Override
-	public List<PortfolioData> getDataListsById(String portfolioId) {
+	public List<PortfolioDataModel> getDataListsById(String portfolioId) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {		
 			HashMap<String, Object> paramMap = new HashMap<>();
@@ -112,12 +112,12 @@ public class MySqlPortfolioInfoDao implements PortfolioInfoDao {
 	}
 		
 	@Override
-	public void insertPortfolioData(PortfolioData portfolioData) {
+	public void insertPortfolioData(PortfolioDataModel portfolioDataModel) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();
-			paramMap.put("portfolioId", portfolioData.getPortfolioId());			
-			paramMap.put("instrumentCd", portfolioData.getInstrumentCd());						
+			paramMap.put("portfolioId", portfolioDataModel.getPortfolioId());			
+			paramMap.put("instrumentCd", portfolioDataModel.getInstrumentCd());						
 			
 			sqlSession.insert("com.quantosauros.manager.dao.PortfolioData.insertPortfolioData",
 					paramMap);

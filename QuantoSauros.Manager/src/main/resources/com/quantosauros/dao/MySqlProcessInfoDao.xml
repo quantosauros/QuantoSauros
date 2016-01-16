@@ -4,7 +4,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantosauros.manager.dao.ProcessInfo">
-  <resultMap type="processInfo" id="processInfoResultMap">            
+  <resultMap type="processInfoModel" id="processInfoResultMap">            
     <result column="PROC_ID"      property="procId"/>
     <result column="PROC_NM"      property="procNM"/>
     <result column="DESCRIPTION"      property="description"/>

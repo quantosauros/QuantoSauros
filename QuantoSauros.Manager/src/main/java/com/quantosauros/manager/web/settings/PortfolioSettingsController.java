@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.quantosauros.manager.model.settings.PortfolioDataForm;
-import com.quantosauros.manager.model.settings.PortfolioInfo;
+import com.quantosauros.manager.model.settings.PortfolioDataModelForm;
+import com.quantosauros.manager.model.settings.PortfolioInfoModel;
 import com.quantosauros.manager.service.settings.PortfolioInfoService;
 
 @Controller
@@ -31,28 +31,28 @@ public class PortfolioSettingsController {
 	@RequestMapping(value = "/settings/portfolio", method = RequestMethod.GET)
 	public String portfolioSettingsIndex(Model model){
 		logger.debug("portfolioSettingsIndex()");
-		model.addAttribute("portfolioInfo", portfolioInfoService.getLists());		
+		model.addAttribute("portfolioInfoModels", portfolioInfoService.getLists());		
 		return "/settings/portfolioSettings";
 	}
 	
 	@RequestMapping(value = "/settings/portfolio", method = RequestMethod.POST)
 	public String portfolioSettingsInsertOrUpdate(
-			@ModelAttribute("portfolioInfo") PortfolioInfo portfolioInfo,			
+			@ModelAttribute("portfolioInfoModel") PortfolioInfoModel portfolioInfoModel,			
 			BindingResult resultPortfolioInfo,			
-			@ModelAttribute("portfolioDataForm") PortfolioDataForm portfolioDataForm,
+			@ModelAttribute("portfolioDataModelForm") PortfolioDataModelForm portfolioDataModelForm,
 			BindingResult resultPortfolioDataForm,
 			Model model, final RedirectAttributes redirectAttributes){
 		
 		logger.debug("portfolioSettingsInsertOrUpdate()");
 		
 		redirectAttributes.addFlashAttribute("css", "success");
-		if (portfolioInfo.isNew()){
+		if (portfolioInfoModel.isNew()){
 			redirectAttributes.addFlashAttribute("msg", "Process added successfully!");
 		} else {
 			redirectAttributes.addFlashAttribute("msg", "Process updated successfully!");
 		}
 				
-		portfolioInfoService.saveOrUpdate(portfolioInfo, portfolioDataForm);		
+		portfolioInfoService.saveOrUpdate(portfolioInfoModel, portfolioDataModelForm);		
 		
 		return "redirect:/settings/portfolio";
 	}
@@ -77,12 +77,12 @@ public class PortfolioSettingsController {
 		
 		logger.debug("updatePortfolioInfo()" + portfolioId);
 		
-		PortfolioInfo portfolioInfo = portfolioInfoService.getOneById(portfolioId);
-		model.addAttribute("portfolioInfo", portfolioInfo);
+		PortfolioInfoModel portfolioInfoModel = portfolioInfoService.getOneById(portfolioId);
+		model.addAttribute("portfolioInfoModel", portfolioInfoModel);
 				
-		PortfolioDataForm portfolioDataForm = new PortfolioDataForm();
-		portfolioDataForm.setPortfolioDatas(portfolioInfoService.getDataLists(portfolioId));
-		model.addAttribute("portfolioDataForm", portfolioDataForm);
+		PortfolioDataModelForm portfolioDataModelForm = new PortfolioDataModelForm();
+		portfolioDataModelForm.setPortfolioDatas(portfolioInfoService.getDataLists(portfolioId));
+		model.addAttribute("portfolioDataModelForm", portfolioDataModelForm);
 		
 		return "settings/portfolioform";		
 	}
@@ -91,15 +91,15 @@ public class PortfolioSettingsController {
 	public String showAddPortfolioInfoForm(Model model){
 		logger.debug("showAddPortfolioInfoForm()");
 		
-		PortfolioInfo portfolioInfo = new PortfolioInfo();		
+		PortfolioInfoModel portfolioInfoModel = new PortfolioInfoModel();		
 		//set default value		
-		portfolioInfo.setPortfolioNM("");
-		portfolioInfo.setDescription("");
-		model.addAttribute("portfolioInfo", portfolioInfo);
+		portfolioInfoModel.setPortfolioNM("");
+		portfolioInfoModel.setDescription("");
+		model.addAttribute("portfolioInfoModel", portfolioInfoModel);
 		
-		PortfolioDataForm portfolioDataForm = new PortfolioDataForm();
-		portfolioDataForm.setPortfolioDatas(portfolioInfoService.getDataLists(""));
-		model.addAttribute("portfolioDataForm", portfolioDataForm);
+		PortfolioDataModelForm portfolioDataModelForm = new PortfolioDataModelForm();
+		portfolioDataModelForm.setPortfolioDatas(portfolioInfoService.getDataLists(""));
+		model.addAttribute("portfolioDataModelForm", portfolioDataModelForm);
 		
 		return "settings/portfolioform";
 	}

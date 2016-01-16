@@ -38,15 +38,15 @@
 							</th>
 						</tr>
 					</thead>
-					<c:forEach var="scenarioInfo" items="${scenarioInfo}">
+					<c:forEach var="scenarioInfoModel" items="${scenarioInfoModels}">
 						<tr>
-							<td>${scenarioInfo.scenarioId}</td>
-							<td>${scenarioInfo.scenarioNM}</td>
-							<td>${scenarioInfo.description}</td>
-							<td>${scenarioInfo.crtnTime}</td>
+							<td>${scenarioInfoModel.scenarioId}</td>
+							<td>${scenarioInfoModel.scenarioNM}</td>
+							<td>${scenarioInfoModel.description}</td>
+							<td>${scenarioInfoModel.crtnTime}</td>
 							<td>
-								<spring:url value="/settings/scenario/${scenarioInfo.scenarioId}/update" var="updateUrl" />
-								<spring:url value="/settings/scenario/${scenarioInfo.scenarioId}/delete" var="deleteUrl" />								
+								<spring:url value="/settings/scenario/${scenarioInfoModel.scenarioId}/update" var="updateUrl" />
+								<spring:url value="/settings/scenario/${scenarioInfoModel.scenarioId}/delete" var="deleteUrl" />								
 								<button class="btn btn-primary btn-xs" onclick="location.href='${updateUrl}'">
 									UPDATE
 								</button>

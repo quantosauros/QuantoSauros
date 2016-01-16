@@ -2,13 +2,13 @@ package com.quantosauros.manager.service.settings;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.settings.ScenarioInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfoModel;
 
 public interface ScenarioInfoService {
 
-	List<ScenarioInfo> selectScenarioInfo();
-	ScenarioInfo findById(String scenarioId);
+	List<ScenarioInfoModel> selectScenarioInfo();
+	ScenarioInfoModel findById(String scenarioId);
 	String getMaxId();
-	void saveOrUpdate(ScenarioInfo scenarioInfo);	
+	void saveOrUpdate(ScenarioInfoModel scenarioInfo);	
 	void delete(String scenarioId);
 }

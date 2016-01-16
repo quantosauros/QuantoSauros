@@ -38,15 +38,15 @@
 							</th>
 						</tr>
 					</thead>
-					<c:forEach var="portfolioInfo" items="${portfolioInfo}">
+					<c:forEach var="portfolioInfoModel" items="${portfolioInfoModels}">
 						<tr>
-							<td>${portfolioInfo.portfolioId}</td>
-							<td>${portfolioInfo.portfolioNM}</td>
-							<td>${portfolioInfo.description}</td>
-							<td>${portfolioInfo.crtnTime}</td>
+							<td>${portfolioInfoModel.portfolioId}</td>
+							<td>${portfolioInfoModel.portfolioNM}</td>
+							<td>${portfolioInfoModel.description}</td>
+							<td>${portfolioInfoModel.crtnTime}</td>
 							<td>
-								<spring:url value="/settings/portfolio/${portfolioInfo.portfolioId}/update" var="updateUrl" />
-								<spring:url value="/settings/portfolio/${portfolioInfo.portfolioId}/delete" var="deleteUrl" />
+								<spring:url value="/settings/portfolio/${portfolioInfoModel.portfolioId}/update" var="updateUrl" />
+								<spring:url value="/settings/portfolio/${portfolioInfoModel.portfolioId}/delete" var="deleteUrl" />
 								<button class="btn btn-primary btn-xs" onclick="location.href='${updateUrl}'">
 									UPDATE
 								</button>

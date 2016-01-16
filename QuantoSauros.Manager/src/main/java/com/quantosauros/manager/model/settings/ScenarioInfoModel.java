@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.settings;
 
-public class ScenarioInfo {
+public class ScenarioInfoModel {
 
 	private String scenarioId;
 	private String scenarioNM;

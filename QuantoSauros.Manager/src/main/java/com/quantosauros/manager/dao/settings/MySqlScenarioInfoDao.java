@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.settings.ScenarioInfo;
+import com.quantosauros.manager.model.settings.ScenarioInfoModel;
 
 @Component("scenarioDao")
 public class MySqlScenarioInfoDao implements ScenarioInfoDao {
@@ -20,7 +20,7 @@ public class MySqlScenarioInfoDao implements ScenarioInfoDao {
 	}
 	
 	@Override
-	public List<ScenarioInfo> getLists() {
+	public List<ScenarioInfoModel> getLists() {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			return sqlSession.selectList("com.quantosauros.manager.dao.ScenarioInfo.selectScenarioInfo");
@@ -30,7 +30,7 @@ public class MySqlScenarioInfoDao implements ScenarioInfoDao {
 	}
 	
 	@Override
-	public ScenarioInfo getScenarioInfoById(String scenarioId) {
+	public ScenarioInfoModel getScenarioInfoById(String scenarioId) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			HashMap<String, Object> paramMap = new HashMap<>();
@@ -53,13 +53,13 @@ public class MySqlScenarioInfoDao implements ScenarioInfoDao {
 	}
 	
 	@Override
-	public void insertScenarioInfo(ScenarioInfo scenarioInfo) {
+	public void insertScenarioInfo(ScenarioInfoModel scenarioInfoModel) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();			
-			paramMap.put("scenarioId", scenarioInfo.getScenarioId());
-			paramMap.put("scenarioNM", scenarioInfo.getScenarioNM());			
-			paramMap.put("description", scenarioInfo.getDescription());			
+			paramMap.put("scenarioId", scenarioInfoModel.getScenarioId());
+			paramMap.put("scenarioNM", scenarioInfoModel.getScenarioNM());			
+			paramMap.put("description", scenarioInfoModel.getDescription());			
 			
 			sqlSession.insert("com.quantosauros.manager.dao.ScenarioInfo.insertScenarioInfo",
 					paramMap);
@@ -71,13 +71,13 @@ public class MySqlScenarioInfoDao implements ScenarioInfoDao {
 	}
 	
 	@Override
-	public void updateScenarioInfo(ScenarioInfo scenarioInfo) {
+	public void updateScenarioInfo(ScenarioInfoModel scenarioInfoModel) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();
-			paramMap.put("scenarioId", scenarioInfo.getScenarioId());
-			paramMap.put("scenarioNM", scenarioInfo.getScenarioNM());			
-			paramMap.put("description", scenarioInfo.getDescription());	
+			paramMap.put("scenarioId", scenarioInfoModel.getScenarioId());
+			paramMap.put("scenarioNM", scenarioInfoModel.getScenarioNM());			
+			paramMap.put("description", scenarioInfoModel.getDescription());	
 			
 			sqlSession.update("com.quantosauros.manager.dao.ScenarioInfo.updateScenarioInfo",
 					paramMap);

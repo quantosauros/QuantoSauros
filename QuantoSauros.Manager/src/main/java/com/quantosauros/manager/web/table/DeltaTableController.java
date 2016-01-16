@@ -17,7 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quantosauros.manager.model.JSONDataTablesModel;
 import com.quantosauros.manager.model.results.DeltaInfo;
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 import com.quantosauros.manager.service.results.DeltaInfoService;
 import com.quantosauros.manager.service.settings.ProcessInfoService;
 
@@ -91,10 +91,10 @@ public class DeltaTableController {
 	}
 	
 	private void populateModel(Model model){
-		List<ProcessInfo> processInfoList = processInfoService.selectProcessInfo();
+		List<ProcessInfoModel> processInfoList = processInfoService.selectProcessInfo();
 		Map<String, String> processList = new LinkedHashMap<>();
 		for (int index = 0; index < processInfoList.size(); index++){
-			ProcessInfo processInfo = processInfoList.get(index);
+			ProcessInfoModel processInfo = processInfoList.get(index);
 			String procId = processInfo.getProcId();
 			String procNM = processInfo.getProcNM();
 			

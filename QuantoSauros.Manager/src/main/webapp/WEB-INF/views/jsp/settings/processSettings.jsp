@@ -40,7 +40,7 @@
 							</th>
 						</tr>
 					</thead>
-					<c:forEach var="processInfo" items="${processInfo}">
+					<c:forEach var="processInfo" items="${processInfoModel}">
 						<tr>
 							<td>${processInfo.procId}</td>
 							<td>${processInfo.procNM}</td>

@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 
 @Component("processInfoDao")
 public class MySqlProcessInfoDao implements ProcessInfoDao {
@@ -20,7 +20,7 @@ public class MySqlProcessInfoDao implements ProcessInfoDao {
 	}
 		
 	@Override
-	public List<ProcessInfo> selectProcessInfo() {
+	public List<ProcessInfoModel> selectProcessInfo() {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			return sqlSession.selectList("com.quantosauros.manager.dao.ProcessInfo.selectProcessInfo");
@@ -28,7 +28,7 @@ public class MySqlProcessInfoDao implements ProcessInfoDao {
 			sqlSession.close();
 		}
 	}
-	public ProcessInfo findByProcId(String procId){
+	public ProcessInfoModel findByProcId(String procId){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			HashMap<String, Object> paramMap = new HashMap<>();
@@ -48,7 +48,7 @@ public class MySqlProcessInfoDao implements ProcessInfoDao {
 		}
 	}
 	@Override
-	public void insertProcessInfo(ProcessInfo processInfo) {
+	public void insertProcessInfo(ProcessInfoModel processInfo) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();
@@ -66,7 +66,7 @@ public class MySqlProcessInfoDao implements ProcessInfoDao {
 		}		
 	}
 	@Override
-	public void updateProcessInfo(ProcessInfo processInfo) {
+	public void updateProcessInfo(ProcessInfoModel processInfo) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			HashMap<String, Object> paramMap = new HashMap<>();

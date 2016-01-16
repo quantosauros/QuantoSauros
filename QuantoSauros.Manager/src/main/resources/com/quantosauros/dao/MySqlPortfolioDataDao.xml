@@ -4,7 +4,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantosauros.manager.dao.PortfolioData">
-  <resultMap type="portfolioData" id="portfolioDataResultMap">
+  <resultMap type="portfolioDataModel" id="portfolioDataResultMap">
     <result column="INSTRUMENT_CD"      property="instrumentCd"/>    
     <result column="PORTFOLIO_ID"      property="portfolioId"/>
     <result column="FLAG"      property="flag"/>

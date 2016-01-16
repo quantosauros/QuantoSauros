@@ -29,7 +29,7 @@
 				<br />
 			
 				<spring:url value="/settings/process" var="processActionUrl" />
-				<form:form class="form-horizontal" method="post" modelAttribute="processInfo" action="${processActionUrl}">
+				<form:form class="form-horizontal" method="post" modelAttribute="processInfoModel" action="${processActionUrl}">
 
 					<form:hidden path="procId" />
 					

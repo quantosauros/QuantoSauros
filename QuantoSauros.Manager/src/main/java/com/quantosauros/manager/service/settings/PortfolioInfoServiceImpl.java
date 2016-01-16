@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantosauros.manager.dao.settings.PortfolioInfoDao;
-import com.quantosauros.manager.model.settings.PortfolioData;
-import com.quantosauros.manager.model.settings.PortfolioDataForm;
-import com.quantosauros.manager.model.settings.PortfolioInfo;
+import com.quantosauros.manager.model.settings.PortfolioDataModel;
+import com.quantosauros.manager.model.settings.PortfolioDataModelForm;
+import com.quantosauros.manager.model.settings.PortfolioInfoModel;
 
 @Service("portfolioInfoService")
 public class PortfolioInfoServiceImpl implements PortfolioInfoService{
@@ -21,12 +21,12 @@ public class PortfolioInfoServiceImpl implements PortfolioInfoService{
 	}
 	
 	@Override
-	public List<PortfolioInfo> getLists() {
+	public List<PortfolioInfoModel> getLists() {
 		return portfolioInfoDao.getLists();
 	}
 	
 	@Override
-	public PortfolioInfo getOneById(String portfolioId) {
+	public PortfolioInfoModel getOneById(String portfolioId) {
 		return portfolioInfoDao.getOneById(portfolioId);
 	}
 	
@@ -37,23 +37,23 @@ public class PortfolioInfoServiceImpl implements PortfolioInfoService{
 	}
 	
 	@Override
-	public void saveOrUpdate(PortfolioInfo portfolioInfo, 
-			PortfolioDataForm portfolioDataForm) {
+	public void saveOrUpdate(PortfolioInfoModel portfolioInfoModel, 
+			PortfolioDataModelForm portfolioDataModelForm) {
 		//Portfolio Info
 		String portfolioId = "";
-		if (getOneById(portfolioInfo.getPortfolioId()) == null){
+		if (getOneById(portfolioInfoModel.getPortfolioId()) == null){
 			portfolioId = portfolioInfoDao.getMaxPortfolioId();
-			portfolioInfo.setPortfolioId(portfolioId);
-			portfolioInfoDao.insertPortfolioInfo(portfolioInfo);			
+			portfolioInfoModel.setPortfolioId(portfolioId);
+			portfolioInfoDao.insertPortfolioInfo(portfolioInfoModel);			
 		} else {
-			portfolioId = portfolioInfo.getPortfolioId();
-			portfolioInfoDao.updatePortfolioInfo(portfolioInfo);
+			portfolioId = portfolioInfoModel.getPortfolioId();
+			portfolioInfoDao.updatePortfolioInfo(portfolioInfoModel);
 		}
 		//Portfolio Data
 		portfolioInfoDao.deletePortfolioData(portfolioId);
-		List<PortfolioData> dataList = portfolioDataForm.getPortfolioDatas();
+		List<PortfolioDataModel> dataList = portfolioDataModelForm.getPortfolioDatas();
 		for (int dataIndex = 0; dataIndex < dataList.size(); dataIndex++){
-			PortfolioData portfolioData = dataList.get(dataIndex);
+			PortfolioDataModel portfolioData = dataList.get(dataIndex);
 			String flag = portfolioData.getFlag();
 			if (flag != null){
 				portfolioData.setPortfolioId(portfolioId);				
@@ -69,7 +69,7 @@ public class PortfolioInfoServiceImpl implements PortfolioInfoService{
 	}
 	
 	@Override
-	public List<PortfolioData> getDataLists(String portfolioId) {
+	public List<PortfolioDataModel> getDataLists(String portfolioId) {
 		return portfolioInfoDao.getDataListsById(portfolioId);
 	}	
 }

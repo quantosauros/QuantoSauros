@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.settings;
 
-public class ProcessInfo {
+public class ProcessInfoModel {
 
 	private String procId;
 	private String procNM;

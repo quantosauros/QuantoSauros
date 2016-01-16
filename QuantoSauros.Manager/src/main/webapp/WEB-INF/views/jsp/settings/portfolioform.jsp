@@ -19,7 +19,7 @@
 			</div>
 			<div class="row">			
 				<c:choose>
-					<c:when test="${portfolioInfo['new']}">
+					<c:when test="${portfolioInfoModel['new']}">
 						<h1>Add Portfolio</h1>
 					</c:when>
 					<c:otherwise>
@@ -29,19 +29,19 @@
 				<br />
 							
 				<spring:url value="/settings/portfolio" var="portfolioActionUrl" />								
-				<form:form class="form-horizontal" method="post" name="formData" modelAttribute="portfolioDataForm"  action="${portfolioActionUrl}">
-					<input type="hidden" name="portfolioId" value="${portfolioInfo.portfolioId}">
+				<form:form class="form-horizontal" method="post" name="formData" modelAttribute="portfolioDataModelForm"  action="${portfolioActionUrl}">
+					<input type="hidden" name="portfolioId" value="${portfolioInfoModel.portfolioId}">
 					
 					<div class="form-group">
 						<label class="col-sm-2 control-label"> Portfolio Name </label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="portfolioNM" placeholder="Portfolio Name" value="${portfolioInfo.portfolioNM}">
+							<input type="text" class="form-control" name="portfolioNM" placeholder="Portfolio Name" value="${portfolioInfoModel.portfolioNM}">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label"> Description </label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="description" placeholder="Description" value="${portfolioInfo.description}">
+							<input type="text" class="form-control" name="description" placeholder="Description" value="${portfolioInfoModel.description}">
 						</div>
 					</div>
 
@@ -58,7 +58,7 @@
 								<th>Option Type</th>							
 							</tr>
 						</thead>					
-						<c:forEach var="portfolioData" items="${portfolioDataForm.portfolioDatas}" varStatus="status">
+						<c:forEach var="portfolioData" items="${portfolioDataModelForm.portfolioDatas}" varStatus="status">
 						<tr>	
 							<td>				
 								<c:choose>																
@@ -86,7 +86,7 @@
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 							<c:choose>
-								<c:when test="${portfolioInfo['new']}">
+								<c:when test="${portfolioInfoModel['new']}">
 									<button type="submit" class="btn-lg btn-primary pull-right">Add</button>
 								</c:when>
 								<c:otherwise>

@@ -2,13 +2,13 @@ package com.quantosauros.manager.service.settings;
 
 import java.util.List;
 
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 
 public interface ProcessInfoService {
 
-	List<ProcessInfo> selectProcessInfo();
-	ProcessInfo findByProcId(String procId);
+	List<ProcessInfoModel> selectProcessInfo();
+	ProcessInfoModel findByProcId(String procId);
 	String getMaxProcId();
-	void saveOrUpdate(ProcessInfo processInfo);	
+	void saveOrUpdate(ProcessInfoModel processInfoModel);	
 	void delete(String procId);
 }

@@ -22,7 +22,7 @@ import com.quantosauros.common.date.Date;
 import com.quantosauros.manager.chart.CreateHighChart;
 import com.quantosauros.manager.model.products.InstrumentInfo;
 import com.quantosauros.manager.model.results.DeltaInfo;
-import com.quantosauros.manager.model.settings.ProcessInfo;
+import com.quantosauros.manager.model.settings.ProcessInfoModel;
 import com.quantosauros.manager.service.products.InstrumentInfoService;
 import com.quantosauros.manager.service.results.DeltaInfoService;
 import com.quantosauros.manager.service.settings.ProcessInfoService;
@@ -193,10 +193,10 @@ public class DeltaChartController {
 	
 	private void populateModel(Model model){
 		//ProcessInfoList
-		List<ProcessInfo> processInfoList = processInfoService.selectProcessInfo();
+		List<ProcessInfoModel> processInfoList = processInfoService.selectProcessInfo();
 		Map<String, String> processList = new LinkedHashMap<>();
 		for (int index = 0; index < processInfoList.size(); index++){
-			ProcessInfo processInfo = processInfoList.get(index);
+			ProcessInfoModel processInfo = processInfoList.get(index);
 			String procId = processInfo.getProcId();
 			String procNM = processInfo.getProcNM();
 			

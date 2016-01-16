@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.settings;
 
-public class PortfolioData {
+public class PortfolioDataModel {
 
 	protected String portfolioId;
 	protected String instrumentCd;	

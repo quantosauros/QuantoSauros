@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.settings;
 
-public class PortfolioInfo {
+public class PortfolioInfoModel {
 
 	private String portfolioId;
 	private String portfolioNM;
