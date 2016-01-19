@@ -1,7 +1,5 @@
 package com.quantosauros.manager.dao.products;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,7 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.products.ProductInfo;
+import com.quantosauros.manager.model.products.ProductInfoModel;
 
 @Component("productInfoDao")
 public class MySqlProductInfoDao implements ProductInfoDao{	
@@ -20,21 +18,34 @@ public class MySqlProductInfoDao implements ProductInfoDao{
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 
-	@Override
-	public void insertProductInfo(ProductInfo productInfo){
+	public ProductInfoModel selectProductInfoByInstrumentCd(String instrumentCd){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			Map params = new HashMap<String, String>();
-			params.put("productCd", productInfo.getInstrumentCd());
-			params.put("issueDt", productInfo.getIssueDt());
-			params.put("mrtyDt", productInfo.getMrtyDt());
-			params.put("productCcyCd", productInfo.getCcyCd());			
-			params.put("optionTypeCd", productInfo.getOptionTypeCd());
-			params.put("principalExchCd", productInfo.getPrincipalExchCd());
+			return sqlSession.selectOne("com.quantosauros.manager.dao.ProductInfo.getProductInfoByInstrumentCd", 
+					instrumentCd);
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	@Override
+	public void insertProductInfo(ProductInfoModel productInfoModel){
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		try {
+//			Map params = new HashMap<String, String>();
+//			params.put("productCd", productInfoModel.getInstrumentCd());
+//			params.put("issueDt", productInfoModel.getIssueDt());
+//			params.put("mrtyDt", productInfoModel.getMrtyDt());
+//			params.put("productCcyCd", productInfoModel.getCcyCd());			
+//			params.put("optionTypeCd", productInfoModel.getOptionTypeCd());
+//			params.put("principalExchCd", productInfoModel.getPrincipalExchCd());
+//			
+//			sqlSession.insert("com.quantosauros.manager.dao.ProductInfo.insertProductInfo", params);
 			
-			sqlSession.insert("com.quantosauros.manager.dao.ProductInfo.insertProductInfo", params);
+			sqlSession.insert("com.quantosauros.manager.dao.ProductInfo.insertProductInfo", productInfoModel);
 			
 		} finally {
+			sqlSession.commit();
 			sqlSession.close();
 		}
 	}

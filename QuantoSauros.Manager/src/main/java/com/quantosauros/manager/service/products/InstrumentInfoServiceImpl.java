@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantosauros.manager.dao.products.InstrumentInfoDao;
-import com.quantosauros.manager.model.products.InstrumentInfo;
+import com.quantosauros.manager.model.products.InstrumentInfoModel;
 
 @Service("instrumentInfoService")
 public class InstrumentInfoServiceImpl implements InstrumentInfoService {
@@ -19,12 +19,12 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
 	}
 	
 	@Override
-	public List<InstrumentInfo> getLists() {	
+	public List<InstrumentInfoModel> getLists() {	
 		return instrumentInfoDao.getLists();
 	}
 
 	@Override
-	public InstrumentInfo getOne(String instrumentCd) {		
+	public InstrumentInfoModel getOne(String instrumentCd) {		
 		return instrumentInfoDao.getOne(instrumentCd);
 	}
 	

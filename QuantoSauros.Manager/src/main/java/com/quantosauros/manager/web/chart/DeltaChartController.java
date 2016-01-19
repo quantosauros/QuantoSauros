@@ -20,7 +20,7 @@ import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.SouthKoreaCalendar;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.manager.chart.CreateHighChart;
-import com.quantosauros.manager.model.products.InstrumentInfo;
+import com.quantosauros.manager.model.products.InstrumentInfoModel;
 import com.quantosauros.manager.model.results.DeltaInfo;
 import com.quantosauros.manager.model.settings.ProcessInfoModel;
 import com.quantosauros.manager.service.products.InstrumentInfoService;
@@ -204,11 +204,11 @@ public class DeltaChartController {
 		}
 		model.addAttribute("processList", processList);		
 		//Instrument Code
-		List<InstrumentInfo> instrumentInfoList = instrumentInfoService.getLists();
+		List<InstrumentInfoModel> instrumentInfoModelList = instrumentInfoService.getLists();
 		Map<String, String> instrumentList = new LinkedHashMap<>();
-		for (int index = 0; index < instrumentInfoList.size(); index++){
-			InstrumentInfo instrumentInfo = instrumentInfoList.get(index);
-			String instrumentCd = instrumentInfo.getInstrumentCd();			
+		for (int index = 0; index < instrumentInfoModelList.size(); index++){
+			InstrumentInfoModel instrumentInfoModel = instrumentInfoModelList.get(index);
+			String instrumentCd = instrumentInfoModel.getInstrumentCd();			
 			
 			instrumentList.put(instrumentCd, instrumentCd);			
 		}

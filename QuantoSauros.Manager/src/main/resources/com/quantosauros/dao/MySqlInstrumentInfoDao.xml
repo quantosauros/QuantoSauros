@@ -4,7 +4,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantosauros.manager.dao.InstrumentInfo">
-  <resultMap type="instrumentInfo" id="instrumentInfoResultMap">    
+  <resultMap type="instrumentInfoModel" id="instrumentInfoResultMap">    
     <result column="INSTRUMENT_CD"      property="instrumentCd"/>
     <result column="CCY_CD"      property="ccyCd"/>
     <result column="ISSUE_DT"      property="issueDt"/>    

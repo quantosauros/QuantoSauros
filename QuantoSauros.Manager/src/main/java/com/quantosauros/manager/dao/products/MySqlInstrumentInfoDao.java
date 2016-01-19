@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.products.InstrumentInfo;
+import com.quantosauros.manager.model.products.InstrumentInfoModel;
 
 @Component("instrumentInfoDao")
 public class MySqlInstrumentInfoDao implements InstrumentInfoDao {
@@ -20,7 +20,7 @@ public class MySqlInstrumentInfoDao implements InstrumentInfoDao {
 	}
 	
 	@Override
-	public List<InstrumentInfo> getLists() {
+	public List<InstrumentInfoModel> getLists() {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			return sqlSession.selectList("com.quantosauros.manager.dao.InstrumentInfo.selectInstrumentInfo");
@@ -28,7 +28,7 @@ public class MySqlInstrumentInfoDao implements InstrumentInfoDao {
 			sqlSession.close();
 		}
 	}
-	public InstrumentInfo getOne(String instrumentCd) {
+	public InstrumentInfoModel getOne(String instrumentCd) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {			
 			HashMap<String , Object> paramMap = new HashMap<>();

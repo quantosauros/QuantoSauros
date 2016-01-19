@@ -8,7 +8,7 @@ import com.quantosauros.manager.dao.products.ProductLegDao;
 import com.quantosauros.manager.dao.products.ProductLegDataDao;
 import com.quantosauros.manager.dao.products.ProductOptionScheduleDao;
 import com.quantosauros.manager.dao.products.ProductScheduleDao;
-import com.quantosauros.manager.model.products.ProductInfo;
+import com.quantosauros.manager.model.products.ProductInfoModel;
 
 @Service("productRegistrationService")
 public class ProductRegistrationServiceImpl 
@@ -45,11 +45,14 @@ public class ProductRegistrationServiceImpl
 		this.productScheduleDao = productScheduleDao;
 	}
 	
-	public void register(ProductInfo productInfo){
+	public void register(ProductInfoModel productInfoModel){
 		
-		productInfoDao.insertProductInfo(productInfo);		
+		productInfoDao.insertProductInfo(productInfoModel);		
 		
 	}
 	
+	public ProductInfoModel getProductInfoModelByInstrumentCd(String instrumentCd){
+		return productInfoDao.selectProductInfoByInstrumentCd(instrumentCd);
+	}
 	
 }

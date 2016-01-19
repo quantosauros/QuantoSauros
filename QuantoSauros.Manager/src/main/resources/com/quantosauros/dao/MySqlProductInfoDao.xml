@@ -4,8 +4,38 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantosauros.manager.dao.ProductInfo">
+    <resultMap type="productInfoModel" id="productInfoResultMap">            
+	    <result column="INSTRUMENT_CD"      property="instrumentCd"/>
+	    <result column="ISSUE_DT"      property="issueDt"/>
+	    <result column="MATURITY_DT"      property="mrtyDt"/>
+	    <result column="CCY_CD"      property="ccyCd"/>
+	    <result column="PRINCIPAL_EXCH_CD"      property="principalExchCd"/>
+	    <result column="OPTION_TYPE_CD"      property="optionTypeCd"/>	    
+    </resultMap>
   
-	<insert id="insertProductInfo">
+  	<select id="getProductInfoByInstrumentCd" parameterType="String" resultMap="productInfoResultMap">
+  		SELECT 
+  			INSTRUMENT_CD, ISSUE_DT, MATURITY_DT, CCY_CD, PRINCIPAL_EXCH_CD, OPTION_TYPE_CD
+  		FROM
+  			PRODUCT_INFO
+  		WHERE
+  			INSTRUMENT_CD = #{instrumentCd}
+  	</select>
+  
+	<insert id="insertProductInfo" parameterType="com.quantosauros.manager.model.products.ProductInfoModel">
+		INSERT INTO PRODUCT_INFO
+			(INSTRUMENT_CD, ISSUE_DT, 
+			MATURITY_DT, CCY_CD, PRINCIPAL_EXCH_CD, 
+			OPTION_TYPE_CD,
+			CRTN_TIME, MODIFY_TIME) 
+		VALUES 
+			(#{instrumentCd}, #{issueDt}, 
+			#{mrtyDt}, #{ccyCd}, #{principalExchCd}, 
+			#{optionTypeCd}, 
+			now(), now())		
+	</insert>  
+  
+  	<!-- <insert id="insertProductInfo" parameterType="com.quantosauros.manager.model.products.ProductInfoModel">
 		INSERT INTO PRODUCT_INFO
 			(INSTRUMENT_CD, ISSUE_DT, 
 			MATURITY_DT, CCY_CD, PRINCIPAL_EXCH_CD, 
@@ -16,6 +46,6 @@
 			#{mrtyDt}, #{productCcyCd}, #{principalExchCd}, 
 			#{optionTypeCd}, 
 			now(), now())		
-	</insert>  
+	</insert>   -->
   
 </mapper>

@@ -1,12 +1,12 @@
 package com.quantosauros.manager.dao.products;
 
-import java.util.List;
 import java.util.Map;
 
-import com.quantosauros.manager.model.products.ProductInfo;
+import com.quantosauros.manager.model.products.ProductInfoModel;
 
 public interface ProductInfoDao {
-	
-	void insertProductInfo(ProductInfo productInfo);
+
+	ProductInfoModel selectProductInfoByInstrumentCd(String instrumentCd);
+	void insertProductInfo(ProductInfoModel productInfoModel);
 	void insertProductInfo(Map params);
 }

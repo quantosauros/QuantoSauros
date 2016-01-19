@@ -42,7 +42,7 @@ import com.quantosauros.manager.model.pricer.LegPricerModelForm;
 import com.quantosauros.manager.model.pricer.MarketInfoPricerModel;
 import com.quantosauros.manager.model.pricer.ProductInfoPricerModel;
 import com.quantosauros.manager.model.pricer.UnderlyingInfoPricerModel;
-import com.quantosauros.manager.model.products.InstrumentInfo;
+import com.quantosauros.manager.model.products.InstrumentInfoModel;
 import com.quantosauros.manager.service.products.InstrumentInfoService;
 import com.quantosauros.manager.web.chart.DeltaChartController;
 
@@ -369,11 +369,11 @@ public class PricerController {
 	
 	private void populateModel(Model model){
 		//Instrument Code
-		List<InstrumentInfo> instrumentInfoList = instrumentInfoService.getLists();
+		List<InstrumentInfoModel> instrumentInfoModelList = instrumentInfoService.getLists();
 		Map<String, String> instrumentList = new LinkedHashMap<>();
-		for (int index = 0; index < instrumentInfoList.size(); index++){
-			InstrumentInfo instrumentInfo = instrumentInfoList.get(index);
-			String instrumentCd = instrumentInfo.getInstrumentCd();			
+		for (int index = 0; index < instrumentInfoModelList.size(); index++){
+			InstrumentInfoModel instrumentInfoModel = instrumentInfoModelList.get(index);
+			String instrumentCd = instrumentInfoModel.getInstrumentCd();			
 			
 			instrumentList.put(instrumentCd, instrumentCd);			
 		}
