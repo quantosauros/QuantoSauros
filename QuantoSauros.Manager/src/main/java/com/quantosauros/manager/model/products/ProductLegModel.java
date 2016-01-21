@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.products;
 
-public class ProductLeg {
+public class ProductLegModel {
 
 	private String instrumentCd;
 	private String payRcvCd;

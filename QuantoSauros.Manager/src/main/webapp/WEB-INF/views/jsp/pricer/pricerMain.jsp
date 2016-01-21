@@ -16,7 +16,7 @@
 			<div id="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
-							<h1 class="page-header"> Pricer </h1>
+						<h1 class="page-header"> Pricer </h1>
 					</div>
 				</div>	
 				<div class="row">
@@ -122,22 +122,24 @@
 														<div class="panel-heading">
 															<h3 class="panel-title"> ${resultRiskFactor[deltaLegIndex.index]} </h3>
 														</div>
-														<div class="panel-body">													
+														<div class="panel-body">						
 															<div class="list-group">
-																<table class="table table-striped">
-																	<thead>
-																		<tr>
-																			<th>Vertex</th>
-																			<th>Delta</th>
-																		</tr>
-																	</thead>
-																	<c:forEach var="delta" items="${deltaRF}" varStatus="deltaIndex">
-																		<tr>
-																			<td>${resultVertex[deltaLegIndex.index][deltaIndex.index]}</td>
-																			<td>${delta}</td>
-																		</tr>
-																	</c:forEach>	
-																</table>
+																<div class="table-responsive">
+																	<table class="table table-striped">
+																		<thead>
+																			<tr>
+																				<th>Vertex</th>
+																				<th>Delta</th>
+																			</tr>
+																		</thead>
+																		<c:forEach var="delta" items="${deltaRF}" varStatus="deltaIndex">
+																			<tr>
+																				<td>${resultVertex[deltaLegIndex.index][deltaIndex.index]}</td>
+																				<td>${delta}</td>
+																			</tr>
+																		</c:forEach>	
+																	</table>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -260,29 +262,30 @@
 																</c:choose>
 															</div>											
 														</c:forEach>	
-														
-														<table class="table table-striped">
-															<thead>
-																<tr>
-																	<th>Start Date</th>
-																	<th>End Date</th>
-																	<th>Payment Date</th>
-																	<th>Coupon Type</th>
-																	<th>Coupon</th>
-																	<th>Condition</th>
-																</tr>
-															</thead>
-															<c:forEach items="${legPricerModelForm.legPeriodPricerModels[status.index].startDt}" varStatus="status2">
-																<tr>
-																	<td>${legPricerModelForm.legPeriodPricerModels[status.index].startDt[status2.index]}</td>
-																	<td>${legPricerModelForm.legPeriodPricerModels[status.index].endDt[status2.index]}</td>
-																	<td>${legPricerModelForm.legPeriodPricerModels[status.index].paymentDt[status2.index]}</td>
-																	<td>${legPricerModelForm.legPeriodPricerModels[status.index].couponType[status2.index]}</td>
-																	<td>${legPricerModelForm.legPeriodPricerModels[status.index].coupon[status2.index]}</td>
-																	<td>${legPricerModelForm.legPeriodPricerModels[status.index].condition[status2.index]}</td>
-																</tr>												
-															</c:forEach>
-														</table>																	
+														<div class="table-responsive">														
+															<table class="table table-striped">
+																<thead>
+																	<tr>
+																		<th>Start Date</th>
+																		<th>End Date</th>
+																		<th>Payment Date</th>
+																		<th>Coupon Type</th>
+																		<th>Coupon</th>
+																		<th>Condition</th>
+																	</tr>
+																</thead>
+																<c:forEach items="${legPricerModelForm.legPeriodPricerModels[status.index].startDt}" varStatus="status2">
+																	<tr>
+																		<td>${legPricerModelForm.legPeriodPricerModels[status.index].startDt[status2.index]}</td>
+																		<td>${legPricerModelForm.legPeriodPricerModels[status.index].endDt[status2.index]}</td>
+																		<td>${legPricerModelForm.legPeriodPricerModels[status.index].paymentDt[status2.index]}</td>
+																		<td>${legPricerModelForm.legPeriodPricerModels[status.index].couponType[status2.index]}</td>
+																		<td>${legPricerModelForm.legPeriodPricerModels[status.index].coupon[status2.index]}</td>
+																		<td>${legPricerModelForm.legPeriodPricerModels[status.index].condition[status2.index]}</td>
+																	</tr>												
+																</c:forEach>
+															</table>
+														</div>																	
 													</div>
 												</div>
 											</div>
@@ -308,22 +311,24 @@
 																<label>Day Count Convention</label>
 																${interestRateCurveModel.dcf}
 																<br>
-																<table class="table table-striped">
-																	<thead>
-																		<tr>
-																			<th>Vertex</th>
-																			<th>Rate</th>
-																			<th>Rate Type</th>																			
-																		</tr>
-																	</thead>
-																	<c:forEach items="${interestRateCurveModel.rate}" varStatus="rateIndex">
-																		<tr>																																
-																			<td>${interestRateCurveModel.vertex[rateIndex.index]}</td>
-																			<td>${interestRateCurveModel.rate[rateIndex.index]}</td>
-																			<td>${interestRateCurveModel.rateType[rateIndex.index]}</td>
-																		</tr>																												
-																	</c:forEach>	
-																</table>
+																<div class="table-responsive">																
+																	<table class="table table-striped table-responsive">
+																		<thead>
+																			<tr>
+																				<th>Vertex</th>
+																				<th>Rate</th>
+																				<th>Rate Type</th>																			
+																			</tr>
+																		</thead>
+																		<c:forEach items="${interestRateCurveModel.rate}" varStatus="rateIndex">
+																			<tr>																																
+																				<td>${interestRateCurveModel.vertex[rateIndex.index]}</td>
+																				<td>${interestRateCurveModel.rate[rateIndex.index]}</td>
+																				<td>${interestRateCurveModel.rateType[rateIndex.index]}</td>
+																			</tr>																												
+																		</c:forEach>	
+																	</table>
+																</div>
 															</div>
 															<div class = "list-group-item">																
 																<label>Mean Reversion 1F </label>																
@@ -359,22 +364,24 @@
 														<label>Day Count Convention</label>
 														${discMarketInfoPricerModel.interestRateCurveModels[0].dcf}
 														<br>
-														<table class="table table-striped">
-															<thead>
-																<tr>
-																	<th>Vertex</th>
-																	<th>Rate</th>
-																	<th>Rate Type</th>																			
-																</tr>
-															</thead>
-															<c:forEach items="${discMarketInfoPricerModel.interestRateCurveModels[0].rate}" varStatus="discIndex">
-																<tr>														
-																	<td>${discMarketInfoPricerModel.interestRateCurveModels[0].vertex[discIndex.index]}</td>
-																	<td>${discMarketInfoPricerModel.interestRateCurveModels[0].rate[discIndex.index]}</td>
-																	<td>${discMarketInfoPricerModel.interestRateCurveModels[0].rateType[discIndex.index]}</td>
-																</tr>
-															</c:forEach>
-														</table>	
+														<div class="table-responsive">
+															<table class="table table-striped">
+																<thead>
+																	<tr>
+																		<th>Vertex</th>
+																		<th>Rate</th>
+																		<th>Rate Type</th>																			
+																	</tr>
+																</thead>
+																<c:forEach items="${discMarketInfoPricerModel.interestRateCurveModels[0].rate}" varStatus="discIndex">
+																	<tr>														
+																		<td>${discMarketInfoPricerModel.interestRateCurveModels[0].vertex[discIndex.index]}</td>
+																		<td>${discMarketInfoPricerModel.interestRateCurveModels[0].rate[discIndex.index]}</td>
+																		<td>${discMarketInfoPricerModel.interestRateCurveModels[0].rateType[discIndex.index]}</td>
+																	</tr>
+																</c:forEach>
+															</table>
+														</div>	
 													</div>
 													<div class = "list-group-item">
 														<label>Mean Reversion 1F </label>

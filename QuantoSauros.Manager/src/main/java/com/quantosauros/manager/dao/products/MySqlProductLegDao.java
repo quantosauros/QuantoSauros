@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.products.ProductLeg;
+import com.quantosauros.manager.model.products.ProductLegModel;
 
 @Component("productLegDao")
 public class MySqlProductLegDao implements ProductLegDao{	
@@ -20,31 +20,31 @@ public class MySqlProductLegDao implements ProductLegDao{
 	}
 	
 	@Override
-	public void insertProductLeg(ProductLeg productLeg) throws Exception {
+	public void insertProductLeg(ProductLegModel productLegModel) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			Map params = new HashMap<String, String>();
-			params.put("instrumentCd", productLeg.getInstrumentCd());
-			params.put("payRcvCd", productLeg.getPayRcvCd());
-			params.put("TypeCd", productLeg.getLegTypeCd());
-			params.put("UndTypeCd", productLeg.getUnderlyingType());
-			params.put("CondiTypeCd", productLeg.getConditionType());
-			params.put("Notional", productLeg.getNotionalPrincipal());
-			params.put("CcyCd", productLeg.getCcyCd());
-			params.put("DCF", productLeg.getDayCountConvention());
-			params.put("CapFloorCd", productLeg.getCapFloorCd());
-			params.put("IrCd1", productLeg.getCouponIrcCd1());
-			params.put("IrTenor1", productLeg.getCouponIrcMrtyCd1());
-			params.put("IrTypeCd1", productLeg.getCouponIrcTypeCd1());
-			params.put("IrCouponFreq1", productLeg.getCouponIrcCouponFreqCd1());
-			params.put("IrCd2", productLeg.getCouponIrcCd2());
-			params.put("IrTenor2", productLeg.getCouponIrcMrtyCd2());
-			params.put("IrTypeCd2", productLeg.getCouponIrcTypeCd2());
-			params.put("IrCouponFreq2", productLeg.getCouponIrcCouponFreqCd2());
-			params.put("IrCd3", productLeg.getCouponIrcCd3());
-			params.put("IrTenor3", productLeg.getCouponIrcMrtyCd3());
-			params.put("IrTypeCd3", productLeg.getCouponIrcTypeCd3());
-			params.put("IrCouponFreq3", productLeg.getCouponIrcCouponFreqCd3());
+			params.put("instrumentCd", productLegModel.getInstrumentCd());
+			params.put("payRcvCd", productLegModel.getPayRcvCd());
+			params.put("TypeCd", productLegModel.getLegTypeCd());
+			params.put("UndTypeCd", productLegModel.getUnderlyingType());
+			params.put("CondiTypeCd", productLegModel.getConditionType());
+			params.put("Notional", productLegModel.getNotionalPrincipal());
+			params.put("CcyCd", productLegModel.getCcyCd());
+			params.put("DCF", productLegModel.getDayCountConvention());
+			params.put("CapFloorCd", productLegModel.getCapFloorCd());
+			params.put("IrCd1", productLegModel.getCouponIrcCd1());
+			params.put("IrTenor1", productLegModel.getCouponIrcMrtyCd1());
+			params.put("IrTypeCd1", productLegModel.getCouponIrcTypeCd1());
+			params.put("IrCouponFreq1", productLegModel.getCouponIrcCouponFreqCd1());
+			params.put("IrCd2", productLegModel.getCouponIrcCd2());
+			params.put("IrTenor2", productLegModel.getCouponIrcMrtyCd2());
+			params.put("IrTypeCd2", productLegModel.getCouponIrcTypeCd2());
+			params.put("IrCouponFreq2", productLegModel.getCouponIrcCouponFreqCd2());
+			params.put("IrCd3", productLegModel.getCouponIrcCd3());
+			params.put("IrTenor3", productLegModel.getCouponIrcMrtyCd3());
+			params.put("IrTypeCd3", productLegModel.getCouponIrcTypeCd3());
+			params.put("IrCouponFreq3", productLegModel.getCouponIrcCouponFreqCd3());
 			
 			sqlSession.insert("com.quantosauros.manager.dao.ProductLeg.insertProductLeg", params);
 			
