@@ -497,6 +497,8 @@ public class testAPSNoteWithCondiOnR1_2F extends TestBase {
 		Money price = product.getPrice(
 				legUnderlyingInfos, discountUnderlyingInfo,
 				correlations);
+
+		double epsilon = 0.0001;
 		
 		Money leg1Price = product.getLegPrice(0);
 //		Money leg2Price = product.getLegPrice(1);
@@ -589,8 +591,8 @@ public class testAPSNoteWithCondiOnR1_2F extends TestBase {
 				lowerLimit, upperLimit, coupon,
 				refRates);
 		
-		double epsilon = 0.0001;
 		
+		log("====BUMPING====");
 		for (int legIndex = 0; legIndex < legNum; legIndex++){
 			
 			CouponType[] couponType =
@@ -616,139 +618,8 @@ public class testAPSNoteWithCondiOnR1_2F extends TestBase {
 		for (int i = 0; i < discountAAD.length; i++){
 			log(discountAAD[i]);
 		}
-		
-		System.out.println("---------------------------------------------------");
-		System.out.println("------------      Bumping Method    ---------------");
-		System.out.println("---------------------------------------------------");
-		
-		System.out.println("==="+0 + ", " + 0 +"===");	
-		for (int i = 0; i < _structuredLegCurve1.getSpotRates().length; i++){	
-			InterestRate[] spotRates = _structuredLegCurve1.getSpotRates().clone();
-			InterestRate[] upSpotRates = _structuredLegCurve1.getSpotRates().clone();
-			InterestRate[] downSpotRates = _structuredLegCurve1.getSpotRates().clone();
-//			InterestRateCurve upCurve = _structuredLegCurve1;
-//			InterestRateCurve downCurve = _structuredLegCurve1;
-			
-			double upSpot = spotRates[i].getRate() + epsilon;
-			upSpotRates[i] = new InterestRate(spotRates[i].getVertex(), upSpot);
-			
-			double downSpot = spotRates[i].getRate() - epsilon;
-			downSpotRates[i] = new InterestRate(spotRates[i].getVertex(), downSpot);
-			
-			InterestRateCurve upCurve = new InterestRateCurve(_asOfDate, upSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-			InterestRateCurve downCurve = new InterestRateCurve(_asOfDate, downSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-			
-			legUnderlyingInfos[0][0] = new RateMarketInfo(
-					upCurve, _structuredLegHWParam1, _structuredLegHWVol1			
-			);
-			Money upprice = product.getPrice(
-					legUnderlyingInfos,
-					discountUnderlyingInfo,					
-					correlations);
-			
-			legUnderlyingInfos[0][0] = new RateMarketInfo(
-					downCurve, _structuredLegHWParam1, _structuredLegHWVol1			
-			);
-			Money downprice = product.getPrice(
-					legUnderlyingInfos,
-					discountUnderlyingInfo,
-					correlations);
-			
-			
-			System.out.println("vertex: " + spotRates[i].getVertex() + ", delta: " + upprice.subtract(downprice));			
-		}
-		
-		legUnderlyingInfos[0][0] = new RateMarketInfo(
-				_structuredLegCurve1, _structuredLegHWParam1, _structuredLegHWVol1			
-		);
-		legUnderlyingInfos[0][1] = new RateMarketInfo(
-				_structuredLegCurve1, _structuredLegHWParam1, _structuredLegHWVol1			
-		);
-		
-		System.out.println("==="+0 + ", " + 1 +"===");	
-		for (int i = 0; i < _structuredLegCurve1.getSpotRates().length; i++){	
-			InterestRate[] spotRates = _structuredLegCurve1.getSpotRates().clone();
-			InterestRate[] upSpotRates = _structuredLegCurve1.getSpotRates().clone();
-			InterestRate[] downSpotRates = _structuredLegCurve1.getSpotRates().clone();
-//			InterestRateCurve upCurve = _structuredLegCurve1;
-//			InterestRateCurve downCurve = _structuredLegCurve1;
-			
-			double upSpot = spotRates[i].getRate() + epsilon;
-			upSpotRates[i] = new InterestRate(spotRates[i].getVertex(), upSpot);
-			
-			double downSpot = spotRates[i].getRate() - epsilon;
-			downSpotRates[i] = new InterestRate(spotRates[i].getVertex(), downSpot);
-			
-			InterestRateCurve upCurve = new InterestRateCurve(_asOfDate, upSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-			InterestRateCurve downCurve = new InterestRateCurve(_asOfDate, downSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-			
-			legUnderlyingInfos[0][1] = new RateMarketInfo(
-					upCurve, _structuredLegHWParam1, _structuredLegHWVol1			
-			);
-			Money upprice = product.getPrice(
-					legUnderlyingInfos,
-					discountUnderlyingInfo,
-					correlations);
 
-			legUnderlyingInfos[0][1] = new RateMarketInfo(
-					downCurve, _structuredLegHWParam1, _structuredLegHWVol1			
-			);
-			Money downprice = product.getPrice(
-					legUnderlyingInfos,
-					discountUnderlyingInfo,
-					correlations);
-			
-			
-			System.out.println("vertex: " + spotRates[i].getVertex() + ", delta: " + upprice.subtract(downprice));
-			
-		}
-		legUnderlyingInfos[0][0] = new RateMarketInfo(
-				_structuredLegCurve1, _structuredLegHWParam1, _structuredLegHWVol1			
-		);
-		legUnderlyingInfos[0][1] = new RateMarketInfo(
-				_structuredLegCurve1, _structuredLegHWParam1, _structuredLegHWVol1			
-		);
-		
-		System.out.println("===discount===");	
-		for (int i = 0; i < _discountCurve.getSpotRates().length; i++){	
-			InterestRate[] spotRates = _discountCurve.getSpotRates().clone();
-			InterestRate[] upSpotRates = _discountCurve.getSpotRates().clone();
-			InterestRate[] downSpotRates = _discountCurve.getSpotRates().clone();
-//			InterestRateCurve upCurve = _structuredLegCurve1;
-//			InterestRateCurve downCurve = _structuredLegCurve1;
-			
-			double upSpot = spotRates[i].getRate() + epsilon;
-			upSpotRates[i] = new InterestRate(spotRates[i].getVertex(), upSpot);
-			
-			double downSpot = spotRates[i].getRate() - epsilon;
-			downSpotRates[i] = new InterestRate(spotRates[i].getVertex(), downSpot);
-			
-			InterestRateCurve upCurve = new InterestRateCurve(_asOfDate, upSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-			InterestRateCurve downCurve = new InterestRateCurve(_asOfDate, downSpotRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
 
-			
-			discountUnderlyingInfo = new RateMarketInfo(
-					upCurve, _discountHWParam, _discountHWVol);
-			Money upprice = product.getPrice(
-					legUnderlyingInfos,
-					discountUnderlyingInfo,
-					correlations);
-			
-			discountUnderlyingInfo = new RateMarketInfo(
-					downCurve, _discountHWParam, _discountHWVol);
-			
-			Money downprice = product.getPrice(
-					legUnderlyingInfos,
-					discountUnderlyingInfo,
-					correlations);
-			
-			
-			System.out.println("vertex: " + spotRates[i].getVertex() + ", delta: " + upprice.subtract(downprice));
-			
-		}
-		
-		
-		
 		
 	}
 
