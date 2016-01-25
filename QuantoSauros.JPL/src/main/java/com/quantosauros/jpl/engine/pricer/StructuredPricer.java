@@ -7,6 +7,7 @@ import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.TypeDef.OptionType;
 import com.quantosauros.common.TypeDef.PayRcv;
 import com.quantosauros.common.TypeDef.RiskFreeType;
+import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.PaymentPeriod;
@@ -124,6 +125,13 @@ public class StructuredPricer extends AbstractPricer{
 				double[][] upperLimits = _legCouponInfos[legIndex].getUpperLimits();
 				double[][] lowerLimits = _legCouponInfos[legIndex].getLowerLimits();
 				
+				if(_legCouponInfos[legIndex].getUnderlyingType().equals(UnderlyingType.R1nEQ)){
+					for (int periodIndex = 0; periodIndex < upperLimits[1].length; periodIndex++){
+						lowerLimits[1][periodIndex] = Math.log(lowerLimits[1][periodIndex]);
+						upperLimits[1][periodIndex] = Math.log(upperLimits[1][periodIndex]);
+					}	
+				}
+				
 				double[][] newUpperLimits = new double[condiNum][_periodNum];
 				double[][] newLowerLimits = new double[condiNum][_periodNum];
 				for (int condIndex = 0; condIndex < condiNum; condIndex++){					
@@ -135,7 +143,7 @@ public class StructuredPricer extends AbstractPricer{
 					System.arraycopy(lowerLimits[condIndex], idx, newLowerLimits[condIndex],
 							0, _periodNum);
 					_legCouponInfos[legIndex].setLowerLimits(condIndex, newLowerLimits[condIndex]);
-				}
+				}				
 			}
 			
 			//Leverage

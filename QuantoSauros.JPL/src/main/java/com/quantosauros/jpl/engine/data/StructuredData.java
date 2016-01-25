@@ -128,7 +128,7 @@ public class StructuredData extends AbstractData {
 							accrualTenor += _tenors.get(timeIndex);
 						}
 						break;
-					case R1nR2 :
+					case R1nR2 :						
 						refRate1 = _referenceRates[legIndex][0][simIndex][periodIndex][timeIndex];
 						refRate2 = _referenceRates[legIndex][1][simIndex][periodIndex][timeIndex];
 						if (refRate1 <= upperLimit[0][periodIndex] && 
