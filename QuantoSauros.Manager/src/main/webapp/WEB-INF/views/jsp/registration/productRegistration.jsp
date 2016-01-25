@@ -212,7 +212,7 @@
 															<td><label class="control-label"> Underlying </label></td>
 															<td>
 																<spring:bind path="productModel.productLegModels[0].underlyingType">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}">
+																	<select class="form-control" name="${status.expression}" id="payUndType" onchange="chgCondiType(this);">
 																		<option value ="0"> None </option>
 																		<option value ="1"> R1 </option>
 																		<option value ="2"> R1 - R2 </option> 
@@ -223,7 +223,7 @@
 															</td>
 															<td>
 																<spring:bind path="productModel.productLegModels[1].underlyingType">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}">
+																	<select class="form-control" name="${status.expression}" id="rcvUndType" onchange="chgCondiType(this);">
 																		<option value ="0"> None </option>
 																		<option value ="1"> R1 </option>
 																		<option value ="2"> R1 - R2 </option> 
@@ -237,7 +237,7 @@
 															<td><label class="control-label"> Condition Type </label></td>
 															<td>
 																<spring:bind path="productModel.productLegModels[0].conditionType">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}">
+																	<select class="form-control" name="${status.expression}" id="payConditionType">
 																		<option value ="0"> None </option>
 																		<option value ="1" disabled> R1 </option>
 																		<option value ="2" disabled> R2 </option> 
@@ -253,7 +253,7 @@
 															</td>
 															<td>
 																<spring:bind path="productModel.productLegModels[1].conditionType">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}">
+																	<select class="form-control" name="${status.expression}" id="rcvConditionType">
 																		<option value ="0"> None </option>
 																		<option value ="1" disabled> R1 </option>
 																		<option value ="2" disabled> R2 </option> 
@@ -272,7 +272,7 @@
 															<td><label class="control-label"> Cap/Floor Type </label></td>
 															<td>
 																<spring:bind path="productModel.productLegModels[0].capFloorCd">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}">
+																	<select class="form-control" name="${status.expression}" id="payCapFloorCd">
 																		<option value = "0"> None </option>
 																		<option value = "1"> Cap Only </option>
 																		<option value = "2"> Floor Only </option>
@@ -282,7 +282,7 @@
 															</td>
 															<td>
 																<spring:bind path="productModel.productLegModels[1].capFloorCd">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}">
+																	<select class="form-control" name="${status.expression}" id="rcvCapFloorCd">
 																		<option value = "0"> None </option>
 																		<option value = "1"> Cap Only </option>
 																		<option value = "2"> Floor Only </option>
@@ -293,9 +293,9 @@
 														</tr>
 														<tr>
 															<td><label class="control-label"> IR Code 1 </label></td>
-															<td>
+															<td id="payIrInfo1">
 																<spring:bind path="productModel.productLegModels[0].couponIrcCd1">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "NONE"> None </option>
 																		<option value = "KRWIRS" selected> KRWIRS </option>
 																		<option value = "USDIRS"> USDIRS </option>
@@ -304,26 +304,26 @@
 																	</select>									
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcMrtyCd1">				
-																	<input type="text" class="form-control" name="${status.expression}" id="${status.expression}" value="M3" style="width:15%; display:inline">							
+																	<input type="text" class="form-control" name="${status.expression}" disabled value="M3" style="width:15%; display:inline">							
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcTypeCd1">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "SPOT"> ZERO </option>
 																		<option value = "SWAP"> SWAP </option>
 																		<option value = "RMS"> RMS </option>
 																	</select>								
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcCouponFreqCd1">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:30%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:30%; display:inline">
 																		<option value = "Q"> Quarterly </option>
 																		<option value = "S"> Semi-Annual </option>
 																		<option value = "A"> Annual </option>
 																	</select>								
 																</spring:bind>
 															</td>
-															<td>
+															<td id="rcvIrInfo2">
 																<spring:bind path="productModel.productLegModels[1].couponIrcCd1">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "NONE"> None </option>
 																		<option value = "KRWIRS" selected> KRWIRS </option>
 																		<option value = "USDIRS"> USDIRS </option>
@@ -332,17 +332,17 @@
 																	</select>									
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcMrtyCd1">				
-																	<input type="text" class="form-control" name="${status.expression}" id="${status.expression}" value="M3" style="width:15%; display:inline">							
+																	<input type="text" class="form-control" name="${status.expression}" disabled value="M3" style="width:15%; display:inline">							
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcTypeCd1">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "SPOT"> ZERO </option>
 																		<option value = "SWAP"> SWAP </option>
 																		<option value = "RMS"> RMS </option>
 																	</select>								
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcCouponFreqCd1">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:30%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:30%; display:inline">
 																		<option value = "Q"> Quarterly </option>
 																		<option value = "S"> Semi-Annual </option>
 																		<option value = "A"> Annual </option>
@@ -352,9 +352,9 @@
 														</tr>
 														<tr>
 															<td><label class="control-label"> IR Code 2 </label></td>
-															<td>
+															<td id="payIrInfo2">
 																<spring:bind path="productModel.productLegModels[0].couponIrcCd2">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "NONE"> None </option>
 																		<option value = "KRWIRS" selected> KRWIRS </option>
 																		<option value = "USDIRS"> USDIRS </option>
@@ -363,26 +363,26 @@
 																	</select>									
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcMrtyCd2">				
-																	<input type="text" class="form-control" name="${status.expression}" id="${status.expression}" value="M3" style="width:15%; display:inline">							
+																	<input type="text" class="form-control" name="${status.expression}" disabled value="M3" style="width:15%; display:inline">							
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcTypeCd2">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "SPOT"> ZERO </option>
 																		<option value = "SWAP"> SWAP </option>
 																		<option value = "RMS"> RMS </option>
 																	</select>								
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcCouponFreqCd2">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:30%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:30%; display:inline">
 																		<option value = "Q"> Quarterly </option>
 																		<option value = "S"> Semi-Annual </option>
 																		<option value = "A"> Annual </option>
 																	</select>								
 																</spring:bind>
 															</td>
-															<td>
+															<td id="rcvIrInfo2">
 																<spring:bind path="productModel.productLegModels[1].couponIrcCd2">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "NONE"> None </option>
 																		<option value = "KRWIRS" selected> KRWIRS </option>
 																		<option value = "USDIRS"> USDIRS </option>
@@ -391,17 +391,17 @@
 																	</select>									
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcMrtyCd2">				
-																	<input type="text" class="form-control" name="${status.expression}" id="${status.expression}" value="M3" style="width:15%; display:inline">							
+																	<input type="text" class="form-control" name="${status.expression}" disabled value="M3" style="width:15%; display:inline">							
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcTypeCd2">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "SPOT"> ZERO </option>
 																		<option value = "SWAP"> SWAP </option>
 																		<option value = "RMS"> RMS </option>
 																	</select>								
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcCouponFreqCd2">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:30%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:30%; display:inline">
 																		<option value = "Q"> Quarterly </option>
 																		<option value = "S"> Semi-Annual </option>
 																		<option value = "A"> Annual </option>
@@ -411,9 +411,9 @@
 														</tr>
 														<tr>
 															<td><label class="control-label"> IR Code 3 </label></td>
-															<td>
+															<td id="payIrInfo3">
 																<spring:bind path="productModel.productLegModels[0].couponIrcCd3">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "NONE"> None </option>
 																		<option value = "KRWIRS" selected> KRWIRS </option>
 																		<option value = "USDIRS"> USDIRS </option>
@@ -422,26 +422,26 @@
 																	</select>									
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcMrtyCd3">				
-																	<input type="text" class="form-control" name="${status.expression}" id="${status.expression}" value="M3" style="width:15%; display:inline">							
+																	<input type="text" class="form-control" name="${status.expression}" disabled value="M3" style="width:15%; display:inline">							
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcTypeCd3">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "SPOT"> ZERO </option>
 																		<option value = "SWAP"> SWAP </option>
 																		<option value = "RMS"> RMS </option>
 																	</select>								
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[0].couponIrcCouponFreqCd3">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:30%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:30%; display:inline">
 																		<option value = "Q"> Quarterly </option>
 																		<option value = "S"> Semi-Annual </option>
 																		<option value = "A"> Annual </option>
 																	</select>								
 																</spring:bind>
 															</td>
-															<td>
+															<td id="rcvIrInfo3">
 																<spring:bind path="productModel.productLegModels[1].couponIrcCd3">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "NONE"> None </option>
 																		<option value = "KRWIRS" selected> KRWIRS </option>
 																		<option value = "USDIRS"> USDIRS </option>
@@ -450,17 +450,17 @@
 																	</select>									
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcMrtyCd3">				
-																	<input type="text" class="form-control" name="${status.expression}" id="${status.expression}" value="M3" style="width:15%; display:inline">							
+																	<input type="text" class="form-control" name="${status.expression}" disabled value="M3" style="width:15%; display:inline">							
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcTypeCd3">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:25%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:25%; display:inline">
 																		<option value = "SPOT"> ZERO </option>
 																		<option value = "SWAP"> SWAP </option>
 																		<option value = "RMS"> RMS </option>
 																	</select>								
 																</spring:bind>
 																<spring:bind path="productModel.productLegModels[1].couponIrcCouponFreqCd3">				
-																	<select class="form-control" name="${status.expression}" id="${status.expression}" style="width:30%; display:inline">
+																	<select class="form-control" name="${status.expression}" disabled style="width:30%; display:inline">
 																		<option value = "Q"> Quarterly </option>
 																		<option value = "S"> Semi-Annual </option>
 																		<option value = "A"> Annual </option>
@@ -493,8 +493,14 @@
 														</tr>
 														<tr>
 															<td></td>
-															<td id="paySchedule"></td>
-															<td id="rcvSchedule"></td>
+															<td>
+																<table id ="paySchedule" class="table table-striped"></table>
+															</td>
+															
+															<td>
+																<table id ="rcvSchedule" class="table table-striped"></table>
+															</td>
+															
 														</tr>
 													</tbody>
 												</table>
@@ -519,14 +525,285 @@
 	
 	<jsp:include page="../fragments/footer.jsp" />
 	<script type="text/javascript">
-		function genSchedule(sector){
-			var legCode = sector.id.substring(0,3);
+		function genSchedule(selector){
+			var legCode = selector.id.substring(0,3);
 			var issueDt = $('#issueDt').val().replace(/-/gi,"");
 			var mrtyDt = $('#mrtyDt').val().replace(/-/gi,"");
-			var freq = $('#' + legCode +'CouponFreq').val();
+			var couponFreq = $('#' + legCode +'CouponFreq').val();
+			var jsonStr = './json/scheduleList?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq;
 			
-			$('#' + legCode + 'Schedule').html(issueDt + " " + mrtyDt + " " + freq);
+			$.getJSON(jsonStr, function(data){
+				$('#' + legCode + 'Schedule').empty();				
+				buildScheduleTable(data, legCode)	
+			});			
+		};
+	
+		function buildScheduleTable(data, legCode){
+			var selector = "#" + legCode +"Schedule";
+			var columns = addColumns(data, selector, legCode);
+			var capFloorCd = $('#' + legCode +'CapFloorCd').val();
+			var undTypeCd = $("#" + legCode + "UndType option:selected").val();
+			
+			//Leg Index
+			var legIndex = "-1";
+			if (legCode == "pay"){
+				legIndex = "0";
+			} else if (legCode == "rcv"){
+				legIndex = "1";
+			}			
+						
+			//Generate
+			for (var rowIndex = 0; rowIndex < data.length; rowIndex++){
+				var row$ = $('<tr/>');
+		        var rowIndexStr = "";
+		        if (rowIndex < 10){
+		        	rowIndexStr = "0" + rowIndex;
+		        } else {
+		        	rowIndexStr = rowIndex;
+		        }
+		        var scheduleModelStr = 'productScheduleModels[' + legIndex + '][' + rowIndex + ']';
+		        
+		        for (var colIndex = 0 ; colIndex < columns.length ; colIndex++) {
+		        	var columnValue = columns[colIndex];
+		        	var cellValue = data[rowIndex][columnValue];
+		        	var td$ = $('<td/>');
+		        	if (columnValue == "CapFloor"){
+		        		//CapFloor
+		        		td$.attr({
+		            		'id' : legCode + "CapFloor" + rowIndexStr
+		            	});
+		            	var contents$ = "asd";//genCapFloorContents(tagCode, capFloorTypeCd);
+		            	if (capFloorCd == 0){
+		            		td$.html(contents$).attr({'hidden': true});
+		            	} else {
+		            		td$.html(contents$);	
+		            	}
+		        	} else if (columnValue == "CouponType"){
+		        		//CouponType
+		        		var contents$ = $('<select/>').attr({
+		            		'class': 'form-control', 
+		            		'name': scheduleModelStr + '.couponType',
+		            		'onChange' :  'changeCouponTag(this);'
+		            	});
+		        		if (undTypeCd == 0){
+		        			//NONE		
+		            		contents$.append($('<option>',{value: 1, text: 'RESET'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 2, text: 'ACCRUAL'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 3, text: 'AVERAGE'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
+		        		} else if (undTypeCd == 1){
+		        			//R1	        			
+		        			contents$.append($('<option>',{value: 1, text: 'RESET'}));
+			            	contents$.append($('<option>',{value: 2, text: 'ACCRUAL'}));
+			            	contents$.append($('<option>',{value: 3, text: 'AVERAGE'}));
+			            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
+		        		} else if (undTypeCd == 2){
+		        			//R1 - R2	        			
+		        			contents$.append($('<option>',{value: 1, text: 'RESET'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 2, text: 'ACCRUAL'}));
+			            	contents$.append($('<option>',{value: 3, text: 'AVERAGE'}));
+			            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
+		        		} else if (undTypeCd == 3){
+		        			//R1 & R2	        			
+		        			contents$.append($('<option>',{value: 1, text: 'RESET'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 2, text: 'ACCRUAL'}));
+			            	contents$.append($('<option>',{value: 3, text: 'AVERAGE'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
+		        		} else if (undTypeCd == 4){
+		        			//R1 & (R2 - R3)	        			
+		        			contents$.append($('<option>',{value: 1, text: 'RESET'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 2, text: 'ACCRUAL'}));
+			            	contents$.append($('<option>',{value: 3, text: 'AVERAGE'}).attr('disabled', true));
+			            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
+		        		}
+		        		td$.html(contents$);
+		        	/* } else if (columnValue == "Coupon"){
+		        		//Coupon
+		        		
+		        	} else if (columnValue == "Condition"){
+		        		//Condition
+		        		 */
+		        	} else if (columnValue == "startDate"){		        	
+		        		//StartDate
+		        		var contents$ = $('<input/>').attr({
+		            		'type':'text',
+		            		'value': cellValue,
+		            		'class': 'form-control smaller',
+		            		'name': scheduleModelStr + '.couponStrtDt'
+		            	});	
+		        		td$.html(contents$);
+		        	} else if (columnValue == "endDate"){
+		        		//EndDate
+		        		var contents$ = $('<input/>').attr({
+		            		'type':'text',
+		            		'value': cellValue,
+		            		'class': 'form-control smaller',
+		            		'name': scheduleModelStr + '.couponEndDt'
+		            	});	
+		        		td$.html(contents$);
+		        	} else if (columnValue == "paymentDate"){
+		        		//PaymentDate
+		        		var contents$ = $('<input/>').attr({
+		            		'type':'text',
+		            		'value': cellValue,
+		            		'class': 'form-control smaller',
+		            		'name': scheduleModelStr + '.couponPayDt'
+		            	});	
+		        		td$.html(contents$);
+		        	}		        	
+	            	row$.append(td$);
+		        }		        
+		        $(selector).append(row$);
+			}			
 		}
+	
+		function addColumns(data, selector, legCode){
+			var columnSet = [];
+		    var headerTr$ = $('<tr/>');
+		    
+	        var rowHash = data[0];
+	        for (var key in rowHash) {
+	            if ($.inArray(key, columnSet) == -1){
+	                columnSet.push(key);
+	                headerTr$.append($('<th/>')
+	                		.attr({'width' : '10%'})
+	                		.html(key));
+	            }		            
+	        }	        
+		    
+		  	//CouponType
+		    columnSet.push("CouponType");	    
+	        headerTr$.append($('<th/>').html("Coupon Type"));
+	        
+	        //Coupon
+		    columnSet.push("Coupon");	    
+	        headerTr$.append($('<th/>').html("Coupon"));
+	        
+	        //Cap, Floor
+	        var capFloorCd = $('#' + legCode +'CapFloorCd').val();
+	        columnSet.push("CapFloor");	   
+	        if (capFloorCd == 0){
+	        	headerTr$.append($('<th/>').html("CapFloor").attr({'hidden': true}));
+	        } else {
+	        	headerTr$.append($('<th/>').html("CapFloor"));
+	        }	        
+	        /* //Condition
+	        var conditionCd = $('#' + tagCode + 'LegCondiTypeCd').val();
+	        columnSet.push("Condition");
+	        if (conditionCd == 0){
+	        	headerTr$.append($('<th/>').html("Condition").attr({'hidden': true}));	
+	        } else {
+	        	headerTr$.append($('<th/>').html("Condition"));	
+	        } */	
+		    
+		    $(selector).append(headerTr$);
+		    
+		    return columnSet;
+		}
+		
+		function chgCondiType(selector){
+			var legCode = selector.id.substring(0,3);
+			var typeCd = selector.value;
+			var targetTagInput1 = $('#' + legCode + "IrInfo1 input");
+			var targetTagSelect1 = $('#' + legCode + "IrInfo1 select");
+			var targetTagInput2 = $('#' + legCode + "IrInfo2 input");
+			var targetTagSelect2 = $('#' + legCode + "IrInfo2 select");
+			var targetTagInput3 = $('#' + legCode + "IrInfo3 input");
+			var targetTagSelect3 = $('#' + legCode + "IrInfo3 select");			
+			var targetCondiType = $('#' + legCode + 'ConditionType option');
+			
+			if (typeCd == 0){
+				//NONE
+				targetTagInput1.attr('disabled', 'true');
+				targetTagSelect1.attr('disabled', 'true');				
+				targetTagInput2.attr('disabled', 'true');
+				targetTagSelect2.attr('disabled', 'true');
+				targetTagInput3.attr('disabled', 'true');
+				targetTagSelect3.attr('disabled', 'true');
+				
+				targetCondiType[0].disabled = false;
+				for (var idx = 1; idx < targetCondiType.length; idx++){
+					targetCondiType[idx].disabled = true;	
+				}
+				
+			} else if (typeCd == 1){
+				//R1
+				targetTagInput1.removeAttr('disabled');
+				targetTagSelect1.removeAttr('disabled');				
+				targetTagInput2.attr('disabled', 'true');
+				targetTagSelect2.attr('disabled', 'true');
+				targetTagInput3.attr('disabled', 'true');
+				targetTagSelect3.attr('disabled', 'true');
+				
+				targetCondiType[0].disabled = false;
+				targetCondiType[1].disabled = false;
+				for (var idx = 2; idx < targetCondiType.length; idx++){
+					targetCondiType[idx].disabled = true;	
+				}
+				
+			} else if (typeCd == 2){
+				//R1 - R2
+				targetTagInput1.removeAttr('disabled');
+				targetTagSelect1.removeAttr('disabled');				
+				targetTagInput2.removeAttr('disabled');
+				targetTagSelect2.removeAttr('disabled');
+				targetTagInput3.attr('disabled', 'true');
+				targetTagSelect3.attr('disabled', 'true');
+				
+				targetCondiType[0].disabled = false;
+				targetCondiType[1].disabled = false;
+				targetCondiType[2].disabled = false;
+				targetCondiType[4].disabled = false;
+				
+				targetCondiType[3].disabled = true;
+				targetCondiType[5].disabled = true;
+				targetCondiType[6].disabled = true;
+				targetCondiType[7].disabled = true;
+				targetCondiType[8].disabled = true;
+				targetCondiType[9].disabled = true;
+				
+			} else if (typeCd == 3){
+				//R1 & R2
+				targetTagInput1.removeAttr('disabled');
+				targetTagSelect1.removeAttr('disabled');				
+				targetTagInput2.removeAttr('disabled');
+				targetTagSelect2.removeAttr('disabled');
+				targetTagInput3.attr('disabled', 'true');
+				targetTagSelect3.attr('disabled', 'true');
+				
+				targetCondiType[0].disabled = false;
+				targetCondiType[1].disabled = false;
+				targetCondiType[2].disabled = false;
+				targetCondiType[6].disabled = false;
+				
+				targetCondiType[3].disabled = true;
+				targetCondiType[4].disabled = true;
+				targetCondiType[5].disabled = true;				
+				targetCondiType[7].disabled = true;
+				targetCondiType[8].disabled = true;
+				targetCondiType[9].disabled = true;
+				
+			} else if (typeCd == 4){
+				//R1 & R2 - R3
+				targetTagInput1.removeAttr('disabled');
+				targetTagSelect1.removeAttr('disabled');				
+				targetTagInput2.removeAttr('disabled');
+				targetTagSelect2.removeAttr('disabled');
+				targetTagInput3.removeAttr('disabled');
+				targetTagSelect3.removeAttr('disabled');
+				targetCondiType[0].disabled = false;
+				targetCondiType[1].disabled = false;
+				targetCondiType[2].disabled = false;
+				targetCondiType[3].disabled = false;
+				targetCondiType[5].disabled = false;				
+				targetCondiType[9].disabled = false;
+				
+				targetCondiType[4].disabled = true;
+				targetCondiType[6].disabled = true;
+				targetCondiType[7].disabled = true;
+				targetCondiType[8].disabled = true;
+			}			
+		};
 	</script>	
 	
 </body>

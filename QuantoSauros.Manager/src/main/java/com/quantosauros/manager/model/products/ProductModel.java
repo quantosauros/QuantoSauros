@@ -4,7 +4,7 @@ public class ProductModel {
 
 	protected ProductInfoModel productInfoModel;
 	protected ProductLegModel[] productLegModels;
-	
+	protected ProductScheduleModel[][] productScheduleModels;
 	
 	public void setProductInfoModel(ProductInfoModel productInfoModel){
 		this.productInfoModel = productInfoModel;
@@ -19,4 +19,10 @@ public class ProductModel {
 		return productLegModels;
 	}
 	
+	public void setProductScheduleModels(ProductScheduleModel[][] productScheduleModels){
+		this.productScheduleModels = productScheduleModels;
+	}
+	public ProductScheduleModel[][] getProductScheduleModels(){
+		return this.productScheduleModels;
+	}
 }

@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.products;
 
-public class ProductSchedule {
+public class ProductScheduleModel {
 	private String instrumentCd;
 	private String payRcvCd;
 	private String couponResetDt;
@@ -26,6 +26,7 @@ public class ProductSchedule {
 	public void setPayRcvCd(String payRcvCd){this.payRcvCd=payRcvCd;}
 	public void setCouponStrtDt(String couponStrtDt){this.couponStrtDt=couponStrtDt;}
 	public void setCouponResetDt(String couponResetDt){this.couponResetDt=couponResetDt;}
+	public void setCouponEndDt(String couponEndDt){this.couponEndDt=couponEndDt;}
 	public void setCouponPayDt(String couponPayDt){this.couponPayDt=couponPayDt;}
 	public void setCouponType(String couponType){this.couponType=couponType;}
 	public void setPrincipal(String principal){this.principal=principal;}

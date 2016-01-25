@@ -3,9 +3,9 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.quantosauros.manager.dao.ProductSchedule">
+<mapper namespace="com.quantosauros.manager.dao.ProductScheduleModel">
   
-	<insert id="insertProductSchedule">
+	<insert id="insertProductSchedule" parameterType="com.quantosauros.manager.model.products.ProductScheduleModel">
 		INSERT INTO PRODUCT_SCHEDULE 
 			(INSTRUMENT_CD, PAY_RCV_CD, COUPON_STRT_DT, COUPON_RESET_DT, COUPON_END_DT, COUPON_PAY_DT,
 			 COUPON_TYPE, PRINCIPAL, UPPERBOUND1, LOWERBOUND1, LEVERAGE1, UPPERBOUND2, LOWERBOUND2, LEVERAGE2, LEVERAGE3,
@@ -13,22 +13,22 @@
 		VALUES (
 			#{instrumentCd},
 			#{payRcvCd},
-			#{startDate},
+			#{couponStrtDt},
 			#{couponResetDt},
-			#{endDate},
-			#{paymentDate},
-			#{CouponType},
+			#{couponEndDt},
+			#{couponPayDt},
+			#{couponType},
 			#{principal},
-			#{UpperLimit1},
-			#{LowerLimit1},
-			#{Leverage1},
-			#{UpperLimit2},
-			#{LowerLimit2},
-			#{Leverage2},
-			#{Leverage3},
-			#{InCouponRate},
-			#{OutCouponRate},
-			#{Spread},
+			#{upperBound1},
+			#{lowerBound1},
+			#{leverage1},
+			#{upperBound2},
+			#{lowerBound2},
+			#{leverage2},
+			#{leverage3},
+			#{inCoupon},
+			#{outCoupon},
+			#{fixedCoupon},
 			#{cap},
 			#{floor}
 		);

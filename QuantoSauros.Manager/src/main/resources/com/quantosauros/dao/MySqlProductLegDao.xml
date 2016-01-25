@@ -5,7 +5,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantosauros.manager.dao.ProductLeg">
   
-	<insert id="insertProductLeg">
+	<insert id="insertProductLeg" parameterType="com.quantosauros.manager.model.products.ProductLegModel">
 		INSERT INTO PRODUCT_LEG 
 			(INSTRUMENT_CD, PAY_RCV_CD, LEG_TYPE_CD, UNDERLYING_TYPE, CONDITION_TYPE, NOTIONAL_PRINCIPAL, CCY_CD,
 			 DAY_COUNT_CONVENTION, CAPFLOOR_CD,
@@ -15,25 +15,25 @@
 		VALUES (
 			#{instrumentCd},
 			#{payRcvCd},
-			#{TypeCd},
-			#{UndTypeCd},
-			#{CondiTypeCd},
-			#{Notional},
-			#{CcyCd},
-			#{DCF},
-			#{CapFloorCd},
-			#{IrCd1},
-			#{IrTenor1},
-			#{IrTypeCd1},
-			#{IrCouponFreq1},
-			#{IrCd2},
-			#{IrTenor2},
-			#{IrTypeCd2},
-			#{IrCouponFreq2},
-			#{IrCd3},
-			#{IrTenor3},
-			#{IrTypeCd3},
-			#{IrCouponFreq3}
+			#{legTypeCd},
+			#{underlyingType},
+			#{conditionType},
+			#{notionalPrincipal},
+			#{ccyCd},
+			#{dayCountConvention},
+			#{capFloorCd},
+			#{couponIrcCd1},
+			#{couponIrcMrtyCd1},
+			#{couponIrcTypeCd1},
+			#{couponIrcCouponFreqCd1},
+			#{couponIrcCd2},
+			#{couponIrcMrtyCd2},
+			#{couponIrcTypeCd2},
+			#{couponIrcCouponFreqCd2},
+			#{couponIrcCd3},
+			#{couponIrcMrtyCd3},
+			#{couponIrcTypeCd3},
+			#{couponIrcCouponFreqCd3}
 		);
 
 	</insert>  

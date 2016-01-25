@@ -33,11 +33,7 @@ public class RegistrationController {
 		
 		logger.debug("pricerIndex()");
 		
-//		ProductInfoModel productInfoModel = new ProductInfoModel();
-//		ProductLegModel productLegModel = new ProductLegModel();
 		ProductModel productModel = new ProductModel();
-//		model.addAttribute("productInfoModel", productInfoModel);
-//		model.addAttribute("productLegModel", productLegModel);
 		model.addAttribute("productModel", productModel);
 		
 		return "/registration/productRegistration";
@@ -51,7 +47,8 @@ public class RegistrationController {
 		
 		logger.debug("registrationInsert()");
 		
-		
+		redirectAttributes.addFlashAttribute("css", "success");		
+		redirectAttributes.addFlashAttribute("msg", "Product registered successfully!");
 		
 		
 		return "redirect:/register";
