@@ -13,6 +13,7 @@ import com.quantosauros.jpl.dto.LegDataInfo;
 import com.quantosauros.jpl.dto.LegScheduleInfo;
 import com.quantosauros.jpl.dto.OptionInfo;
 import com.quantosauros.jpl.dto.ProductInfo;
+import com.quantosauros.jpl.dto.market.EquityMarketInfo;
 import com.quantosauros.jpl.dto.market.MarketInfo;
 import com.quantosauros.jpl.dto.market.RateMarketInfo;
 import com.quantosauros.jpl.engine.pricer.StructuredPricer;
@@ -109,6 +110,29 @@ public class StructuredProduct extends AbstractProduct {
 				//Delta
 				delta.add(upPrice.subtract(downPrice).getAmount());
 			}			
+		} else if (marketInfo instanceof EquityMarketInfo){
+			//Equity
+			EquityMarketInfo equityMarketInfo = (EquityMarketInfo) marketInfo;
+			double currPrice = equityMarketInfo.getCurrEquityPrice();
+			
+			//UP
+			double upCurrPrice = currPrice * (1 + epsilon);			
+			legMarketInfos[legIndex][undIndex] = new EquityMarketInfo(
+					upCurrPrice, equityMarketInfo.getEquityVolatility(),
+					equityMarketInfo.getEquityDividend(),
+					equityMarketInfo.getRiskFreeCurve());			
+			Money upPrice = this.getPrice(legMarketInfos, discountMarketInfo, correlations);
+			
+			//DOWN
+			double downCurrPrice = currPrice * (1 - epsilon);			
+			legMarketInfos[legIndex][undIndex] = new EquityMarketInfo(
+					downCurrPrice, equityMarketInfo.getEquityVolatility(),
+					equityMarketInfo.getEquityDividend(),
+					equityMarketInfo.getRiskFreeCurve());			
+			Money downPrice = this.getPrice(legMarketInfos, discountMarketInfo, correlations);
+			
+			delta.add(upPrice.subtract(downPrice).getAmount());
+			
 		}
 		
 		return delta;
