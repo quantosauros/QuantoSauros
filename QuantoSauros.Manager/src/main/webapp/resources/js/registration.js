@@ -3,7 +3,7 @@ function genSchedule(selector){
 	var issueDt = $('#issueDt').val().replace(/-/gi,"");
 	var mrtyDt = $('#mrtyDt').val().replace(/-/gi,"");
 	var couponFreq = $('#' + legCode +'CouponFreq').val();
-	var jsonStr = './json/scheduleList?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq;
+	var jsonStr = './register/json?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq;
 	
 	$.getJSON(jsonStr, function(data){
 		$('#' + legCode + 'Schedule').empty();				
@@ -17,7 +17,7 @@ function genExercise(selector){
 	var couponFreq = $('#exerciseFrequency').val();
 	var nonCallYear = $('#nonCallYear').val();
 	
-	var jsonStr = './json/scheduleList?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq;
+	var jsonStr = './register/json?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq;
 	
 	$.getJSON(jsonStr, function(data){
 		$('#exerciseSchedule').empty();				
