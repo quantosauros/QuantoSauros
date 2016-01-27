@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <spring:url value="/" var="urlHome" />
-<spring:url value="/registration" var="urlRegistration" />
+<spring:url value="/register" var="urlRegistration" />
 <spring:url value="/tables/price" var="urlPriceTable" />
 <spring:url value="/tables/delta" var="urlDeltaTable" />
 <spring:url value="/tables/detail" var="urlDetailTable" />

@@ -20,8 +20,7 @@ public class MySqlProductScheduleDao implements ProductScheduleDao{
 	}
 	
 	@Override
-	public void insertProductSchedule(ProductScheduleModel productScheduleModel) 
-			throws Exception {
+	public void insertProductSchedule(ProductScheduleModel productScheduleModel){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			sqlSession.insert(
@@ -33,7 +32,7 @@ public class MySqlProductScheduleDao implements ProductScheduleDao{
 			sqlSession.close();
 		}
 	}
-	public void insertProductSchedule(Map params) throws Exception {
+	public void insertProductSchedule(Map params){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			sqlSession.insert(

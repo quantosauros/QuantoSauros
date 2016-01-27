@@ -6,7 +6,7 @@ import com.quantosauros.manager.model.products.ProductScheduleModel;
 
 public interface ProductScheduleDao {
 
-	void insertProductSchedule(ProductScheduleModel productSchedule) throws Exception;
-	void insertProductSchedule(Map params) throws Exception;
+	void insertProductSchedule(ProductScheduleModel productSchedule);
+	void insertProductSchedule(Map params);
 	
 }

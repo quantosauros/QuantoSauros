@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.quantosauros.manager.model.products.ProductOptionSchedule;
+import com.quantosauros.manager.model.products.ProductOptionScheduleModel;
 
 @Component("productOptionScheduleDao")
 public class MySqlProductOptionScheduleDao implements ProductOptionScheduleDao{	
@@ -20,16 +20,15 @@ public class MySqlProductOptionScheduleDao implements ProductOptionScheduleDao{
 	}
 	
 	@Override
-	public void insertProductOptionSchedule(ProductOptionSchedule productOptionSchedule) 
-			throws Exception {
+	public void insertProductOptionSchedule(ProductOptionScheduleModel productOptionScheduleModel){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			Map params = new HashMap<String, String>();
-			params.put("instrumentCd", productOptionSchedule.getInstrumentCd());
-			params.put("exerciseTypeCd", productOptionSchedule.getOptionTypeCd());
-			params.put("exerciseStrtDt", productOptionSchedule.getOptionStrtDt());
-			params.put("exerciseEndDt", productOptionSchedule.getOptionEndDt());
-			params.put("exerciseStrike", productOptionSchedule.getStrike());
+			params.put("instrumentCd", productOptionScheduleModel.getInstrumentCd());
+			params.put("exerciseTypeCd", productOptionScheduleModel.getOptionTypeCd());
+			params.put("exerciseStrtDt", productOptionScheduleModel.getOptionStrtDt());
+			params.put("exerciseEndDt", productOptionScheduleModel.getOptionEndDt());
+			params.put("exerciseStrike", productOptionScheduleModel.getStrike());
 						
 			sqlSession.insert(
 					"com.quantosauros.manager.dao.ProductOptionSchedule.insertProductOptionSchedule",
@@ -41,7 +40,7 @@ public class MySqlProductOptionScheduleDao implements ProductOptionScheduleDao{
 		}
 	}
 	@Override
-	public void insertProductOptionSchedule(Map params) throws Exception {
+	public void insertProductOptionSchedule(Map params){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			sqlSession.insert(

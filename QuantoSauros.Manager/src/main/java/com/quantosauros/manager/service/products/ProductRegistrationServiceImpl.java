@@ -9,6 +9,9 @@ import com.quantosauros.manager.dao.products.ProductLegDataDao;
 import com.quantosauros.manager.dao.products.ProductOptionScheduleDao;
 import com.quantosauros.manager.dao.products.ProductScheduleDao;
 import com.quantosauros.manager.model.products.ProductInfoModel;
+import com.quantosauros.manager.model.products.ProductLegModel;
+import com.quantosauros.manager.model.products.ProductOptionScheduleModel;
+import com.quantosauros.manager.model.products.ProductScheduleModel;
 
 @Service("productRegistrationService")
 public class ProductRegistrationServiceImpl 
@@ -45,10 +48,27 @@ public class ProductRegistrationServiceImpl
 		this.productScheduleDao = productScheduleDao;
 	}
 	
-	public void register(ProductInfoModel productInfoModel){
+	public void register(ProductInfoModel productInfoModel, 
+			ProductLegModel[] productLegModels, ProductScheduleModel[][] productScheduleModels,
+			ProductOptionScheduleModel[] productOptionScheduleModels){
 		
-		productInfoDao.insertProductInfo(productInfoModel);		
+		productInfoDao.insertProductInfo(productInfoModel);
 		
+		int legNum = productLegModels.length;
+		for (int legIndex = 0; legIndex < legNum; legIndex++){
+			productLegDao.insertProductLeg(productLegModels[legIndex]);
+			
+			int periodNum = productScheduleModels[legIndex].length;
+			for (int periodIndex = 0; periodIndex < periodNum; periodIndex++){
+				productScheduleDao.insertProductSchedule(productScheduleModels[legIndex][periodIndex]);				
+			}
+		}
+		if (productOptionScheduleModels != null){
+			int optionNum = productOptionScheduleModels.length;
+			for (int optionIndex = 0; optionIndex < optionNum; optionIndex++){
+				productOptionScheduleDao.insertProductOptionSchedule(productOptionScheduleModels[optionIndex]);
+			}
+		}	
 	}
 	
 	public ProductInfoModel getProductInfoModelByInstrumentCd(String instrumentCd){

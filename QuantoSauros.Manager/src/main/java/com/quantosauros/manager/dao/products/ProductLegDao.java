@@ -6,7 +6,7 @@ import com.quantosauros.manager.model.products.ProductLegModel;
 
 public interface ProductLegDao {
 
-	void insertProductLeg(ProductLegModel productLegModel) throws Exception;
-	void insertProductLeg(Map params) throws Exception;
+	void insertProductLeg(ProductLegModel productLegModel);
+	void insertProductLeg(Map params);
 	
 }

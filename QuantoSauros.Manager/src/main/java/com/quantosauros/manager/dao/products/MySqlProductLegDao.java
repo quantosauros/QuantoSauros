@@ -20,10 +20,9 @@ public class MySqlProductLegDao implements ProductLegDao{
 	}
 	
 	@Override
-	public void insertProductLeg(ProductLegModel productLegModel) throws Exception {
+	public void insertProductLeg(ProductLegModel productLegModel){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
-		try {
-			
+		try {			
 			sqlSession.insert("com.quantosauros.manager.dao.ProductLeg.insertProductLeg", productLegModel);
 			
 		} finally {
@@ -31,7 +30,7 @@ public class MySqlProductLegDao implements ProductLegDao{
 			sqlSession.close();
 		}
 	}
-	public void insertProductLeg(Map params) throws Exception {
+	public void insertProductLeg(Map params){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			sqlSession.insert("com.quantosauros.manager.dao.ProductLeg.insertProductLeg", params);

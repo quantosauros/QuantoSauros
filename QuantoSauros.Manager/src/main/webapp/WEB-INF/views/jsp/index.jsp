@@ -18,25 +18,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div>
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a href="#home" data-toggle="tab" aria-expanded="true">Home</a>
-							</li>
-							<li>
-								<a href="#profile" data-toggle="tab" aria-expanded="true">Profile</a>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div class="tab-pane fade active in" id="home">
-								<h4>Home Tab</h4>
-								<p> hahahaha </p>								
-							</div>
-							<div class="tab-pane fade" id="profile">
-								<h4>Profile Tab</h4>
-								<p> hahahahaasdasd </p>
-							</div>	
-						</div>
-						
+						<h3>AAD Manager</h3>
 					</div>
 				</div>
 			</div>

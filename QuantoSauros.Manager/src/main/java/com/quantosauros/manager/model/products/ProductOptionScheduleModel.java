@@ -1,6 +1,6 @@
 package com.quantosauros.manager.model.products;
 
-public class ProductOptionSchedule {
+public class ProductOptionScheduleModel {
 
 	private String instrumentCd;
 	private String optionTypeCd;
