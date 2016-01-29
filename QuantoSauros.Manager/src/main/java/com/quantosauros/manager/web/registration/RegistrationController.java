@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.quantosauros.batch.instrument.ProductDataGenerator;
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.PaymentPeriod;
@@ -103,8 +104,15 @@ public class RegistrationController {
 				productOptionScheduleModels[optionIndex].setInstrumentCd(instrumentCd);
 			}
 		}
-		
 		productRegistrationService.register(productInfoModel, productLegModels, productScheduleModels, productOptionScheduleModels);
+		
+		//Product Leg Data
+		//TODO
+		ProductDataGenerator dataGenerator = new ProductDataGenerator(
+				Date.valueOf("20150401"),
+				//Date.valueOf(new SimpleDateFormat("yyyyMMdd").format(new java.util.Date())), 
+				instrumentCd, "KR");		
+		dataGenerator.generate();
 		
 		return "redirect:/register";
 	}

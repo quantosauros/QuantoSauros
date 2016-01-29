@@ -1,6 +1,7 @@
 package com.quantosauros.jpl.engine.method.model.hullwhite;
 
 import com.quantosauros.common.TypeDef.ModelType;
+import com.quantosauros.common.TypeDef.OptionType;
 import com.quantosauros.common.calendar.BusinessDayConvention;
 import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.CalendarFactory;
@@ -16,7 +17,8 @@ public class HullWhiteStripping {
 	private HWVolatilitySurface _hwSurface;
 	
 	public HullWhiteStripping(Date asOfDate, Date maturityDate,
-			Date[] exerciseDates, HWVolatilitySurface hwSurface) {
+			Date[] exerciseDates, OptionType optionType, 
+			HWVolatilitySurface hwSurface) {
 		
 		_asOfDate = asOfDate;
 		_hwSurface = hwSurface;
@@ -32,7 +34,7 @@ public class HullWhiteStripping {
 		Date adjustedSettlementDate = calendar.adjustDate(
 				adjustedAsOfDate.plusDays(settlementDay), convention); 
 		
-		if (exerciseDates == null){
+		if (optionType.equals(OptionType.NONE)){
 			//마지막 행사일이 1일 남았거나 지난경우
 //				_swaptionInfo = new double[1][2];			
 //				_swaptionInfo[0][0] = dcf.getYearFraction(adjustedAsOfDate, 

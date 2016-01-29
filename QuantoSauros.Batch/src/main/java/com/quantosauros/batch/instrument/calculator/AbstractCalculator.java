@@ -220,7 +220,7 @@ public class AbstractCalculator {
 		double[][] correlations = (double[][]) _riskFactorMap.get(RiskFactor.CORRELATION);
 				
 		return _instance.getPrice(_legMarketInfos, _discountMarketnfo, correlations);
-
+		
 	}
 	
 	public double[] getAADGreek(

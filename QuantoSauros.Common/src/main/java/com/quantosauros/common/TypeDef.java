@@ -84,17 +84,22 @@ public class TypeDef {
 	}
 	
 	public static CouponType getCouponType(Object couponType){
-		if (couponType.equals("RESET") || couponType.equals(0) || couponType.equals("1")){
-			return CouponType.RESET;
-		} else if (couponType.equals("ACCRUAL") || couponType.equals(1)|| couponType.equals("2")){
-			return CouponType.ACCRUAL;
-		} else if (couponType.equals("AVERAGE") || couponType.equals(2)|| couponType.equals("3")){
-			return CouponType.AVERAGE;
-		} else if (couponType.equals("FIXED") || couponType.equals(3)|| couponType.equals("4")){
-			return CouponType.FIXED;
+		if (couponType != null){
+			if (couponType.equals("RESET") || couponType.equals(0) || couponType.equals("1")){
+				return CouponType.RESET;
+			} else if (couponType.equals("ACCRUAL") || couponType.equals(1)|| couponType.equals("2")){
+				return CouponType.ACCRUAL;
+			} else if (couponType.equals("AVERAGE") || couponType.equals(2)|| couponType.equals("3")){
+				return CouponType.AVERAGE;
+			} else if (couponType.equals("FIXED") || couponType.equals(3)|| couponType.equals("4")){
+				return CouponType.FIXED;
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
+		
 	}
 	
 	public static int getNumOfUnderNum(UnderlyingType underlyingType){

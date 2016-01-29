@@ -1073,13 +1073,32 @@ public class InterestRateCurve implements Serializable {
 	public InterestRateCurve copy(double parallelShift) {
 		InterestRate[] shiftedSpotRates = new InterestRate[spotRates.length];
 		for (int i = 0; i < spotRates.length; ++i) {
-			// Jae-Heon Kim on 2009.01.30
-			// shiftedSpotRates[i] = new InterestRate(spotRates[i].getVertex(),
-			// spotRates[i].getRate() + parallelShift);
 			shiftedSpotRates[i] = new InterestRate(spotRates[i].getVertex(),
 					spotRates[i].getRate() + parallelShift, spotRates[i]
 							.getFactorCode());
 		}
+		InterestRateCurve irc = new InterestRateCurve(_date, shiftedSpotRates,
+				interpolation, compoundFreq, dcf);
+		irc.setSpread(this.spread);
+		return irc;
+	}
+	
+	public InterestRateCurve copy(int index, double perturbation) {
+		InterestRate[] shiftedSpotRates = new InterestRate[spotRates.length];
+		
+		for (int i = 0; i < spotRates.length; ++i) {
+			if (index == i){
+				shiftedSpotRates[i] = new InterestRate(spotRates[i].getVertex(),
+						spotRates[i].getRate() + perturbation, spotRates[i]
+								.getFactorCode());
+			} else {
+				shiftedSpotRates[i] = new InterestRate(spotRates[i].getVertex(),
+						spotRates[i].getRate(), spotRates[i]
+								.getFactorCode());
+			}			
+		}
+		
+		
 		InterestRateCurve irc = new InterestRateCurve(_date, shiftedSpotRates,
 				interpolation, compoundFreq, dcf);
 		irc.setSpread(this.spread);

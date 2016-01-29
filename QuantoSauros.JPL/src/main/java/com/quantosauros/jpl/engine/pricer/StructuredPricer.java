@@ -191,7 +191,7 @@ public class StructuredPricer extends AbstractPricer{
 					if (rateMarketInfo.isHWVolSurface()){
 						HullWhiteStripping hwStripping = new HullWhiteStripping(
 								_asOfDate, _productInfo.getMaturityDate(), 
-								_optionInfo.getExerciseDates(),
+								_optionInfo.getExerciseDates(), _optionInfo.getOptionType(),
 								rateMarketInfo.getHWVolatilitySurface());
 						rateMarketInfo.setHWVolatilities(
 								hwStripping.getHWVolatility(underlyingInfo.getModelType()));
@@ -206,7 +206,7 @@ public class StructuredPricer extends AbstractPricer{
 		if (discountMarketInfo.isHWVolSurface()){
 			HullWhiteStripping hwStripping = new HullWhiteStripping(
 					_asOfDate, _productInfo.getMaturityDate(), 
-					_optionInfo.getExerciseDates(),
+					_optionInfo.getExerciseDates(), _optionInfo.getOptionType(),
 					discountMarketInfo.getHWVolatilitySurface());
 			discountMarketInfo.setHWVolatilities(
 					hwStripping.getHWVolatility(_discModelType));

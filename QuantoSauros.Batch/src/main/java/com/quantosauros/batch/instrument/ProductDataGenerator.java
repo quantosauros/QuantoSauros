@@ -5,22 +5,30 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.quantosauros.batch.dao.MarketDataDao;
+import com.quantosauros.batch.dao.MySqlMarketDataDao;
 import com.quantosauros.batch.dao.MySqlProductLegDao;
 import com.quantosauros.batch.dao.MySqlProductScheduleDao;
 import com.quantosauros.batch.dao.ProductLegDao;
 import com.quantosauros.batch.dao.ProductScheduleDao;
+import com.quantosauros.batch.instrument.marketDataCreator.AbstractMarketDataCreator;
+import com.quantosauros.batch.model.IrCurveModel;
 import com.quantosauros.batch.model.ProductLegModel;
 import com.quantosauros.batch.model.ProductScheduleModel;
 import com.quantosauros.batch.mybatis.SqlMapClient;
+import com.quantosauros.common.Frequency;
 import com.quantosauros.common.TypeDef;
 import com.quantosauros.common.TypeDef.ConditionType;
 import com.quantosauros.common.TypeDef.CouponType;
+import com.quantosauros.common.TypeDef.RateType;
 import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.calendar.BusinessDayConvention;
 import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.CalendarFactory;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
+import com.quantosauros.common.date.Vertex;
+import com.quantosauros.common.interestrate.InterestRateCurve;
 
 public class ProductDataGenerator {
 
@@ -65,13 +73,29 @@ public class ProductDataGenerator {
 		String capFloorCd =productLegModel.getCapFloorCd();
 		
 		int undNum = TypeDef.getNumOfUnderNum(undType);
-		String[] ircFactorCd = new String[]{
-				productLegModel.getCouponIrcCd1() + productLegModel.getCouponIrcMrtyCd1(),
-				productLegModel.getCouponIrcCd2() + productLegModel.getCouponIrcMrtyCd2(),
-				productLegModel.getCouponIrcCd3() + productLegModel.getCouponIrcMrtyCd3(),
-		}; 		
-		DayCountFraction dcf = DayCountFraction.valueOf(productLegModel.getDcf());
+		String[] ircCds = new String[] {
+				productLegModel.getCouponIrcCd1(),
+				productLegModel.getCouponIrcCd2(),
+				productLegModel.getCouponIrcCd3(),
+		};
+		Vertex[] ircMrtyCds = new Vertex[]{
+				Vertex.valueOf(productLegModel.getCouponIrcMrtyCd1()),
+				Vertex.valueOf(productLegModel.getCouponIrcMrtyCd2()),
+				Vertex.valueOf(productLegModel.getCouponIrcMrtyCd3()),
+		};		
+		RateType[] irRateTypeCds = new RateType[]{
+				TypeDef.getRateType(productLegModel.getCouponIrcTypeCd1()),
+				TypeDef.getRateType(productLegModel.getCouponIrcTypeCd2()),
+				TypeDef.getRateType(productLegModel.getCouponIrcTypeCd3()),
+		};
+		Frequency[] irCouponFreqs = new Frequency[]{
+				Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd1()),
+				Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd2()),
+				Frequency.valueOf(productLegModel.getCouponIrcCouponFreqCd3()),
+		};
 				
+		DayCountFraction dcf = DayCountFraction.valueOf(productLegModel.getDcf());
+		
 		for (int schIndex = 0; schIndex < scheduleModelList.size(); schIndex++){
 			ProductScheduleModel productScheduleModel = scheduleModelList.get(schIndex);
 			
@@ -102,50 +126,40 @@ public class ProductDataGenerator {
 				if (dt.diff(_asOfDate) >= 0){
 					break;
 				}
-								
+				
+				//get Rates
+				InterestRateCurve[] irCurves = new InterestRateCurve[undNum];
+				double[] rates = new double[undNum];
+				for (int ircIndex = 0; ircIndex < undNum; ircIndex++){						
+					irCurves[ircIndex] = getIrCurves(startDt, ircCds[ircIndex]);
+					rates[ircIndex] = getRate(irCurves[ircIndex], irRateTypeCds[ircIndex], ircMrtyCds[ircIndex], irCouponFreqs[ircIndex]);
+				}
+				
 				if (couponType.equals(CouponType.FIXED)){				
 					paramMap = new HashMap();
 					paramMap.put("dt", dt.getDt());
 			        paramMap.put("instrumentCd", _instrumentCd);        
 			        paramMap.put("payRcvCd", payRcvCd);
 			        paramMap.put("nextCouponPayDt", nextCouponPayDt);
-			        paramMap.put("nextCoupon", nextCoupon);		        
+			        paramMap.put("nextCoupon", nextCoupon * 100);		        
 			        paramMap.put("accrualDayCnt", accrualDayCnt);
-			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon);
+			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon * 100);
 			        
-				} else if (couponType.equals(CouponType.RESET)){
-					//get Rates
-					double[] rates = new double[undNum];
-					for (int ircIndex = 0; ircIndex < undNum; ircIndex++){
-						paramMap = new HashMap();
-						//TODO reset Date
-						paramMap.put("dt", startDt.getDt());
-						paramMap.put("factorCd", ircFactorCd[ircIndex]);
-						rates[ircIndex] = Double.parseDouble((String)
-								_session.selectOne("InsertProduct.selectIrData", paramMap));						
-					}
-					if (undType.equals(UnderlyingType.R1)){
+				} else if (couponType.equals(CouponType.RESET)){					
+					if (undType.equals(UnderlyingType.R1)){		
 						nextCoupon = leverage1 * rates[0] + spread;
-					} 				
-					
+					} 					
+					//INSERT
 					paramMap = new HashMap();
 					paramMap.put("dt", dt.getDt());
 			        paramMap.put("instrumentCd", _instrumentCd);        
 			        paramMap.put("payRcvCd", payRcvCd);
 			        paramMap.put("nextCouponPayDt", nextCouponPayDt);
-			        paramMap.put("nextCoupon", nextCoupon);		        
+			        paramMap.put("nextCoupon", nextCoupon * 100);		        
 			        paramMap.put("accrualDayCnt", accrualDayCnt);
-			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon);
+			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon * 100);
 				} else if (couponType.equals(CouponType.ACCRUAL)){
-					//get Rates
-					double[] rates = new double[undNum];
-					for (int ircIndex = 0; ircIndex < undNum; ircIndex++){
-						paramMap = new HashMap();
-						paramMap.put("dt", dt.getDt());
-						paramMap.put("factorCd", ircFactorCd[ircIndex]);
-						rates[ircIndex] = Double.parseDouble((String)
-								_session.selectOne("InsertProduct.selectIrData", paramMap));						
-					}
+					
 					int condiNum = TypeDef.getNumOfCondition(condiType);
 					double[] lowerBound = new double[condiNum]; 							
 					double[] upperBound = new double[condiNum];			
@@ -201,21 +215,12 @@ public class ProductDataGenerator {
 			        paramMap.put("instrumentCd", _instrumentCd);        
 			        paramMap.put("payRcvCd", payRcvCd);
 			        paramMap.put("nextCouponPayDt", nextCouponPayDt);
-			        paramMap.put("nextCoupon", nextCoupon);		        
+			        paramMap.put("nextCoupon", nextCoupon * 100);		        
 			        paramMap.put("accrualDayCnt", accrualDayCnt);
-			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon);
+			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon * 100);
 					
 					
 				} else if (couponType.equals(CouponType.AVERAGE)){
-					//get Rates
-					double[] rates = new double[undNum];
-					for (int ircIndex = 0; ircIndex < undNum; ircIndex++){
-						paramMap = new HashMap();
-						paramMap.put("dt", dt.getDt());
-						paramMap.put("factorCd", ircFactorCd[ircIndex]);
-						rates[ircIndex] = Double.parseDouble((String)
-								_session.selectOne("InsertProduct.selectIrData", paramMap));						
-					}
 					
 					double tenor = dcf.getYearFraction(dt, nextDt);
 					double coupon = 0;
@@ -293,24 +298,49 @@ public class ProductDataGenerator {
 			        paramMap.put("instrumentCd", _instrumentCd);        
 			        paramMap.put("payRcvCd", payRcvCd);
 			        paramMap.put("nextCouponPayDt", nextCouponPayDt);
-			        paramMap.put("nextCoupon", nextCoupon);		        
+			        paramMap.put("nextCoupon", nextCoupon * 100);		        
 			        paramMap.put("accrualDayCnt", accrualDayCnt);
-			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon);
+			        paramMap.put("accumulateAvgCoupon", accumulateAvgCoupon * 100);
 				}
 				
 				dt = calendar.adjustDate(dt.plusDays(1), BusinessDayConvention.FOLLOWING);
 				nextDt = calendar.adjustDate(nextDt.plusDays(1), BusinessDayConvention.FOLLOWING);
-				_session.insert("InsertProduct.insertProductLegData", paramMap);
-				System.out.println(dt);
-				System.out.println(paramMap.get("dt")+ ", " +
-						paramMap.get("payRcvCd") + ", " +
-						paramMap.get("nextCouponPayDt") + ", " +
-						paramMap.get("nextCoupon") + ", " +
-						paramMap.get("accrualDayCnt") + ", " + 
-						paramMap.get("accumulateAvgCoupon") + ", ");
+				_session.insert("InsertProduct.insertProductLegData", paramMap);				
+//				System.out.println(paramMap.get("dt")+ ", " +
+//						paramMap.get("payRcvCd") + ", " +
+//						paramMap.get("nextCouponPayDt") + ", " +
+//						paramMap.get("nextCoupon") + ", " +
+//						paramMap.get("accrualDayCnt") + ", " + 
+//						paramMap.get("accumulateAvgCoupon") + ", ");
 				
 			}						
 		}   
 		_session.commit();
+	}
+	
+	private InterestRateCurve getIrCurves(Date processDate, String ircCd){
+		HashMap<String, Object> paramMap = new HashMap<>();		
+		paramMap.put("dt", processDate.getDt());
+		paramMap.put("ircCd", ircCd);
+		MarketDataDao marketDataDao = new MySqlMarketDataDao();
+		List<IrCurveModel> irCurveDaoList = 
+				marketDataDao.selectIrCurveModel(paramMap);
+		
+		return AbstractMarketDataCreator.getIrCurve(processDate, irCurveDaoList);
+	}
+	
+	private double getRate(InterestRateCurve rateCurve, 
+			RateType rateType, Vertex maturity, Frequency frequency){
+		if (rateType.equals(RateType.SPOT)){
+			return rateCurve.getSpotRate(maturity.getVertex(rateCurve.getDayCountFraction()));
+		} else if (rateType.equals(RateType.SWAP)){
+			return rateCurve.getForwardSwapRate(rateCurve.getDate(), 
+					maturity.getVertex(rateCurve.getDayCountFraction()), frequency);
+		} else if (rateType.equals(RateType.RMS)){
+			return 0;
+		} else {
+			return 0;
+		}
+		
 	}
 }
