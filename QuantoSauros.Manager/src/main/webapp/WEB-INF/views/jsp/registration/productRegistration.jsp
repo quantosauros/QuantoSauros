@@ -71,7 +71,7 @@
 															<td><label class="control-label"> Issue Date </label></td>
 															<td>
 																<spring:bind path="productModel.productInfoModel.issueDt">
-																	<input type="date" class="form-control" name="${status.expression}" id="issueDt" placeholder="Issue Date" value="2014-12-02">
+																	<input type="date" class="form-control" name="${status.expression}" id="issueDt" placeholder="Issue Date" value="2013-12-02">
 																</spring:bind>	
 															</td>															
 														</tr>
@@ -79,7 +79,7 @@
 															<td><label class="control-label"> Maturity Date </label></td>
 															<td>
 																<spring:bind path="productModel.productInfoModel.mrtyDt">
-																	<input type="date" class="form-control" name="${status.expression}" id="mrtyDt" placeholder="Maturity Date" value="2029-12-03">
+																	<input type="date" class="form-control" name="${status.expression}" id="mrtyDt" placeholder="Maturity Date" value="2028-12-03">
 																</spring:bind>
 															</td>															
 														</tr>

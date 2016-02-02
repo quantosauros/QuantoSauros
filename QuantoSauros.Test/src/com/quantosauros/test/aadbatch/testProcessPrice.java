@@ -35,7 +35,7 @@ public class testProcessPrice extends TestBase {
 			//상품코드입력(미입력시 모든상품 계산)
 			process.setSpecificInstrument("KR_IRS131202001");
 			//DB기록 여부 입력(true:기록, false:미기록)
-			process.setInsertResults(false);
+			process.setInsertResults(true);
 			process.execute();
 			
 			long end = System.currentTimeMillis();

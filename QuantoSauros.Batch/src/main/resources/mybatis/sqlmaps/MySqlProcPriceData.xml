@@ -5,9 +5,19 @@
 
 <mapper namespace = "ProcPriceData">
 
+<!-- SELECT -->
+	<select id="selectProcessData">
+		SELECT 
+			DT, PROC_ID, INSTRUMENT_CD, POSITION
+		FROM
+			PROCESS_DATA
+		WHERE
+			DT = #{dt}
+			AND PROC_ID = #{procId}
+	</select>
+
 <!-- INSERT  -->
 	
-	<!-- use -->
 	<insert id="insertPrice">
 		INSERT INTO 
 			PROC_PRICE_DATA
@@ -32,7 +42,6 @@
 								
     </insert>    
 	
-	<!-- use -->
 	<insert id="insertDeltaGamma">
 		INSERT INTO 
 			PROC_DELTAGAMMA_DATA
@@ -56,7 +65,6 @@
 						
     </insert>    
 	
-	<!-- use -->
 	<insert id="insertDetailData">
 	    INSERT INTO
 	    	PROC_DETAIL_DATA
@@ -78,6 +86,45 @@
 	    	VALUE2 = VALUES(VALUE2),
 	    	CRTN_TIME = VALUES(CRTN_TIME)
 	    
+	</insert>
+	
+	<insert id="insertPortfolioPriceData">
+		INSERT INTO
+			PROC_PFO_PRICE_DATA
+				(DT, PROC_ID, CCY_CD, AMOUNT, CRTN_TIME)
+				SELECT
+					A.DT, A.PROC_ID, B.CCY_CD, SUM(A.POSITION * B.PRICE) AS AMOUNT, NOW() AS CRTN_TIME
+				FROM
+					PROCESS_DATA A, PROC_PRICE_DATA B
+				WHERE
+					A.DT = B.DT
+					AND A.INSTRUMENT_CD = B.INSTRUMENT_CD
+					AND A.PROC_ID = B.PROC_ID
+					AND A.DT = #{dt}
+					AND A.PROC_ID = #{procId}
+					AND B.NONCALL_CD = 'N'
+				GROUP BY B.CCY_CD
+			ON DUPLICATE KEY UPDATE AMOUNT = VALUES(AMOUNT), CRTN_TIME = NOW();
+	</insert>
+	
+	<insert id="insertPortfolioDeltaGammaData">
+		INSERT INTO
+			PROC_PFO_DELTAGAMMA_DATA
+				(DT, PROC_ID, FACTOR_CD, CCY_CD, AMOUNT, CRTN_TIME)
+				SELECT
+					A.DT, A.PROC_ID, B.FACTOR_CD, B.CCY_CD, SUM(A.POSITION * B.GREEK) AS AMOUNT, NOW() AS CRTN_TIME
+				FROM
+					PROCESS_DATA A, PROC_DELTAGAMMA_DATA B
+				WHERE
+					A.DT = B.DT
+					AND A.INSTRUMENT_CD = B.INSTRUMENT_CD
+					AND A.PROC_ID = B.PROC_ID
+					AND A.DT = #{dt}
+					AND B.NONCALL_CD = 'N'
+					AND GREEK_CD = 'AAD'
+					AND A.PROC_ID = #{procId}
+				GROUP BY FACTOR_CD
+			ON DUPLICATE KEY UPDATE AMOUNT = VALUES(AMOUNT), CRTN_TIME = NOW();
 	</insert>
 	
 </mapper>

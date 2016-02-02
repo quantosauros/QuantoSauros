@@ -67,6 +67,7 @@ public abstract class AbstractProcess {
 			calculate(instrumentInfoModel);
 		}
 	}
+	
 	private void generate(InstrumentInfoModel instrumentInfoModel){		
 		//generate a Curve Container
 		HashMap paramMap = new HashMap();
@@ -144,9 +145,11 @@ public abstract class AbstractProcess {
 	public void setSimNum(int simNum){
 		this._simNum = simNum;
 	}
+	
 	public void setMonitorFrequency(int monitorFrequency){
 		_monitorFrequency = monitorFrequency;
 	}
+	
 	public void setSpecificInstrument(String instrumentCd){
 		HashMap paramMap = new HashMap();
 		paramMap.put("dt", _processDate.getDt());
@@ -155,6 +158,7 @@ public abstract class AbstractProcess {
 		_infoDaoList = _instrumentInfoDao.selectSpecificInstrumentInfo(paramMap);		
 		
 	}
+	
 	public void setInsertResults(boolean flag){
 		_insertResult = flag;
 	}
