@@ -1,9 +1,9 @@
 package com.quantosauros.jpl.engine.data;
 
 import java.util.ArrayList;
-
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.TypeDef.ModelType;
+import com.quantosauros.common.TypeDef.OptionType;
 import com.quantosauros.common.TypeDef.RateType;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
@@ -62,12 +62,16 @@ public abstract class AbstractData {
 	
 	protected double[][][] _couponRate;
 	protected double[][][] _condiTenor;
+	protected double[][] _switchValue;
 	
 	protected boolean[] _hasExercises;
 	//[legIndex][simIndex][periodIndex][rfIndex]
 	protected double[][][][] _LSMCData;
 	protected boolean[][] _restricted;
 		
+	protected OptionType _optionType;
+	protected double _switchCoupon;
+	
 	public AbstractData(Date asOfDate, Date issueDate, Date maturityDate,
 			PaymentPeriod[] periods, DayCountFraction dcf,
 			int simNum, int periodNum, int legNum,
@@ -90,6 +94,7 @@ public abstract class AbstractData {
 		_legDataInfos = legDataInfos;		
 		_couponRate = new double[_legNum][_simNum][_periodNum];
 		_condiTenor = new double[_legNum][_simNum][_periodNum];
+		_switchValue = new double[_simNum][_periodNum];
 		_LSMCData = new double[_legNum][_simNum][_periodNum][];
 		_referenceRates = new double[_legNum][][][][];
 		_undNum = new int[_legNum];
@@ -123,8 +128,7 @@ public abstract class AbstractData {
 			_hwX[i] = path[i];
 		}
 	}
-	
-	
+		
 	protected void setCouponIndex(int periodIndex, int couponIndex){
 		_couponIndex[periodIndex] = couponIndex;
 	}
@@ -151,6 +155,15 @@ public abstract class AbstractData {
 	
 	public double[] getLSMC(int legIndex, int simIndex, int periodIndex){
 		return _LSMCData[legIndex][simIndex][periodIndex];
+	}
+	
+	public double getSwitchValue(int simIndex, int periodIndex){
+		if (_optionType.equals(OptionType.SWITCH)){
+			return _switchValue[simIndex][periodIndex];
+		} else {
+			return 1.0;
+		}
+		
 	}
 	
 	protected void calcDiscountFactor(int simIndex, int periodIndex){
@@ -420,5 +433,6 @@ public abstract class AbstractData {
 	public int[] getUnderlyingNum(){
 		return _undNum;
 	}
+
 }
 

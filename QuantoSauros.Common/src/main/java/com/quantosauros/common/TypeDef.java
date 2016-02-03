@@ -7,7 +7,7 @@ public class TypeDef {
 	}
 	
 	public enum OptionType {
-		CALL, PUT, NONE,
+		CALL, PUT, NONE, SWITCH,
 	}
 	
 	public enum RateType {
@@ -62,6 +62,8 @@ public class TypeDef {
 			return OptionType.CALL;
 		} else if (optionType.equals("PUT") || optionType.equals(1)|| optionType.equals("1")){
 			return OptionType.PUT;
+		} else if (optionType.equals("SWITCH") || optionType.equals(2)|| optionType.equals("2")){
+			return OptionType.SWITCH;
 		} else {
 			return OptionType.NONE;
 		}

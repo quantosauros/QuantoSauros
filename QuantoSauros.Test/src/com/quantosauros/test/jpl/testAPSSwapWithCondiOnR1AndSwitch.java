@@ -34,7 +34,7 @@ import com.quantosauros.jpl.dto.underlying.RateUnderlyingInfo;
 import com.quantosauros.jpl.dto.underlying.UnderlyingInfo;
 import com.quantosauros.jpl.instrument.StructuredProduct;
 
-public class testAPSSwapWithCondiOnR1 {
+public class testAPSSwapWithCondiOnR1AndSwitch {
 
 	static Date _asOfDate;
 	static Date _issueDate;
@@ -52,6 +52,7 @@ public class testAPSSwapWithCondiOnR1 {
 	static Date[] _exerciseDates;
 	static double[] _exercisePrices;
 	static OptionType _optionType;
+	static double _switchCoupon;
 	
 	static DayCountFraction _dcf1;
 	static DayCountFraction _dcf2;
@@ -258,14 +259,15 @@ public class testAPSSwapWithCondiOnR1 {
 				new Date("20140809"),	new Date("20141109"),	new Date("20150209"),	new Date("20150509"),	new Date("20150809"),	new Date("20151109"),	new Date("20160209"),	new Date("20160509"),	new Date("20160809"),	new Date("20161109"),	new Date("20170209"),	new Date("20170509"),
 		};
 		
-//		_exerciseDates = new Date[]{
-//			new Date("20150509"),	new Date("20150809"),	new Date("20151109"),	new Date("20160209"),	new Date("20160509"),	new Date("20160809"),	new Date("20161109"),	new Date("20170209"),
-//		};
-//		_exercisePrices = new double[_exerciseDates.length];
-//		for (int i = 0; i < _exerciseDates.length; i++){
-//			_exercisePrices[i] = 1;
-//		}
-		_optionType = OptionType.NONE;
+		_exerciseDates = new Date[]{
+			new Date("20150509"),	new Date("20150809"),	new Date("20151109"),	new Date("20160209"),	new Date("20160509"),	new Date("20160809"),	new Date("20161109"),	new Date("20170209"),
+		};
+		_exercisePrices = new double[_exerciseDates.length];
+		for (int i = 0; i < _exerciseDates.length; i++){
+			_exercisePrices[i] = 1;
+		}
+		_optionType = OptionType.SWITCH;
+		_switchCoupon = 0.02;
 		
 		_dcf1 = DayCountFraction.ACTUAL_365;
 		_dcf2 = DayCountFraction.ACTUAL_360;
@@ -383,7 +385,7 @@ public class testAPSSwapWithCondiOnR1 {
 		
 		//OPTION INFO
 		OptionInfo optionInfo = new OptionInfo(
-				_optionType, _exerciseDates, _exercisePrices);
+				_optionType, _exerciseDates, _exercisePrices, _switchCoupon);
 				
 		//QUANTO INFO
 		double[][] fxAssetCorrelations = new double[legCouponInfos.length][];
@@ -494,18 +496,23 @@ public class testAPSSwapWithCondiOnR1 {
 		product.getResults();
 		
 		double epsilon = 0.001;
-		for (int legIndex = 0; legIndex < legCouponInfos.length; legIndex++){
-			for (int undIndex = 0; undIndex < legCouponInfos[legIndex].getUnderlyingNumber(); undIndex++){
-				ArrayList<Double> delta = product.getDelta(legUnderlyingInfos, discountUnderlyingInfo, 
-						correlations, legIndex, undIndex, epsilon);
-				
-				for (int deltaIndex = 0; deltaIndex < delta.size(); deltaIndex++){
-					System.out.println(delta.get(deltaIndex));
-				}
-				
-			}
-		}
+//		for (int legIndex = 0; legIndex < legCouponInfos.length; legIndex++){
+//			for (int undIndex = 0; undIndex < legCouponInfos[legIndex].getUnderlyingNumber(); undIndex++){
+//				ArrayList<Double> delta = product.getDelta(legUnderlyingInfos, discountUnderlyingInfo, 
+//						correlations, legIndex, undIndex, epsilon);
+//				
+//				for (int deltaIndex = 0; deltaIndex < delta.size(); deltaIndex++){
+//					System.out.println(delta.get(deltaIndex));
+//				}
+//				
+//			}
+//		}
 		
+		ArrayList<Double> delta = product.getDiscountDelta(legUnderlyingInfos, 
+				discountUnderlyingInfo, correlations, epsilon);
+		for (int deltaIndex = 0; deltaIndex < delta.size(); deltaIndex++){
+			System.out.println(delta.get(deltaIndex));
+		}
 	}
 
 }

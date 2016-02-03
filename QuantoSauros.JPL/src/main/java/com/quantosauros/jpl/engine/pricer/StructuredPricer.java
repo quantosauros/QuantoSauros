@@ -235,7 +235,9 @@ public class StructuredPricer extends AbstractPricer{
 				legMarketInfoArray,
 				legUnderlyingInfoArray,
 				discMarketInfo,
-				_discModelType);		
+				_discModelType,
+				_optionInfo.getOptionType(),
+				_optionInfo.getSwitchCoupon());		
 	}
 	
 	protected void genData(
@@ -438,8 +440,9 @@ public class StructuredPricer extends AbstractPricer{
 			//Determine the Exercise			
 			boolean hasExerciseAtThisPeriod = _data.getHasExercise(periodIndex);				
 			if (hasExerciseAtThisPeriod){
-				double exercisePrice = principal;
+				
 				if (!useExerciseIndex){
+					//Exercise Index 비고정
 					double[][][] X = new double[_legNum][][];						
 					double[][] Y = new double[_legNum][_simNum];					
 					int structuredLegIndex = 0;
@@ -460,28 +463,34 @@ public class StructuredPricer extends AbstractPricer{
 						}
 					}					
 					
-					AbstractLSMC lsmc = new AbstractLSMC(X, Y, exercisePrice, structuredLegIndex);
+					//LSMC
+					AbstractLSMC lsmc = new AbstractLSMC(X, Y, principal, structuredLegIndex);
 					for (int legIndex = 0; legIndex < _legNum; legIndex++){
 						if (_lsmcParams[legIndex][periodIndex] != null){
 							lsmc.setLSMCParams(legIndex, _lsmcParams[legIndex][periodIndex]);
 						}
-					}
-					
+					}					
 					lsmc.generate();
 					
+					//Continuation Value
 					double[][] contiValue = new double[_legNum][];
 					for (int legIndex = 0; legIndex < _legNum; legIndex++){
 						contiValue[legIndex] = lsmc.getContinuationValues(legIndex);
 						_lsmcParams[legIndex][periodIndex] = lsmc.getLSMCParams(legIndex);
 					}
 					
+					//Determine Exercise
 					for (int simIndex = 0; simIndex < _simNum; simIndex++){
+						double exercisePrice = _data.getSwitchValue(simIndex, periodIndex);
+						
 						double rcvContiValue = 0;
 						double payContiValue = 0;
 						if (_legNum == 1 ){
-							rcvContiValue = _rcvIndex == 1 ? principal : contiValue[_rcvIndex][simIndex];
-							payContiValue = _payIndex == 1 ? principal : contiValue[_payIndex][simIndex];
+							//Note Case
+							rcvContiValue = _rcvIndex == 1 ? exercisePrice : contiValue[_rcvIndex][simIndex];
+							payContiValue = _payIndex == 1 ? exercisePrice : contiValue[_payIndex][simIndex];
 						} else {
+							//Swap Case
 							rcvContiValue = contiValue[_rcvIndex][simIndex];
 							payContiValue = contiValue[_payIndex][simIndex];
 						}
@@ -489,26 +498,40 @@ public class StructuredPricer extends AbstractPricer{
 						if (_optionInfo.getOptionType().equals(OptionType.CALL)){							
 							if (rcvContiValue - payContiValue < 0){
 								for (int legIndex = 0; legIndex < _legNum; legIndex++){
-									_payoff[legIndex][simIndex][periodIndex + 1] = principal;
+									_payoff[legIndex][simIndex][periodIndex + 1] = exercisePrice;
 								}	 	 						
 	 	 						_exerciseIndex[simIndex] = periodIndex;
 							}							
 						} else if (_optionInfo.getOptionType().equals(OptionType.PUT)){
 							if (rcvContiValue - payContiValue > 0){
 								for (int legIndex = 0; legIndex < _legNum; legIndex++){
-									_payoff[legIndex][simIndex][periodIndex + 1] = principal;
+									_payoff[legIndex][simIndex][periodIndex + 1] = exercisePrice;
 								}	 	 						
 	 	 						_exerciseIndex[simIndex] = periodIndex;
 							}
-						} 	
+						} else if (_optionInfo.getOptionType().equals(OptionType.SWITCH)){
+							//TODO switch index
+							double switchContiValue = contiValue[_payIndex][simIndex];
+							if (switchContiValue > exercisePrice){
+								_payoff[_payIndex][simIndex][periodIndex + 1] = exercisePrice; 
+	 	 						_exerciseIndex[simIndex] = periodIndex;
+							}
+						}
 					}
 					
 				} else {
+					//Exercise Index 고정
 					for (int simIndex = 0; simIndex < _simNum; simIndex++) {	
 						if (_exerciseIndex[simIndex] == periodIndex) {
-							for (int legIndex = 0; legIndex < _legNum; legIndex++){
-								_payoff[legIndex][simIndex][periodIndex + 1] = principal;
-							}
+							if (_optionInfo.getOptionType().equals(OptionType.SWITCH)){
+								//SWITCH
+								_payoff[_payIndex][simIndex][periodIndex + 1] = _data.getSwitchValue(simIndex, periodIndex);
+							} else {
+								//CALL OR PUT
+								for (int legIndex = 0; legIndex < _legNum; legIndex++){
+									_payoff[legIndex][simIndex][periodIndex + 1] = _data.getSwitchValue(simIndex, periodIndex);
+								}
+							}							
 						} 							
 					}
 				}

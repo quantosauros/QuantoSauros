@@ -8,12 +8,21 @@ public class OptionInfo {
 	protected Date[] _exerciseDates;
 	protected double[] _exercisePrices;
 	protected OptionType _optionType;
-	
+	protected double _switchCoupon;
+		
 	public OptionInfo(OptionType optionType, 
 			Date[] exerciseDates, double[] exercisePrices) {
 		_optionType = optionType;
 		_exerciseDates = exerciseDates;
 		_exercisePrices = exercisePrices;	
+	}
+	
+	public OptionInfo(OptionType optionType, 
+			Date[] exerciseDates, double[] exercisePrices, double switchCoupon) {
+		_optionType = optionType;
+		_exerciseDates = exerciseDates;
+		_exercisePrices = exercisePrices;	
+		_switchCoupon = switchCoupon;
 	}
 	
 	public OptionType getOptionType(){
@@ -45,6 +54,10 @@ public class OptionInfo {
 			}
 		}		
 	}
+	public double getSwitchCoupon(){
+		return _switchCoupon;
+	}
+	
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("\r\n");

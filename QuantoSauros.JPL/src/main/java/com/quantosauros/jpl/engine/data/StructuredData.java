@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import com.quantosauros.common.TypeDef.ConditionType;
 import com.quantosauros.common.TypeDef.CouponType;
 import com.quantosauros.common.TypeDef.ModelType;
+import com.quantosauros.common.TypeDef.OptionType;
 import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
+import com.quantosauros.common.interestrate.InterestRateCurve;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
-import com.quantosauros.jpl.dto.LegStructuredCouponInfo;
 import com.quantosauros.jpl.dto.market.MarketInfo;
 import com.quantosauros.jpl.dto.market.RateMarketInfo;
 import com.quantosauros.jpl.dto.underlying.UnderlyingInfo;
@@ -33,7 +34,9 @@ public class StructuredData extends AbstractData {
 			ArrayList<UnderlyingInfo> legUnderlyingInfoArray,			
 			//Discount Parameters
 			RateMarketInfo discMarketInfo,
-			ModelType discModelType) {
+			ModelType discModelType,
+			OptionType optionType,
+			double switchCoupon) {
 		
 		super(asOfDate, issueDate, maturityDate, periods, dcf, 
 				simNum, periodNum, legCouponInfos.length, 
@@ -44,6 +47,8 @@ public class StructuredData extends AbstractData {
 		_legUnderlyingInfos = legUnderlyingInfoArray;
 		_discMarketInfo = discMarketInfo;
 		_discModelType = discModelType;
+		_optionType = optionType;
+		_switchCoupon = switchCoupon;
 	}
 
 	public void setData(int simIndex, int periodIndex, int couponIndex,
@@ -68,6 +73,10 @@ public class StructuredData extends AbstractData {
 		calcCoupon(simIndex, periodIndex);
 		calcTenor(simIndex, periodIndex);
 		calcLSMCData(simIndex, periodIndex);
+		
+		if (_optionType.equals(OptionType.SWITCH)){
+			calcSwitchValue(simIndex, periodIndex);
+		}		
 	}
 	
 	protected void calcTenor(int simIndex, int periodIndex){		
@@ -378,4 +387,69 @@ public class StructuredData extends AbstractData {
 			_LSMCData[legIndex][simIndex][periodIndex][index] = -Math.log(zeroBond)/discountTenor;
 		}		
 	}			
+
+	protected void calcSwitchValue(int simIndex, int periodIndex){
+		if (_hasExercises[periodIndex]){			
+			AbstractHullWhite hullWhite = null;
+			double vol = 0;
+			double vol2 = 0;
+			double startDt = _startTime[simIndex][periodIndex];
+			double endDt = 0;
+			double zeroBondSum = 0;
+			double zeroBond = 0;				
+			double totalTenor = 0;
+			int discIndex = _generatedPath.length - 1;
+			
+			HullWhiteVolatility[] hwVols = _discMarketInfo.getHWVolatilities();
+			HullWhiteParameters hwParams = _discMarketInfo.getHullWhiteParameters();
+			InterestRateCurve irCurve = _discMarketInfo.getInterestRateCurve();
+			for (int index = periodIndex; index < _periodNum; index++){
+				
+				Date startDate = _periods[index].getStartDate();
+				Date endDate = _periods[index].getEndDate();
+				
+				double tenor = index == periodIndex ? Math.min(
+						_dcf.getYearFraction(startDate, endDate), 
+						_dcf.getYearFraction(_asOfDate, endDate)) :
+							_dcf.getYearFraction(startDate, endDate);
+						
+				totalTenor += tenor;
+				
+				endDt = startDt + totalTenor;
+				if (_discModelType.equals(ModelType.HW1F)){
+					vol = hwVols[0].getVolatility(startDt, totalTenor);
+					hullWhite = new HullWhite1F(hwParams.getMeanReversion1F(),
+							vol, irCurve);
+					zeroBond = ((HullWhite1F)hullWhite).discountBond(startDt, endDt, 
+							_generatedPath[discIndex][0]);
+				} else if (_discModelType.equals(ModelType.HW2F)){
+					//vol1
+					vol = hwVols[0].getVolatility(startDt, totalTenor);					
+					
+					//vol2
+					vol2 = hwVols[1].getVolatility(startDt, totalTenor);					
+					
+					hullWhite = new HullWhite2F(
+							hwParams.getMeanReversion1_2F(),
+							hwParams.getMeanReversion2_2F(),
+							vol, vol2, hwParams.getCorrelation(), 
+							irCurve);
+					
+					zeroBond = ((HullWhite2F)hullWhite).discountBond(startDt, endDt, 
+							_hwX[discIndex][0][0], _hwX[discIndex][1][0]);
+				} else {
+					//NONE
+				}
+				
+				zeroBondSum += zeroBond * _switchCoupon * tenor;
+				if (index == _periodNum - 1){
+					zeroBondSum += zeroBond;
+				}
+			} 
+			
+			_switchValue[simIndex][periodIndex] = zeroBondSum;
+		} else {
+			_switchValue[simIndex][periodIndex] = 1.0;
+		}
+	}
 }
