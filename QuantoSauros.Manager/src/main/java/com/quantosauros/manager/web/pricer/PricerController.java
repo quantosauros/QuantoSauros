@@ -90,7 +90,7 @@ public class PricerController {
 		
 		Date processDate = Date.valueOf(processDt.replaceAll("-",""));		
 		int monitorFrequency = 1;
-		int simNum = 1000;
+		int simNum = 500;
 		
 		Date issueDate = Date.valueOf(instrumentInfoService.getOne(instrumentCd).getIssueDt().replace("-",""));
 		if (processDate.diff(issueDate) < 0){

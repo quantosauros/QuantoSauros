@@ -417,10 +417,11 @@ public class StructuredPricer extends AbstractPricer{
 			useExerciseIndex = true;
 		}
 		
-		double principal = 0.0;
-		if (_productInfo.hasPrincipalExchange()){
-			principal = 1.0;
-		}
+		double principal = 1.0;
+//		double principal = 0.0;
+//		if (_productInfo.hasPrincipalExchange()){
+//			principal = 1.0;
+//		}
 		
 		//1. 만기 payoff에 원금 넣어주기
 		for (int legIndex = 0; legIndex < _legNum; legIndex++){
@@ -464,7 +465,7 @@ public class StructuredPricer extends AbstractPricer{
 					}					
 					
 					//LSMC
-					AbstractLSMC lsmc = new AbstractLSMC(X, Y, principal, structuredLegIndex);
+					AbstractLSMC lsmc = new AbstractLSMC(X, Y, 1.0, structuredLegIndex);
 					for (int legIndex = 0; legIndex < _legNum; legIndex++){
 						if (_lsmcParams[legIndex][periodIndex] != null){
 							lsmc.setLSMCParams(legIndex, _lsmcParams[legIndex][periodIndex]);

@@ -48,7 +48,7 @@ public class StructuredData extends AbstractData {
 		_discMarketInfo = discMarketInfo;
 		_discModelType = discModelType;
 		_optionType = optionType;
-		_switchCoupon = switchCoupon;
+		_switchCoupon = switchCoupon;		
 	}
 
 	public void setData(int simIndex, int periodIndex, int couponIndex,

@@ -175,7 +175,7 @@
 														</td>															
 													</tr>
 													<tr>
-														<td><label class="control-label"> Underlying </label></td>
+														<td><label class="control-label"> Underlying Type</label></td>
 														<td colspan=4>
 															<spring:bind path="productModel.productLegModels[0].underlyingType">				
 																<select class="form-control" name="${status.expression}" id="payUndType" onchange="chgCondiType(this);">
@@ -423,7 +423,7 @@
 														</td>															
 													</tr>
 													<tr>
-														<td><label class="control-label"> Underlying </label></td>
+														<td><label class="control-label"> Underlying Type</label></td>
 														<td colspan=4>
 															<spring:bind path="productModel.productLegModels[1].underlyingType">				
 																<select class="form-control" name="${status.expression}" id="rcvUndType" onchange="chgCondiType(this);">

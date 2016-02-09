@@ -16,13 +16,10 @@
 	<mvc:annotation-driven />
  
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-  		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://quantosauros.c5rq93advanj.us-west-2.rds.amazonaws.com:3306/quantosauros" />
-  		<property name="username" value="niks12" />
-		<property name="password" value="dunk24cec" />
-  		<!-- <property name="url" value="jdbc:mysql://dirondol.synology.me:3306/kirudaAAD" />
-  		<property name="username" value="kiruda" />
-		<property name="password" value="1qaz2wsx" /> -->
+  		<property name="driverClassName" value="com.mysql.jdbc.Driver" />		
+  		<property name="url" value="jdbc:mysql://61.96.111.175:3306/quantosauros" />
+  		<property name="username" value="root" />
+		<property name="password" value="1qaz2wsx" />
 	</bean> 
   
 	<bean id="transactionManager"

@@ -70,7 +70,7 @@ public abstract class AbstractData {
 	protected boolean[][] _restricted;
 		
 	protected OptionType _optionType;
-	protected double _switchCoupon;
+	protected double _switchCoupon;	
 	
 	public AbstractData(Date asOfDate, Date issueDate, Date maturityDate,
 			PaymentPeriod[] periods, DayCountFraction dcf,
