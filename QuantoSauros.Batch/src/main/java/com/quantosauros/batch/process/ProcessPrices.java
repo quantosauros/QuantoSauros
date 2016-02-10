@@ -23,7 +23,7 @@ public class ProcessPrices extends AbstractProcess {
 	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel){	
 		Money originPrice = _calculator.getPrice(
 				_processDate, _irCurveContainer, _surfaceContainer, "");
-		_calculator.getResults();
+//		_calculator.getResults();
 		
 		if (_insertResult)
 			insertDetailResult(instrumentInfoModel.getInstrumentCd(), "N");

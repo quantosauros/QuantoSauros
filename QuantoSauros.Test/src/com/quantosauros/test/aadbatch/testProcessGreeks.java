@@ -11,11 +11,11 @@ public class testProcessGreeks extends TestBase {
 
 	public void test(){
 		//INPUT VARIABLES
-		String procId = "2";
-		Date startDate = Date.valueOf("20131202");
-		Date endDate = Date.valueOf("20131203");				
-		int simNum = 100;
-		boolean calcBump = true;
+		String procId = "0";
+		Date startDate = Date.valueOf("20131204");
+		Date endDate = Date.valueOf("20131230");				
+		int simNum = 5000;
+		boolean calcBump = false;
 		int monitorFrequency = 1;
 		
 		Calendar cal = SouthKoreaCalendar.getCalendar(1);
@@ -29,7 +29,7 @@ public class testProcessGreeks extends TestBase {
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);
 			process.setCalcBump(calcBump);
-			process.setSpecificInstrument("KR_IRS131202001");
+//			process.setSpecificInstrument("KR_IRS131202001");
 			//DB기록 여부 입력(true:기록, false:미기록)
 			process.setInsertResults(true);
 			process.execute();

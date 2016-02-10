@@ -83,6 +83,8 @@ public abstract class AbstractProcess {
 	}
 	
 	private void calculate(InstrumentInfoModel instrumentInfoModel){		
+		System.out.println(instrumentInfoModel.getInstrumentCd());
+		
 		calcInstrument(instrumentInfoModel);				
 	}
 		

@@ -102,16 +102,22 @@
 							<br>
 							However, AAD Method is much faster than BUMP method and it's precision is the same as the BUMP method.
 							<br>
-							I implemented AAD library of interest rate derivatives. And the results of AAD are same as the BUMP. 
+							I implemented the AAD library of interest rate derivatives. And the results of AAD are same as the BUMP. 
 							<br>
-							And BUMP method takes 2 hours on the average, however, AAD method takes 15 min on the average.
+							And the BUMP method takes 2 hours on the average, however, the AAD method takes 15 min on the average.
 							 
 							<h4> REFERENCE </h4>
 							<a href="http://www.fincad.com/sites/default/files/wysiwyg/Structured%20products%20desks%20join%20the%20AAD%20revolution.pdf" target="_blank">
 							Structured products desks join the AAD revolution. - Risk
-							</a>				 
-							
-							
+							</a>				
+						</div>
+						<div class="panel-heading">
+							<h3 class="panel-title"> Contact </h3>
+						</div>
+						<div class="panel-body">
+							Jihoon Lee
+							<br>
+							jayjlee12@gmail.com
 						</div>
 					</div>
 				</div>

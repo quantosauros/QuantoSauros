@@ -96,21 +96,23 @@
 													<div class="panel-heading">
 														<h3 class="panel-title"> Pricer Result </h3>
 													</div>
-													<div class="panel-body">													
-														<div class="list-group">													
-															<div class = "list-group-item">
-																<label> Product Price </label>
-																${resultPrice}
-															</div>
-															<div class = "list-group-item">
-																<label> Rcv Leg Price </label>
-																${resultRcvLegPrice}		
-															</div>
-															<div class = "list-group-item">
-																<label> Pay Leg Price </label>
-																${resultPayLegPrice}		
-															</div>		
-														</div>
+													<div class="panel-body">
+														<table class="table table-striped">
+															<tbody>
+																<tr>
+																	<td><label class="control-label"> Product Price </label></td>
+																	<td>${resultPrice}</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label"> Rcv Leg Price </label></td>
+																	<td>${resultRcvLegPrice}</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label"> Pay Leg Price </label></td>
+																	<td>${resultPayLegPrice}</td>
+																</tr>
+															</tbody>
+														</table>													
 													</div>
 												</div>
 											</div>
@@ -155,24 +157,26 @@
 												<h3 class="panel-title"> Product Information </h3>
 											</div>
 											<div class="panel-body">
-												<div class="list-group">						
-													<div class = "list-group-item">											
-														<label> Issue Date </label>										
-														${productInfoModel.issueDt}
-													</div>
-													<div class = "list-group-item">
-														<label> Maturity Date </label>
-														${productInfoModel.mrtyDt}
-													</div>	
-													<div class = "list-group-item">
-														<label> Principal Exchange </label>
-														${productInfoModel.hasPrincipalExchange}
-													</div>
-													<div class = "list-group-item">
-														<label> Currency </label>
-														${productInfoModel.currency}
-													</div>
-												</div>
+												<table class="table table-striped">
+													<tbody>
+														<tr>
+															<td><label class="control-label"> Issue Date </label></td>
+															<td>${productInfoModel.issueDt}</td>
+														</tr>
+														<tr>
+															<td><label class="control-label"> Maturity Date </label></td>
+															<td>${productInfoModel.mrtyDt}</td>
+														</tr>
+														<tr>
+															<td><label class="control-label"> Principal Exchange </label></td>
+															<td>${productInfoModel.hasPrincipalExchange}</td>
+														</tr>
+														<tr>
+															<td><label class="control-label"> Currency </label></td>
+															<td>${productInfoModel.currency}</td>
+														</tr>
+													</tbody>
+												</table>												
 											</div>							
 										</div>
 									</div>
@@ -185,83 +189,91 @@
 													<h3 class="panel-title"> ${legInfoPricerModel.payRcv} Leg Information </h3>
 												</div>
 												<div class="panel-body">
-													<div class="list-group">						
-														<div class = "list-group-item">
-															<label> PayRcv Type </label>
-															${legInfoPricerModel.payRcv}
+													<div class="list-group">
+														<div class="table-responsive">
+															<table class="table table-striped">
+																<tbody>
+																	<tr>
+																		<td><label class="control-label"> PayRcv Type </label></td>
+																		<td>${legInfoPricerModel.payRcv}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> DCF </label></td>
+																		<td>${legInfoPricerModel.dcf}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Condition Type </label></td>
+																		<td>${legInfoPricerModel.conditionType}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Underlying Type </label></td>
+																		<td>${legInfoPricerModel.underlyingType}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Has Cap </label></td>
+																		<td>${legInfoPricerModel.hasCap}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Has Floor </label></td>
+																		<td>${legInfoPricerModel.hasFloor}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Next Coupon Date </label></td>
+																		<td>${legInfoPricerModel.nextCouponDt}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Next Coupon Rate </label></td>
+																		<td>${legInfoPricerModel.nextCouponRate}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Cumulated Accrual Days </label></td>
+																		<td>${legInfoPricerModel.cumulatedAccrualDays}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label"> Cumulated Average Coupon </label></td>
+																		<td>${legInfoPricerModel.cumulatedAvgCoupon}</td>
+																	</tr>
+																	<c:forEach var="underlyingInfoPricerModel" items="${legInfoPricerModel.underlyingInfoPricerModels}" varStatus = "status1">
+																		<tr>
+																			<td><label> Underlying Info ${status1.index} </label></td>
+																			<td><label> Underlying Info Type</label>
+																				${underlyingInfoPricerModel.underlyingInfoFlag}
+																				<br>
+																				<c:choose>
+																					<c:when test="${underlyingInfoPricerModel.underlyingInfoFlag == 'Rate'}">
+																						<label class="control-label"> Rate Type </label>
+																						${underlyingInfoPricerModel.rateType}
+																						<br>
+																						<label> Rate Tenor </label>
+																						${underlyingInfoPricerModel.tenor}
+																						<br>
+																						<label> Swap Coupon Frequency </label>
+																						${underlyingInfoPricerModel.swapCouponFrequency}
+																						<br>
+																						<label> Model Type </label>
+																						${underlyingInfoPricerModel.modelType}
+																						<br>
+																					</c:when>
+																					<c:when test="${underlyingInfoPricerModel.underlyingInfoFlag == 'Equity'}">
+																						<label> Base Price </label>
+																						${underlyingInfoPricerModel.basePrice}
+																						<br>
+																						<label> RiskFree Type </label>
+																						${underlyingInfoPricerModel.riskFreeType}
+																						<br>
+																					</c:when>
+																					<c:when test="${underlyingInfoPricerModel.underlyingInfoFlag == 'FX'}">
+																						
+																					</c:when>
+																				</c:choose>
+																			</td>
+																		</tr>											
+																	</c:forEach>
+																</tbody>
+															</table>
 														</div>
-														<div class = "list-group-item">
-															<label> DCF </label>
-															${legInfoPricerModel.dcf}
-														</div>
-														<div class = "list-group-item">
-															<label> Condition Type </label>
-															${legInfoPricerModel.conditionType}
-														</div>
-														<div class = "list-group-item">
-															<label> Underlying Type </label>
-															${legInfoPricerModel.underlyingType}
-														</div>
-														<div class = "list-group-item">
-															<label> Has Cap </label>
-															${legInfoPricerModel.hasCap}
-														</div>
-														<div class = "list-group-item">
-															<label> Has Floor </label>
-															${legInfoPricerModel.hasFloor}
-														</div>
-														<div class = "list-group-item">
-															<label> Next Coupon Date </label>
-															${legInfoPricerModel.nextCouponDt}
-														</div>
-														<div class = "list-group-item">
-															<label> Next Coupon Rate </label>
-															${legInfoPricerModel.nextCouponRate}
-														</div>
-														<div class = "list-group-item">
-															<label> Cumulated Accrual Days </label>
-															${legInfoPricerModel.cumulatedAccrualDays}
-														</div>
-														<div class = "list-group-item">
-															<label> Cumulated Average Coupon </label>
-															${legInfoPricerModel.cumulatedAvgCoupon}
-														</div>
-														<c:forEach var="underlyingInfoPricerModel" items="${legInfoPricerModel.underlyingInfoPricerModels}" varStatus = "status1">
-															<div class = "list-group-item">
-																<label> Underlying Info ${status1.index} </label>	
-																<br>
-																<label> Underlying Info Type</label>
-																${underlyingInfoPricerModel.underlyingInfoFlag}
-																<br>
-																<c:choose>
-																	<c:when test="${underlyingInfoPricerModel.underlyingInfoFlag == 'Rate'}">
-																		<label class="control-label"> Rate Type </label>
-																		${underlyingInfoPricerModel.rateType}
-																		<br>
-																		<label> Rate Tenor </label>
-																		${underlyingInfoPricerModel.tenor}
-																		<br>
-																		<label> Swap Coupon Frequency </label>
-																		${underlyingInfoPricerModel.swapCouponFrequency}
-																		<br>
-																		<label> Model Type </label>
-																		${underlyingInfoPricerModel.modelType}
-																		<br>
-																	</c:when>
-																	<c:when test="${underlyingInfoPricerModel.underlyingInfoFlag == 'Equity'}">
-																		<label> Base Price </label>
-																		${underlyingInfoPricerModel.basePrice}
-																		<br>
-																		<label> RiskFree Type </label>
-																		${underlyingInfoPricerModel.riskFreeType}
-																		<br>
-																	</c:when>
-																	<c:when test="${underlyingInfoPricerModel.underlyingInfoFlag == 'FX'}">
-																		
-																	</c:when>
-																</c:choose>
-															</div>											
-														</c:forEach>	
+													</div>													
+													<div class="list-group">	
 														<div class="table-responsive">														
 															<table class="table table-striped">
 																<thead>
@@ -300,17 +312,26 @@
 													<h3 class="panel-title"> ${legPricerModelForm.legInfoPricerModels[status.index].payRcv} Leg Market Information </h3>
 												</div>
 												<div class="panel-body">
-													<c:forEach var="interestRateCurveModel" items="${marketInfoPricerModel.interestRateCurveModels}" varStatus="curveIndex">
-														<div class="list-group">
-															<div class = "list-group-item">																
-																<label> Underlying ${curveIndex.index} </label>
-																<br>
-																<label>Date</label>
-																${interestRateCurveModel.date}																																
-																<br>
-																<label>Day Count Convention</label>
-																${interestRateCurveModel.dcf}
-																<br>
+													<div class="list-group">
+														<c:forEach var="interestRateCurveModel" items="${marketInfoPricerModel.interestRateCurveModels}" varStatus="curveIndex">
+															<div class = "list-group-item">
+																<div class="table-responsive">														
+																	<table class="table table-striped table-responsive">
+																		<tbody>
+																			<tr>
+																				<td colspan=2><label class="control-label"> Underlying ${curveIndex.index} </label></td>																			
+																			</tr>
+																			<tr>
+																				<td><label class="control-label">Date</label></td>
+																				<td>${interestRateCurveModel.date}</td>
+																			</tr>
+																			<tr>
+																				<td><label class="control-label">Day Count Convention</label></td>
+																				<td>${interestRateCurveModel.dcf}</td>
+																			</tr>
+																		</tbody>																	
+																	</table>
+																</div>																													
 																<div class="table-responsive">																
 																	<table class="table table-striped table-responsive">
 																		<thead>
@@ -320,32 +341,42 @@
 																				<th>Rate Type</th>																			
 																			</tr>
 																		</thead>
-																		<c:forEach items="${interestRateCurveModel.rate}" varStatus="rateIndex">
-																			<tr>																																
-																				<td>${interestRateCurveModel.vertex[rateIndex.index]}</td>
-																				<td>${interestRateCurveModel.rate[rateIndex.index]}</td>
-																				<td>${interestRateCurveModel.rateType[rateIndex.index]}</td>
-																			</tr>																												
-																		</c:forEach>	
+																		<tbody>
+																			<c:forEach items="${interestRateCurveModel.rate}" varStatus="rateIndex">
+																				<tr>																																
+																					<td>${interestRateCurveModel.vertex[rateIndex.index]}</td>
+																					<td>${interestRateCurveModel.rate[rateIndex.index]}</td>
+																					<td>${interestRateCurveModel.rateType[rateIndex.index]}</td>
+																				</tr>																												
+																			</c:forEach>	
+																		</tbody>
+																	</table>
+																</div>															
+																<div class="table-responsive">
+																	<table class="table table-striped table-responsive">
+																		<tbody>
+																			<tr>
+																				<td><label>Mean Reversion 1F </label></td>
+																				<td>${marketInfoPricerModel.meanReversion1F[curveIndex.index]}</td>
+																			</tr>
+																			<tr>
+																				<td><label>Mean Reversion 2F 1 </label></td>
+																				<td>${marketInfoPricerModel.meanReversion2F1[curveIndex.index]}</td>
+																			</tr>
+																			<tr>
+																				<td><label>Mean Reversion 2F 2 </label></td>
+																				<td>${marketInfoPricerModel.meanReversion2F2[curveIndex.index]}</td>
+																			</tr>
+																			<tr>
+																				<td><label>Mean Reversion 2F Correlation </label></td>
+																				<td>${marketInfoPricerModel.correlation[curveIndex.index]}</td>
+																			</tr>
+																		</tbody>
 																	</table>
 																</div>
 															</div>
-															<div class = "list-group-item">																
-																<label>Mean Reversion 1F </label>																
-																${marketInfoPricerModel.meanReversion1F[curveIndex.index]}
-																<br>
-																<label>Mean Reversion 2F 1</label>
-																${marketInfoPricerModel.meanReversion2F1[curveIndex.index]}
-																<br>
-																<label>Mean Reversion 2F 2</label>
-																${marketInfoPricerModel.meanReversion2F2[curveIndex.index]}
-																<br>
-																<label>Mean Reversion 2F Correlation</label>
-																${marketInfoPricerModel.correlation[curveIndex.index]}
-																<br>
-															</div>
-														</div>														
-													</c:forEach>
+														</c:forEach>
+													</div>
 												</div>
 											</div>
                             			</div>
@@ -358,14 +389,22 @@
 											<div class="panel-body">
 												<div class="list-group">
 													<div class = "list-group-item">
-														<label>Date</label>
-														${discMarketInfoPricerModel.interestRateCurveModels[0].date}
-														<br>
-														<label>Day Count Convention</label>
-														${discMarketInfoPricerModel.interestRateCurveModels[0].dcf}
-														<br>
+														<div class="table-responsive">														
+															<table class="table table-striped table-responsive">
+																<tbody>
+																	<tr>
+																		<td><label class="control-label">Date</label></td>
+																		<td>${discMarketInfoPricerModel.interestRateCurveModels[0].date}</td>
+																	</tr>
+																	<tr>
+																		<td><label class="control-label">Day Count Convention</label></td>
+																		<td>${discMarketInfoPricerModel.interestRateCurveModels[0].dcf}</td>
+																	</tr>
+																</tbody>																	
+															</table>
+														</div>														
 														<div class="table-responsive">
-															<table class="table table-striped">
+															<table class="table table-striped table-responsive">
 																<thead>
 																	<tr>
 																		<th>Vertex</th>
@@ -382,23 +421,30 @@
 																</c:forEach>
 															</table>
 														</div>	
-													</div>
-													<div class = "list-group-item">
-														<label>Mean Reversion 1F </label>
-														${discMarketInfoPricerModel.meanReversion1F[0]}
-														<br>
-														<label>Mean Reversion 2F 1</label>
-														${discMarketInfoPricerModel.meanReversion2F1[0]}
-														<br>
-														<label>Mean Reversion 2F 2</label>
-														${discMarketInfoPricerModel.meanReversion2F2[0]}
-														<br>
-														<label>Mean Reversion 2F Correlation</label>
-														${discMarketInfoPricerModel.correlation[0]}
-														<br>
-													</div>
-												</div>
-																							
+														<div class="table-responsive">
+															<table class="table table-striped table-responsive">
+																<tbody>
+																	<tr>
+																		<td><label>Mean Reversion 1F </label></td>
+																		<td>${discMarketInfoPricerModel.meanReversion1F[0]}</td>
+																	</tr>
+																	<tr>
+																		<td><label>Mean Reversion 2F 1 </label></td>
+																		<td>${discMarketInfoPricerModel.meanReversion2F1[0]}</td>
+																	</tr>
+																	<tr>
+																		<td><label>Mean Reversion 2F 2 </label></td>
+																		<td>${discMarketInfoPricerModel.meanReversion2F2[0]}</td>
+																	</tr>
+																	<tr>
+																		<td><label>Mean Reversion 2F Correlation </label></td>
+																		<td>${discMarketInfoPricerModel.correlation[0]}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>													
+												</div>																							
 											</div>
 										</div>                            			
                             		</div>                            		

@@ -21,5 +21,6 @@ public class testProductDataGenerator extends TestBase {
 
 		productDataGenerator.generate();
 		
+		log("DONE");
 	}
 }
