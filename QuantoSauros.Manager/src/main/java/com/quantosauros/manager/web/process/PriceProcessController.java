@@ -63,7 +63,7 @@ public class PriceProcessController {
 			ProcessPrices processPrices = new ProcessPrices(
 					processDate, procId);
 			
-			processPrices.execute();
+//			processPrices.execute();
 			
 			processDate = calendar.adjustDate(processDate.plusDays(1), 
 					BusinessDayConvention.FOLLOWING);			

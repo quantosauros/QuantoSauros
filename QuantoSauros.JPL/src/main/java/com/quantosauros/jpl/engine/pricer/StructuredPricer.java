@@ -195,7 +195,7 @@ public class StructuredPricer extends AbstractPricer{
 								rateMarketInfo.getHWVolatilitySurface());
 						rateMarketInfo.setHWVolatilities(
 								hwStripping.getHWVolatility(underlyingInfo.getModelType()));
-					}										
+					}
 				}
 								
 				legMarketInfoArray.add(marketInfo);

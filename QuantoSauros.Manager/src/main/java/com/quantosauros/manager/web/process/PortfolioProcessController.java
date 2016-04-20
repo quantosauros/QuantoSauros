@@ -63,7 +63,7 @@ public class PortfolioProcessController {
 			ProcessPortfolio processPortfolio = new ProcessPortfolio(
 					processDate, procId);
 			
-			processPortfolio.execute();
+//			processPortfolio.execute();
 			
 			processDate = calendar.adjustDate(processDate.plusDays(1), 
 					BusinessDayConvention.FOLLOWING);			

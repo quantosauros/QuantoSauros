@@ -126,11 +126,12 @@ public class RegistrationController {
 		String startDt = request.getParameter("issueDt");
 		String mrtyDt = request.getParameter("mrtyDt");
 		String frequency = request.getParameter("couponFreq");
-		String noncallYear = request.getParameter("noncallYear");
+		String noncallYear = request.getParameter("nonCallYear");
 		
 		Date startDate = null;
 		if (noncallYear != null){
-			startDate = Date.valueOf(startDt).plusYears(Integer.parseInt(noncallYear));
+			int noncallMonth = (int) (Double.parseDouble(noncallYear) * 12.0);
+			startDate = Date.valueOf(startDt).plusMonths(noncallMonth);
 		} else {
 			startDate = Date.valueOf(startDt);
 		}

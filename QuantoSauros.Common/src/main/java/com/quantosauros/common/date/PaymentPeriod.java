@@ -60,6 +60,17 @@ public class PaymentPeriod {
 		 
 	}
 	
+	public boolean isExpired(Date date){
+		if (_paymentDate.compareTo(date) <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public double getYearFraction(DayCountFraction dayCountFraction) {
+		return dayCountFraction.getYearFraction(_startDate, _endDate);
+	}
+	
 	public String toString(){
 		StringBuffer buf = new StringBuffer();
 		buf.append("\r\n");

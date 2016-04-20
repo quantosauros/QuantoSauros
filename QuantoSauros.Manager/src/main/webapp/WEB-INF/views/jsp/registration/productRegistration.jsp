@@ -229,7 +229,7 @@
 																	<option value = "KRWIRS" selected> KRWIRS </option>
 																	<option value = "USDIRS"> USDIRS </option>
 																	<option value = "EURIRS"> EURIRS </option>
-																	<option value = "1010000W"> KRW TBond </option>
+																	<option value = "KTB"> KTB </option>
 																</select>									
 															</spring:bind>
 														</td>
@@ -266,7 +266,7 @@
 																	<option value = "KRWIRS" selected> KRWIRS </option>
 																	<option value = "USDIRS"> USDIRS </option>
 																	<option value = "EURIRS"> EURIRS </option>
-																	<option value = "1010000W"> KRW TBond </option>
+																	<option value = "KTB"> KTB </option>
 																</select>									
 															</spring:bind>
 														</td>
@@ -303,7 +303,7 @@
 																	<option value = "KRWIRS" selected> KRWIRS </option>
 																	<option value = "USDIRS"> USDIRS </option>
 																	<option value = "EURIRS"> EURIRS </option>
-																	<option value = "1010000W"> KRW TBond </option>
+																	<option value = "KTB"> KTB </option>
 																</select>									
 															</spring:bind>
 														</td>

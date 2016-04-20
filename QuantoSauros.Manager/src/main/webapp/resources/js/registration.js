@@ -17,10 +17,10 @@ function genExercise(selector){
 	var couponFreq = $('#exerciseFrequency').val();
 	var nonCallYear = $('#nonCallYear').val();
 	
-	var jsonStr = './register/json?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq;
+	var jsonStr = './register/json?issueDt=' + issueDt + '&mrtyDt=' + mrtyDt + '&couponFreq=' + couponFreq + '&nonCallYear=' + nonCallYear;
 	
 	$.getJSON(jsonStr, function(data){
-		$('#exerciseSchedule').empty();				
+		$('#exeSchedule').empty();				
 		buildExerciseTable(data)	
 	});
 };	
@@ -88,7 +88,7 @@ function buildScheduleTable(data, legCode){
 	            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
         		} else if (undTypeCd == 2){
         			//R1 - R2	        			
-        			contents$.append($('<option>',{value: 1, text: 'RESET'}).attr('disabled', true));
+        			contents$.append($('<option>',{value: 1, text: 'RESET'}));
 	            	contents$.append($('<option>',{value: 2, text: 'ACCRUAL'}));
 	            	contents$.append($('<option>',{value: 3, text: 'AVERAGE'}));
 	            	contents$.append($('<option>',{value: 4, text: 'FIXED'}));
@@ -119,7 +119,7 @@ function buildScheduleTable(data, legCode){
         			couponTypeCd = 1;
         		} else if (undTypeCd == 2){
         			//R1 - R2
-        			couponTypeCd = 2;
+        			couponTypeCd = 1;
         		} else if (undTypeCd == 3){
         			//R1 & R2
         			couponTypeCd = 2;
@@ -413,7 +413,7 @@ function genCouponContents(targetStr, couponTypeCd, undTypeCd, legCode, rowIndex
 	//Combine
 	if (couponTypeCd == 1){
 		//RESET		
-		if (undTypeCd == 1){
+		if (undTypeCd == 1 || undTypeCd == 2){
 			resultTag.append(underlyingTag);
 			resultTag.append(spreadTag.attr({'value' : initSpread}));
 			resultTag.append(" %");

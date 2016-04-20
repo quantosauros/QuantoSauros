@@ -64,7 +64,7 @@ public class DeltaProcessController {
 			ProcessGreeks processGreeks = new ProcessGreeks(
 					processDate, procId);
 			
-			processGreeks.execute();
+//			processGreeks.execute();
 			
 			processDate = calendar.adjustDate(processDate.plusDays(1), 
 					BusinessDayConvention.FOLLOWING);			
