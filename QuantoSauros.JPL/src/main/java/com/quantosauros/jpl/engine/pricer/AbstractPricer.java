@@ -372,7 +372,7 @@ public abstract class AbstractPricer {
 					getUnderlyingInfo(underlyingIndex)).getTenor();
 	}
 	
-	public boolean[][] getRestrictionInfo(){
+	public boolean[][][] getRestrictionInfo(){
 		return _data.getRestrictionInfo();
 	}
 	

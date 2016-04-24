@@ -67,7 +67,8 @@ public abstract class AbstractData {
 	protected boolean[] _hasExercises;
 	//[legIndex][simIndex][periodIndex][rfIndex]
 	protected double[][][][] _LSMCData;
-	protected boolean[][] _restricted;
+	//[legIndex][simIndex][periodIndex]
+	protected boolean[][][] _restricted;
 		
 	protected OptionType _optionType;
 	protected double _switchCoupon;	
@@ -388,7 +389,7 @@ public abstract class AbstractData {
 		return results;		
 	}
 	
-	public boolean[][] getRestrictionInfo(){
+	public boolean[][][] getRestrictionInfo(){
 		return _restricted;
 	}
 

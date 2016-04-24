@@ -77,7 +77,7 @@ public abstract class AbstractProduct {
 	public double getReferenceTenor(int legIndex, int underlyingIndex){
 		return _pricer.getReferenceTenor(legIndex, underlyingIndex);
 	}	
-	public boolean[][] getRestrictionInfo(){
+	public boolean[][][] getRestrictionInfo(){
 		return _pricer.getRestrictionInfo();
 	}	
 	public double[] getLeverage(int legIndex, int underlyingIndex){

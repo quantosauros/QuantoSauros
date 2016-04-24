@@ -42,7 +42,7 @@ public class StructuredData extends AbstractData {
 				simNum, periodNum, legCouponInfos.length, 
 				legCouponInfos, legDataInfos);
 				 
-		_restricted = new boolean[_simNum][_periodNum];
+		_restricted = new boolean[_legNum][_simNum][_periodNum];
 		_legMarketInfos = legMarketInfoArray;
 		_legUnderlyingInfos = legUnderlyingInfoArray;
 		_discMarketInfo = discMarketInfo;
@@ -255,26 +255,26 @@ public class StructuredData extends AbstractData {
 					if (hasFloor && hasCap){
 						tmpCoupon = Math.min(Math.max(tmpCoupon, floor[periodIndex]), cap[periodIndex]);
 						if (tmpCoupon != cap[periodIndex] && tmpCoupon != floor[periodIndex]){
-							_restricted[simIndex][periodIndex] = false;
+							_restricted[legIndex][simIndex][periodIndex] = false;
 						} else {
-							_restricted[simIndex][periodIndex] = true;
+							_restricted[legIndex][simIndex][periodIndex] = true;
 						}
 					} else if (!hasFloor && hasCap){
 						tmpCoupon = Math.min(tmpCoupon, cap[periodIndex]);
 						if (tmpCoupon != cap[periodIndex]){
-							_restricted[simIndex][periodIndex] = false;
+							_restricted[legIndex][simIndex][periodIndex] = false;
 						} else {
-							_restricted[simIndex][periodIndex] = true;
+							_restricted[legIndex][simIndex][periodIndex] = true;
 						}
 					} else if (hasFloor && !hasCap){
 						tmpCoupon = Math.max(tmpCoupon, floor[periodIndex]);
 						if (tmpCoupon != floor[periodIndex]){
-							_restricted[simIndex][periodIndex] = false;
+							_restricted[legIndex][simIndex][periodIndex] = false;
 						} else {
-							_restricted[simIndex][periodIndex] = true;
+							_restricted[legIndex][simIndex][periodIndex] = true;
 						}
 					} else {
-						_restricted[simIndex][periodIndex] = false;
+						_restricted[legIndex][simIndex][periodIndex] = false;
 					}
 					_couponRate[legIndex][simIndex][periodIndex] = tmpCoupon;
 					break;
@@ -313,26 +313,26 @@ public class StructuredData extends AbstractData {
 					if (hasFloor && hasCap){
 						rate = Math.min(Math.max(rate, floor[periodIndex]), cap[periodIndex]);
 						if (rate != cap[periodIndex] && rate != floor[periodIndex]){
-							_restricted[simIndex][periodIndex] = false;
+							_restricted[legIndex][simIndex][periodIndex] = false;
 						} else {
-							_restricted[simIndex][periodIndex] = true;
+							_restricted[legIndex][simIndex][periodIndex] = true;
 						}
 					} else if (!hasFloor && hasCap){
 						rate = Math.min(rate, cap[periodIndex]);
 						if (rate != cap[periodIndex]){
-							_restricted[simIndex][periodIndex] = false;
+							_restricted[legIndex][simIndex][periodIndex] = false;
 						} else {
-							_restricted[simIndex][periodIndex] = true;
+							_restricted[legIndex][simIndex][periodIndex] = true;
 						}
 					} else if (hasFloor && !hasCap){
 						rate = Math.max(rate, floor[periodIndex]);
 						if (rate != floor[periodIndex]){
-							_restricted[simIndex][periodIndex] = false;
+							_restricted[legIndex][simIndex][periodIndex] = false;
 						} else {
-							_restricted[simIndex][periodIndex] = true;
+							_restricted[legIndex][simIndex][periodIndex] = true;
 						}
 					} else {
-						_restricted[simIndex][periodIndex] = false;
+						_restricted[legIndex][simIndex][periodIndex] = false;
 					}
 					_couponRate[legIndex][simIndex][periodIndex] = rate;
 					break;

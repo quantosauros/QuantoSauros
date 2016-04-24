@@ -55,7 +55,8 @@ public class AADEngine {
 	protected double[] _periodTenors;
 	
 	private double[][][] _leverage;
-	private boolean[][] _restriction;
+	//[legIndex][simIndex][periodIndex]
+	private boolean[][][] _restriction;
 	//[legIndex][conditionIndex][periodIndex]
 	private double[][][] _lowerLimits;
 	private double[][][] _upperLimits;
@@ -91,7 +92,7 @@ public class AADEngine {
 			double[][] discountFactor,
 			//average
 			double[][][] leverage,
-			boolean[][] restriction,	
+			boolean[][][] restriction,	
 			//condition
 			double[][][] lowerLimits, double[][][] upperLimits,
 			double[][][] coupon,

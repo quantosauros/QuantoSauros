@@ -56,7 +56,8 @@ public class AbstractAAD {
 	
 	//[legIndex][underlyingIndex][periodIndex]
 	protected double[][][] _leverage;
-	protected boolean[][] _restriction;	
+	//[legIndex][simIndex][periodIndex]
+	protected boolean[][][] _restriction;	
 	
 	//[legIndex][conditionIndex][periodIndex]
 	private double[][][] _lowerLimits;
@@ -92,7 +93,7 @@ public class AbstractAAD {
 			double[][] discountFactor,
 			//average
 			double[][][] leverage,
-			boolean[][] restriction,	
+			boolean[][][] restriction,	
 			//condition
 			double[][][] lowerLimits, double[][][] upperLimits,
 			double[][][] coupon,
@@ -311,7 +312,7 @@ public class AbstractAAD {
 										sensiIndex, timeIndex, modelType) 
 								* _timeDt * DF 
 								* _leverage[legIndex][underlyingIndex][periodIndex] 
-								* indicatorFunction(_restriction[simIndex][periodIndex]);					
+								* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);					
 					}
 				} else {
 					double DF = 1;
@@ -326,7 +327,7 @@ public class AbstractAAD {
 									sensiIndex, timeIndex, modelType) 
 							* _timeDt * DF 
 							* _leverage[legIndex][underlyingIndex][periodIndex] 
-							* indicatorFunction(_restriction[simIndex][periodIndex]);
+							* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 					
 				}
 				break;
@@ -353,7 +354,9 @@ public class AbstractAAD {
 												_legIrTenors[legIndex][underlyingIndex],
 												_legIrMeanReversions[legIndex][underlyingIndex],
 												sensiIndex, timeIndex, modelType) *
-										_periodTenors[periodIndex] * DF;
+										_periodTenors[periodIndex] * DF
+										* _leverage[legIndex][underlyingIndex][periodIndex] 
+										* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 							}
 						}
 					} else {
@@ -366,7 +369,9 @@ public class AbstractAAD {
 											_legIrTenors[legIndex][underlyingIndex],
 											_legIrMeanReversions[legIndex][underlyingIndex],
 											sensiIndex, timeIndex, modelType) *
-									_periodTenors[periodIndex] * DF;
+									_periodTenors[periodIndex] * DF
+									* _leverage[legIndex][underlyingIndex][periodIndex] 
+									* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 						}
 					}
 				}
@@ -523,7 +528,7 @@ public class AbstractAAD {
 									_legIrTenors[legIndex][underlyingIndex],
 									_legIrMeanReversions[legIndex][underlyingIndex], modelType)
 								* _timeDt * DF * _leverage[legIndex][underlyingIndex][periodIndex]
-								* indicatorFunction(_restriction[simIndex][periodIndex]);
+								* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 				
 					}					
 				} else {
@@ -538,7 +543,7 @@ public class AbstractAAD {
 							_legIrTenors[legIndex][underlyingIndex],
 							_legIrMeanReversions[legIndex][underlyingIndex], modelType)
 						* _timeDt * DF * _leverage[legIndex][underlyingIndex][periodIndex]
-						* indicatorFunction(_restriction[simIndex][periodIndex]);
+						* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 				}
 				break;
 			case FIXED :
@@ -563,7 +568,9 @@ public class AbstractAAD {
 											_legIrCurves[legIndex][underlyingIndex],
 											_legIrTenors[legIndex][underlyingIndex],
 											_legIrMeanReversions[legIndex][underlyingIndex], modelType)
-										* DF * _periodTenors[periodIndex];
+										* DF * _periodTenors[periodIndex]
+										* _leverage[legIndex][underlyingIndex][periodIndex]
+										* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 							}					
 						}				
 					} else {
@@ -576,7 +583,9 @@ public class AbstractAAD {
 										_legIrCurves[legIndex][underlyingIndex],
 										_legIrTenors[legIndex][underlyingIndex],
 										_legIrMeanReversions[legIndex][underlyingIndex], modelType)
-									* DF * _periodTenors[periodIndex];
+									* DF * _periodTenors[periodIndex]
+									* _leverage[legIndex][underlyingIndex][periodIndex]
+									* indicatorFunction(_restriction[legIndex][simIndex][periodIndex]);
 						}				
 					}
 				}

@@ -29,7 +29,7 @@ public class testProcessGreeks extends TestBase {
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);
 			process.setCalcBump(calcBump);
-			process.setSpecificInstrument("NEW004");
+			process.setSpecificInstrument("NEW002");
 			//DB기록 여부 입력(true:기록, false:미기록)
 			process.setInsertResults(false);
 			process.execute();
