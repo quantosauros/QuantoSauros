@@ -204,6 +204,6 @@ public class AbstractResult {
 		sb.append(ddf.format(new Date()));
 		sb.append(": ");
 		sb.append(str);
-		System.out.println(sb);
+//		System.out.println(sb);
 	}
 }

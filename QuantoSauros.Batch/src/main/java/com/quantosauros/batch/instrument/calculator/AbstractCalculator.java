@@ -554,8 +554,5 @@ public class AbstractCalculator {
 	}
 	public int getLegNum(){
 		return _instance.getLegNum();
-	}
-	public int getPayLegIndex(){
-		return _instance.getPayIndex();
-	}
+	}	
 }

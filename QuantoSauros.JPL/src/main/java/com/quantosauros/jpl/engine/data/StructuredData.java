@@ -196,6 +196,11 @@ public class StructuredData extends AbstractData {
 			double rate = 0;
 			UnderlyingType underlyingType = _legCouponInfos[legIndex].getUnderlyingType();
 			
+			boolean hasCap = _legCouponInfos[legIndex].hasCap();
+			boolean hasFloor = _legCouponInfos[legIndex].hasFloor();
+			double[] cap = _legCouponInfos[legIndex].getCap();
+			double[] floor = _legCouponInfos[legIndex].getFloor();
+			
 			switch (cpnType) {
 				case ACCRUAL :					
 					double[] inCouponRate = _legCouponInfos[legIndex].getInCouponRates();
@@ -246,12 +251,7 @@ public class StructuredData extends AbstractData {
 					}
 					
 					double tmpCoupon = sum / (denominator + tenor);
-					
-					boolean hasCap = _legCouponInfos[legIndex].hasCap();
-					boolean hasFloor = _legCouponInfos[legIndex].hasFloor();
-					double[] cap = _legCouponInfos[legIndex].getCap();
-					double[] floor = _legCouponInfos[legIndex].getFloor();
-					
+										
 					if (hasFloor && hasCap){
 						tmpCoupon = Math.min(Math.max(tmpCoupon, floor[periodIndex]), cap[periodIndex]);
 						if (tmpCoupon != cap[periodIndex] && tmpCoupon != floor[periodIndex]){
@@ -309,8 +309,34 @@ public class StructuredData extends AbstractData {
 											+ spreads[periodIndex];							
 						}						
 					}					
+										
+					if (hasFloor && hasCap){
+						rate = Math.min(Math.max(rate, floor[periodIndex]), cap[periodIndex]);
+						if (rate != cap[periodIndex] && rate != floor[periodIndex]){
+							_restricted[simIndex][periodIndex] = false;
+						} else {
+							_restricted[simIndex][periodIndex] = true;
+						}
+					} else if (!hasFloor && hasCap){
+						rate = Math.min(rate, cap[periodIndex]);
+						if (rate != cap[periodIndex]){
+							_restricted[simIndex][periodIndex] = false;
+						} else {
+							_restricted[simIndex][periodIndex] = true;
+						}
+					} else if (hasFloor && !hasCap){
+						rate = Math.max(rate, floor[periodIndex]);
+						if (rate != floor[periodIndex]){
+							_restricted[simIndex][periodIndex] = false;
+						} else {
+							_restricted[simIndex][periodIndex] = true;
+						}
+					} else {
+						_restricted[simIndex][periodIndex] = false;
+					}
 					_couponRate[legIndex][simIndex][periodIndex] = rate;
-					break;	
+					break;
+				
 			}
 		}		
 	}

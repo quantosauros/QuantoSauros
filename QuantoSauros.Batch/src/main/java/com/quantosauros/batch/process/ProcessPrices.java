@@ -23,30 +23,25 @@ public class ProcessPrices extends AbstractProcess {
 	protected void calcInstrument(InstrumentInfoModel instrumentInfoModel){	
 		Money originPrice = _calculator.getPrice(
 				_processDate, _irCurveContainer, _surfaceContainer, "");
-//		_calculator.getResults();
-		
-		if (_insertResult)
-			insertDetailResult(instrumentInfoModel.getInstrumentCd(), "N");
-				
+//		_calculator.getResults();				
 		Money rcvPrice = _calculator.getLegPrice(0);		
 		Money payPrice = _calculator.getLegPrice(1);
 		
 		insertPriceResult(instrumentInfoModel, "N", 
 				originPrice, rcvPrice, payPrice);
-				
+		insertDetailResult(instrumentInfoModel.getInstrumentCd(), "N");
+		
 		if (_calculator.getHasExercise()){
 			_calculator.setHasExercise(false);
 			Money nonCallPrices = _calculator.getPrice(
 					_processDate, _irCurveContainer, _surfaceContainer, "");
-			
-			if (_insertResult)
-				insertDetailResult(instrumentInfoModel.getInstrumentCd(), "Y");
-			
+//			_calculator.getResults();			
 			Money noncallRcvValue = _calculator.getLegPrice(0);
 			Money noncallPayValue = _calculator.getLegPrice(1);
 			
 			insertPriceResult(instrumentInfoModel, "Y", 
 					nonCallPrices, noncallRcvValue, noncallPayValue);
+			insertDetailResult(instrumentInfoModel.getInstrumentCd(), "Y");
 			
 			_calculator.setHasExercise(true);
 		}		
@@ -61,15 +56,14 @@ public class ProcessPrices extends AbstractProcess {
 		String rcvValue = dformat.format(rcvPrice.getAmount());
 		
 		System.out.println(
-				"Price Results of Product Code; " + instrumentInfoModel.getInstrumentCd() + 
-				"; at; " + _processDate.getDt() +				 
-				"; NONCALLCD: " + nonCallCd +  
-				";)"				
+				"Price Results of Product Code " + instrumentInfoModel.getInstrumentCd() + 
+				" at " + _processDate.getDt() +				 
+				" NONCALLCD; " + nonCallCd + ")"				
 		);
 
-		System.out.println("Original Price: " + originalPrice);
-		System.out.println("Original RCV: " + rcvPrice);
-		System.out.println("Original PAY: " + payPrice);
+		System.out.println("Price: " + originalPrice);
+		System.out.println("RCV: " + rcvPrice);
+		System.out.println("PAY: " + payPrice);
 		
     	paramMap.put("dt", _processDate.getDt());
     	paramMap.put("procId", _procId);
@@ -98,13 +92,15 @@ public class ProcessPrices extends AbstractProcess {
 			String valueType = TypeDef.getResultTypeStr(resultType);
 			if (result instanceof ResultDto[]){
 				ResultDto[] resultDto = (ResultDto[])result;
-				for (int legIndex = 0; legIndex < resultDto.length; legIndex++){					
+				for (int legIndex = 0; legIndex < resultDto.length; legIndex++){
 					String legType = "";
 					if (payIndex == legIndex){
 						legType = "P";
 					} else {
 						legType = "R";
 					}
+					System.out.println("Value Type: " + valueType + ", Leg Type: " + legType);
+					
 					for (int periodIndex = 0; periodIndex < resultDto[legIndex].length(); periodIndex++){						
 						double avg = resultDto[legIndex].getAvgValue(periodIndex);					
 						double std = resultDto[legIndex].getStdValue(periodIndex);
@@ -120,13 +116,16 @@ public class ProcessPrices extends AbstractProcess {
 						paramMap.put("value1", new BigDecimal(avg));
 						paramMap.put("value2", new BigDecimal(std));
 						
-				    	_procPriceDataDao.insertDetailData(paramMap);			
+						if(_insertResult)
+							_procPriceDataDao.insertDetailData(paramMap);			
 						
-						//System.out.println(valueType + legType + periodIndex + avg + std);
+						System.out.println(periodIndex + "; " + avg + ": "+ std);
 					}
 				}
 			} else if (result instanceof ResultDto){
 				ResultDto resultDto = (ResultDto) result;
+				System.out.println("Value Type: " + valueType);
+				
 				for (int periodIndex = 0; periodIndex < resultDto.length(); periodIndex++){
 					double avg = resultDto.getAvgValue(periodIndex);					
 					double std = resultDto.getStdValue(periodIndex);	
@@ -142,7 +141,10 @@ public class ProcessPrices extends AbstractProcess {
 					paramMap.put("value1", new BigDecimal(avg));
 					paramMap.put("value2", new BigDecimal(std));
 					
-					_procPriceDataDao.insertDetailData(paramMap);
+					if(_insertResult)
+						_procPriceDataDao.insertDetailData(paramMap);
+					
+					System.out.println(periodIndex + "; " + avg + ": "+ std);
 				}
 			}					
 		}

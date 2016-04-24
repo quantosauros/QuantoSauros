@@ -30,16 +30,18 @@ public class ProcessGreeks extends AbstractProcess {
 		while (itr.hasNext()){
 			Object itrNext = itr.next();
 			if(itrNext.getClass() == String.class){				
+				String ircCd = (String) itrNext;
+				Vertex[] vertex = _irCurveContainer.getVertex(ircCd);
+				System.out.println("===RISK FACTOR CODE (" + ircCd + ") ===");
+				
 				//CALCULATE PRICE
 				Money price = _calculator.getPrice(
 						_processDate, _irCurveContainer, _surfaceContainer, "");
-				
+				System.out.println("===ORIGINAL PRICE===");
 				System.out.println("Price: " + price);
 				System.out.println("Rcv Leg: " + _calculator.getLegPrice(0));
 				System.out.println("Pay Leg: " + _calculator.getLegPrice(1));
 				
-				String ircCd = (String) itrNext;
-				Vertex[] vertex = _irCurveContainer.getVertex(ircCd);
 				//AAD
 				HashMap changedIRCurves = _irCurveContainer.getScenarioCurves(ircCd);
 				
@@ -49,8 +51,9 @@ public class ProcessGreeks extends AbstractProcess {
 				insertGreekResult(instrumentInfoModel, ircCd, "AAD", "N", vertex, AADGreeks);
 
 				//BUMPING		
-				if (_calcBump){
-					double[] BumpingGreeks = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
+				if (_calcBump){					
+					double[] BumpingGreeks = calcDelta(instrumentInfoModel.getInstrumentCd(), 
+							ircCd, _calculator.getPayIndex());
 					insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "N", vertex, BumpingGreeks);					
 				}
 								
@@ -69,28 +72,33 @@ public class ProcessGreeks extends AbstractProcess {
 					double[] nonCallAADResult = _calculator.getAADGreek(
 							ircCd, _irCurveContainer, changedIRCurves, true);
 					insertGreekResult(instrumentInfoModel, ircCd, "AAD", "Y", vertex, nonCallAADResult);					
-					_calculator.setHasExercise(true);
-					
+										
 //					BUMPING		
 					if (_calcBump){
-						double[] nonCallBumpingResult = calcDelta(instrumentInfoModel.getInstrumentCd(), ircCd);
-						insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "Y", vertex, nonCallBumpingResult);						
-						_calculator.setHasExercise(true);
-					}					
+						double[] nonCallBumpingResult = calcDelta(instrumentInfoModel.getInstrumentCd(), 
+								ircCd, _calculator.getPayIndex());
+						insertGreekResult(instrumentInfoModel, ircCd, "BUMP", "Y", vertex, nonCallBumpingResult);					
+						
+					}
+					_calculator.setHasExercise(true);
 				}				
 			}
 		}		
 	}	
 	
-	private double[] calcDelta(String instrumentCd, String ircCd){
+	private double[] calcDelta(String instrumentCd, String ircCd, int payIndex){
 		Vertex[] vertices = _irCurveContainer.getVertex(ircCd);
 		int sensiNum = vertices.length;		
 		boolean hasExercise = _calculator.getHasExercise();
 		double[] greeks = new double[sensiNum];
+		int flag = 1;
+		if (payIndex == 1){
+			flag = -1;
+		}
 		
 		for (int sensiIndex = 0; sensiIndex < sensiNum; sensiIndex++){			
 			Vertex vertex = vertices[sensiIndex];
-			
+						
 			//Up Price
 			String upFlag = ircCd + "_UP_" + vertex.getCode();
 //			_calculator.setExerciseIndex(null);
@@ -107,7 +115,7 @@ public class ProcessGreeks extends AbstractProcess {
 			
 			//Calculate Delta 
 			Money delta = upPrice.subtract(downPrice);
-			greeks[sensiIndex] = delta.getAmount();
+			greeks[sensiIndex] = flag * delta.getAmount();
 			
 //			System.out.println(
 //					"INSTRUMENTCD: " + instrumentCd
@@ -128,13 +136,13 @@ public class ProcessGreeks extends AbstractProcess {
 			Vertex[] vertexList, double[] greeks){		    
 		
 		System.out.println(
-				"Greek Results of Product Code; " + instrumentInfoModel.getInstrumentCd() + 
-				"; at; " + _processDate.getDt() + 
-				";(IRCCD: " + ircCd + 
-				";GREEKCD: " + greekCd + 
-				";NONCALLCD: " + nonCallCd +  
-				";)"				
+				"Greek Results of Product Code " + instrumentInfoModel.getInstrumentCd() + 
+				" at " + _processDate.getDt() + 
+				" (IRCCD; " + ircCd + 
+				", GREEKCD; " + greekCd + 
+				", NONCALLCD; " + nonCallCd + ")"				
 		);
+		
 		for (int vtxIndex = 0; vtxIndex < vertexList.length; vtxIndex++){
 			Vertex vtx = vertexList[vtxIndex];
 			String factorCd = ircCd + vtx.getCode();	
@@ -153,7 +161,7 @@ public class ProcessGreeks extends AbstractProcess {
 			if (_insertResult)
 				_procPriceDataDao.insertDeltaGamma(paramMap);
 			
-			System.out.println(factorCd + "; " + greek); 
+			System.out.println(factorCd + ": " + greek); 
 					
 		}
 	}

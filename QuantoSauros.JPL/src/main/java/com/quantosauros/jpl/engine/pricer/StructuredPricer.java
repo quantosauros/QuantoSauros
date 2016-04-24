@@ -11,6 +11,7 @@ import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.PaymentPeriod;
+import com.quantosauros.common.hullwhite.HullWhiteVolatility;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
@@ -193,6 +194,9 @@ public class StructuredPricer extends AbstractPricer{
 								_asOfDate, _productInfo.getMaturityDate(), 
 								_optionInfo.getExerciseDates(), _optionInfo.getOptionType(),
 								rateMarketInfo.getHWVolatilitySurface());
+//						HullWhiteVolatility[] vol = new HullWhiteVolatility[]{
+//							new HullWhiteVolatility(tenors, volatilities)	
+//						};
 						rateMarketInfo.setHWVolatilities(
 								hwStripping.getHWVolatility(underlyingInfo.getModelType()));
 					}
@@ -417,11 +421,11 @@ public class StructuredPricer extends AbstractPricer{
 			useExerciseIndex = true;
 		}
 		
-		double principal = 1.0;
-//		double principal = 0.0;
-//		if (_productInfo.hasPrincipalExchange()){
-//			principal = 1.0;
-//		}
+//		double principal = 1.0;
+		double principal = 0.0;
+		if (_productInfo.hasPrincipalExchange()){
+			principal = 1.0;
+		}
 		
 		//1. 만기 payoff에 원금 넣어주기
 		for (int legIndex = 0; legIndex < _legNum; legIndex++){

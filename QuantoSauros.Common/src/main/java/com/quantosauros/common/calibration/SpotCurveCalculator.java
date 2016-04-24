@@ -31,10 +31,6 @@ import com.quantosauros.common.interestrate.InterestRateCurve;
  */
 public class SpotCurveCalculator implements Serializable {
 
-	public SpotCurveCalculator() {
-	
-	}
-	
 	public static InterestRateCurve calculate(InterestRateCurve ytmCurve){
 		
 		InterestRate[] ytmRates = ytmCurve.getSpotRates();
@@ -219,19 +215,6 @@ public class SpotCurveCalculator implements Serializable {
 		
 	}
 	
-	/**
-	 * YTM금리커브에서  BootStrapping을 이용하여 Spot금리커브를 도출하는 메소드
-	 * 구현된 방법은 Discount Factor를 Linear Interpolation하여 Spot금리커브를 도출하는 방법을
-	 * 채택 하였다.
-	 * 
-	 * @param asOfDate							측정일
-	 * @param countryCode						국가코드(KR,US,EU,JP,CN)
-	 * @param rateType							입수된 YTM금리 시장 타입(IRS,TBOND,CBOND,CRS)
-	 * @param ytmRates							YTM금리 배열
-	 * @param ytmStartVertex					입수된 YTM금리 배열에서 Spot금리가 아닌 YTM금리의 시작 Vertex
-	 * 
-	 * @return									Spot 금리커브
-//	 */
 //	public static InterestRateCurve calculate(Date asOfDate,
 //			String countryCode, MarketRateType rateType, InterestRate[] ytmRates, 
 //			Vertex ytmStartVertex){

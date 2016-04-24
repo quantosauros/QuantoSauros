@@ -14,8 +14,8 @@ public class testProcessGreeks extends TestBase {
 		String procId = "0";
 		Date startDate = Date.valueOf("20160415");
 		Date endDate = Date.valueOf("20160416");				
-		int simNum = 5000;
-		boolean calcBump = false;
+		int simNum = 100;
+		boolean calcBump = true;
 		int monitorFrequency = 1;
 		
 		Calendar cal = SouthKoreaCalendar.getCalendar(1);
@@ -29,7 +29,7 @@ public class testProcessGreeks extends TestBase {
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);
 			process.setCalcBump(calcBump);
-			process.setSpecificInstrument("NEW002");
+			process.setSpecificInstrument("NEW004");
 			//DB기록 여부 입력(true:기록, false:미기록)
 			process.setInsertResults(false);
 			process.execute();
