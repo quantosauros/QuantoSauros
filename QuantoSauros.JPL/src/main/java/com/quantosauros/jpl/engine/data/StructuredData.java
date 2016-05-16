@@ -12,7 +12,7 @@ import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
 import com.quantosauros.jpl.dto.market.MarketInfo;
@@ -428,7 +428,7 @@ public class StructuredData extends AbstractData {
 			
 			HullWhiteVolatility[] hwVols = _discMarketInfo.getHWVolatilities();
 			HullWhiteParameters hwParams = _discMarketInfo.getHullWhiteParameters();
-			InterestRateCurve irCurve = _discMarketInfo.getInterestRateCurve();
+			ZeroRateCurve irCurve = _discMarketInfo.getInterestRateCurve();
 			for (int index = periodIndex; index < _periodNum; index++){
 				
 				Date startDate = _periods[index].getStartDate();

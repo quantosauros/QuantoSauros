@@ -28,7 +28,7 @@ import com.quantosauros.common.hullwhite.HWVolatility;
 import com.quantosauros.common.hullwhite.HWVolatilityCurve;
 import com.quantosauros.common.hullwhite.HWVolatilitySurface;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.common.math.distribution.NormalDistribution;
 import com.quantosauros.common.math.solver.Solvable;
 import com.quantosauros.common.volatility.VolatilitySurface;
@@ -37,7 +37,7 @@ import com.quantosauros.common.volatility.VolatilitySurface;
 public class HWVolatilityCalibration implements Serializable {
 	
 	private static final double M_PI = 3.14159265358979323846;
-	private InterestRateCurve _spotCurve;
+	private ZeroRateCurve _spotCurve;
 	private VolatilitySurface _swaptionSurface;
 	private HullWhiteParameters _hwParams;
 	private Calendar _calendar;		
@@ -55,7 +55,7 @@ public class HWVolatilityCalibration implements Serializable {
 	private HWVolatilitySurface _hwSurface;
 	
 	public HWVolatilityCalibration(String countryCode, Date asOfDate,
-			InterestRateCurve spotCurve, VolatilitySurface swaptionSurface,
+			ZeroRateCurve spotCurve, VolatilitySurface swaptionSurface,
 			HullWhiteParameters HWParams){
 		
 		_asOfDate = asOfDate;
@@ -317,8 +317,8 @@ public class HWVolatilityCalibration implements Serializable {
 			_paymentFrequency = paymentFrequency;
 		}
 		
-		public Money getPrice(Date date, InterestRateCurve swapCurve, double swaptionVol,
-				InterestRateCurve discountCurve){
+		public Money getPrice(Date date, ZeroRateCurve swapCurve, double swaptionVol,
+				ZeroRateCurve discountCurve){
 			double forwardSwapRate =
 					swapCurve.getForwardSwapRate(_terminationDate, _swapMaturity,
 							_paymentFrequency, _fixedNotionalPrincipal, 
@@ -375,7 +375,7 @@ public class HWVolatilityCalibration implements Serializable {
 		private List<Double> _swaptionValue;
 
 		private Frequency _couponFrequency;
-		private InterestRateCurve _spotCurve;
+		private ZeroRateCurve _spotCurve;
 
 //		private double _range = 6.0;
 //		private int _intervals = 16;
@@ -383,7 +383,7 @@ public class HWVolatilityCalibration implements Serializable {
 		private double _a;
 		
 		public HW1FProblem(double a, double sigma,
-				InterestRateCurve spotCurve,
+				ZeroRateCurve spotCurve,
 				Frequency couponFrequency) {
 			_maturity = new ArrayList<Double>();
 			_tenor = new ArrayList<Double>();
@@ -492,10 +492,10 @@ public class HWVolatilityCalibration implements Serializable {
 		
 		private double _meanReversion;
 		private double _sigma;
-		private InterestRateCurve _termStructure;
+		private ZeroRateCurve _termStructure;
 		
 		public HW1FSwaptionFunction(double meanReversion, double sigma, 
-				InterestRateCurve termStructure) {
+				ZeroRateCurve termStructure) {
 			_meanReversion = meanReversion;
 			_sigma = sigma;
 			_termStructure = termStructure;
@@ -575,7 +575,7 @@ public class HWVolatilityCalibration implements Serializable {
 			double strike, double targetValue, 
 			double accuracy, double xMin, double xMax,
 			Frequency couponFrequency,
-			double meanReversion, double sigma, InterestRateCurve termStructure){
+			double meanReversion, double sigma, ZeroRateCurve termStructure){
 		
 		int maxIteration = 1000;
 		double absoluteAccuracy = 1.0E-10;
@@ -596,11 +596,11 @@ public class HWVolatilityCalibration implements Serializable {
 		private Frequency _couponFrequency;
 		private double _meanReversion;
 		private double _sigma;
-		private InterestRateCurve _termStructure;
+		private ZeroRateCurve _termStructure;
 		
 		private FindingRStarFunction(double valueTime, double maturity, double tenor, 
 				double targetValue, double strike, Frequency couponFrequency,
-				double meanReversion, double sigma, InterestRateCurve termStructure) {			
+				double meanReversion, double sigma, ZeroRateCurve termStructure) {			
 			_targetValue = targetValue;
 			_valueTime = valueTime;
 			_maturity = maturity;
@@ -716,7 +716,7 @@ public class HWVolatilityCalibration implements Serializable {
 		private List<Double> swaptionValue;
 
 		private Frequency _couponFrequency;
-		private InterestRateCurve _spotCurve;
+		private ZeroRateCurve _spotCurve;
 
 		private double _range = 6.0;
 		private int _intervals = 16;
@@ -729,7 +729,7 @@ public class HWVolatilityCalibration implements Serializable {
 		private double _F1a;
 		
 		public HW2FProblem(double a, double b, double sigma2, double rho, 
-				InterestRateCurve spotCurve, Frequency couponFrequency, 
+				ZeroRateCurve spotCurve, Frequency couponFrequency, 
 				double F1a, double F1Vol) {
 			maturity = new ArrayList<Double>();
 			tenor = new ArrayList<Double>();
@@ -898,7 +898,7 @@ public class HWVolatilityCalibration implements Serializable {
 		private double _fixedRate;
 
 		// raw Data
-		private InterestRateCurve _spotCurve;
+		private ZeroRateCurve _spotCurve;
 		private double _a;
 		private double _b;
 		private double _sigma1;
@@ -911,7 +911,7 @@ public class HWVolatilityCalibration implements Serializable {
 		public SwaptionPricingFunction(int type, double currentTime,
 				double maturity, double[] payTimes, double strikeRate,
 				double a, double sigma, double b, double eta, double rho,
-				InterestRateCurve spotCurve) {
+				ZeroRateCurve spotCurve) {
 			_w = type;
 			_payTimes = payTimes;
 			_size = payTimes.length;

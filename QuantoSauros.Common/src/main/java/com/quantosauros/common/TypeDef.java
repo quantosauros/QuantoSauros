@@ -47,6 +47,10 @@ public class TypeDef {
 		DISCOUNTRATE_RESULT,
 	}
 	
+	public enum YTMRateType{
+		ZERO, YTM, BOND,
+	}
+	
 	public static PayRcv getPayRcv(Object payRcv){
 		if (payRcv.equals("PAY") || payRcv.equals(0) || payRcv.equals("0") || payRcv.equals("P")){
 			return PayRcv.PAY;
@@ -234,5 +238,29 @@ public class TypeDef {
 		
 		return result;
 	}
-	
+	public static YTMRateType getYTMRateType(String ytmRateType){
+		if (ytmRateType.equals("ZERO")){
+			return YTMRateType.ZERO;
+		} else if (ytmRateType.equals("YTM")){
+			return YTMRateType.YTM;
+		} else if (ytmRateType.equals("BOND")){
+			return YTMRateType.BOND;
+		} else {
+			return null;
+		}
+	}	
+	public static String getYTMRateTypeStr(YTMRateType rateType){
+		String result = "";
+		switch(rateType){
+		case BOND :
+			result = "BOND";
+			break;
+		case YTM :
+			result = "YTM";
+			break;
+		case ZERO : 
+			result = "ZERO";
+		}
+		return result;
+	}
 }

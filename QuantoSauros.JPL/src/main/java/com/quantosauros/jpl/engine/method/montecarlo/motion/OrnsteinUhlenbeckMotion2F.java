@@ -1,19 +1,18 @@
 package com.quantosauros.jpl.engine.method.montecarlo.motion;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.common.math.distribution.NormalDistributionRandomGenerator;
 
 public class OrnsteinUhlenbeckMotion2F extends GeneralizedWienerMotion {
 
 	private HullWhiteParameters _hwParams;
-	private InterestRateCurve _irCurve;
+	private ZeroRateCurve _irCurve;
 	private HullWhiteVolatility[] _hwVols;
 	
 	public OrnsteinUhlenbeckMotion2F(double tenor, double dt,
@@ -22,7 +21,7 @@ public class OrnsteinUhlenbeckMotion2F extends GeneralizedWienerMotion {
 			ModelType modelType,
 			HullWhiteParameters hwParams,
 			HullWhiteVolatility[] hwVols,
-			InterestRateCurve irCurve,
+			ZeroRateCurve irCurve,
 			NormalDistributionRandomGenerator randomGen) {
 		super(tenor, dt, modelType, randomGen);
 		
@@ -100,7 +99,7 @@ public class OrnsteinUhlenbeckMotion2F extends GeneralizedWienerMotion {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	private double getAlpha(int index, InterestRateCurve irCurve){	
+	private double getAlpha(int index, ZeroRateCurve irCurve){	
 		double tenorSum = 0;
 		//TODO index를 포함하는지 안하는지 체크
 		for (int i = 0; i < index; i++){

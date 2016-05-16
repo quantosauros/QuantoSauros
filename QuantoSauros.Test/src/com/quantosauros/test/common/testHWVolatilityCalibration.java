@@ -1,4 +1,6 @@
 package com.quantosauros.test.common;
+import java.util.ArrayList;
+
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.calibration.HWVolatilityCalibration;
 import com.quantosauros.common.calibration.HullWhite2FCalibration;
@@ -7,8 +9,9 @@ import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.common.volatility.Volatility;
 import com.quantosauros.common.volatility.VolatilityCurve;
 import com.quantosauros.common.volatility.VolatilitySurface;
@@ -191,12 +194,12 @@ public class testHWVolatilityCalibration {
 			};
 			
 			
-			InterestRate [] spotRates = new InterestRate[spotRateValues.length];
+			ArrayList<AbstractRate> spotRates = new ArrayList<>();
 			for (int i = 0; i < spotRateValues.length; i++){
-				spotRates[i] = new InterestRate(spotRateVertex[i], spotRateValues[i]);
+				spotRates.add(new ZeroRate(spotRateVertex[i], spotRateValues[i]));
 			}
 			
-			InterestRateCurve spotCurve = new InterestRateCurve(asOfDate, spotRates,
+			ZeroRateCurve spotCurve = new ZeroRateCurve(asOfDate, spotRates,
 					Frequency.valueOf("C"), dcf);
 					
 			Frequency couponFrequency = Frequency.valueOf("S");	

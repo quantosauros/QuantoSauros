@@ -12,8 +12,9 @@ import com.quantosauros.common.TypeDef.PayRcv;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 
 public class AADEngine {
 
@@ -23,8 +24,8 @@ public class AADEngine {
 	protected int _deferredCouponResetIndex;
 	protected int[] _monitorFrequency;
 //	AssetIndex : differs by its number of reference rates.
-	protected InterestRateCurve[][] _legIrCurves;
-	protected InterestRateCurve _discountCurve;
+	protected ZeroRateCurve[][] _legIrCurves;
+	protected ZeroRateCurve _discountCurve;
 	protected DayCountFraction _dcf;
 	protected Money _principal;
 	
@@ -41,7 +42,7 @@ public class AADEngine {
 	protected ArrayList<ArrayList<Double>> _tenors;
 		
 	//SwapLeg Information
-	protected InterestRateCurve _swapLegCurve;
+	protected ZeroRateCurve _swapLegCurve;
 	protected double[][] _swapPayoffs;
 	protected double _swapLegTenor;
 	protected double _swapLegMeanReversion;
@@ -80,13 +81,13 @@ public class AADEngine {
 			ArrayList<ArrayList<Double>> tenors,
 			boolean hasExercise, int[] exerciseIndex,
 			//FloatLeg Information
-			InterestRateCurve[][] legIrCurves,
+			ZeroRateCurve[][] legIrCurves,
 			double[][] legIrTenors,
 			double[][] legIrMeanReversions,
 			ModelType[][] legModelTypes,
 			double[][][] legPayoffs,			
 			//Discount Information
-			InterestRateCurve discountCurve,			
+			ZeroRateCurve discountCurve,			
 			double discountMeanReversion,
 			ModelType discModelType,
 			double[][] discountFactor,
@@ -236,18 +237,18 @@ public class AADEngine {
 			flag = -1;
 		}
 		
-		InterestRate[] spotRates = 
-				_legIrCurves[legIndex][underlyingIndex].getSpotRates();
+		ArrayList<AbstractRate> spotRates = 
+				_legIrCurves[legIndex][underlyingIndex].getRates();
 		
 		for (int i = 0; i < greek.length; i++){
-			Vertex vertex = spotRates[i].getVertex();
-			InterestRateCurve[] irCurves = (InterestRateCurve[]) changedIrCurves.get(vertex.getCode());
-			InterestRate[] upSpotRates = irCurves[0].getSpotRates();
-			InterestRate[] downSpotRates = irCurves[1].getSpotRates();
+			Vertex vertex = spotRates.get(i).getVertex();
+			ZeroRateCurve[] irCurves = (ZeroRateCurve[]) changedIrCurves.get(vertex.getCode());
+			ArrayList<AbstractRate> upSpotRates = irCurves[0].getRates();
+			ArrayList<AbstractRate> downSpotRates = irCurves[1].getRates();
 			
-			for (int j = 0; j < upSpotRates.length; j++){				
-				double upSpot = upSpotRates[j].getRate();
-				double downSpot = downSpotRates[j].getRate();
+			for (int j = 0; j < upSpotRates.size(); j++){				
+				double upSpot = upSpotRates.get(j).getRate();
+				double downSpot = downSpotRates.get(j).getRate();
 				result[i] += flag * (upSpot-downSpot) * greek[j] * _principal.getAmount();		
 			}								
 		}
@@ -285,12 +286,11 @@ public class AADEngine {
 			flag = -1;
 		}
 		
-		InterestRate[] spotRates = 
-				_legIrCurves[legIndex][underlyingIndex].getSpotRates();
+		ArrayList<AbstractRate> spotRates = _legIrCurves[legIndex][underlyingIndex].getRates();
 		
 		for (int i = 0; i < greek.length; i++){			
-			double upSpot = spotRates[i].getRate() + epsilon;
-			double downSpot = spotRates[i].getRate() - epsilon;
+			double upSpot = spotRates.get(i).getRate() + epsilon;
+			double downSpot = spotRates.get(i).getRate() - epsilon;
 			
 			double dx = upSpot - downSpot;
 		
@@ -326,17 +326,17 @@ public class AADEngine {
 		double[] greek = aad.getAllSensitivity(_sensitivities);
 		double[] result = new double[greek.length];		
 
-		InterestRate[] spotRates = _discountCurve.getSpotRates();
+		ArrayList<AbstractRate> spotRates = _discountCurve.getRates();
 		
 		for (int i = 0; i < greek.length; i++){
-			Vertex vertex = spotRates[i].getVertex();
-			InterestRateCurve[] irCurves = (InterestRateCurve[]) changedIrCurves.get(vertex.getCode());
-			InterestRate[] upSpotRates = irCurves[0].getSpotRates();
-			InterestRate[] downSpotRates = irCurves[1].getSpotRates();
+			Vertex vertex = spotRates.get(i).getVertex();
+			ZeroRateCurve[] irCurves = (ZeroRateCurve[]) changedIrCurves.get(vertex.getCode());
+			ArrayList<AbstractRate> upSpotRates = irCurves[0].getRates();
+			ArrayList<AbstractRate> downSpotRates = irCurves[1].getRates();
 			
-			for (int j = 0; j < upSpotRates.length; j++){				
-				double upSpot = upSpotRates[j].getRate();
-				double downSpot = downSpotRates[j].getRate();
+			for (int j = 0; j < upSpotRates.size(); j++){				
+				double upSpot = upSpotRates.get(j).getRate();
+				double downSpot = downSpotRates.get(j).getRate();
 				result[i] += (upSpot-downSpot) * greek[j] * _principal.getAmount();		
 			}								
 		}
@@ -370,11 +370,10 @@ public class AADEngine {
 		double[] greek = aad.getAllSensitivity(_sensitivities);
 		double[] result = new double[greek.length];		
 		
-		InterestRate[] spotRates = 
-				_discountCurve.getSpotRates();
+		ArrayList<AbstractRate> spotRates = _discountCurve.getRates();
 		for (int i = 0; i < greek.length; i++){
-			double upSpot = spotRates[i].getRate() + epsilon;
-			double downSpot = spotRates[i].getRate() - epsilon;
+			double upSpot = spotRates.get(i).getRate() + epsilon;
+			double downSpot = spotRates.get(i).getRate() - epsilon;
 			
 			double dx = upSpot - downSpot;
 		

@@ -1,10 +1,9 @@
 package com.quantosauros.batch.instrument.marketDataCreator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
 
 import com.quantosauros.batch.dao.MarketDataDao;
 import com.quantosauros.batch.dao.MySqlMarketDataDao;
@@ -12,18 +11,24 @@ import com.quantosauros.batch.model.IrCurveModel;
 import com.quantosauros.batch.model.ProductInfoModel;
 import com.quantosauros.batch.model.ProductLegModel;
 import com.quantosauros.batch.model.VolSurfModel;
-import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.RiskFactorType.RiskFactor;
 import com.quantosauros.common.Frequency;
+import com.quantosauros.common.TypeDef;
 import com.quantosauros.common.TypeDef.ModelType;
+import com.quantosauros.common.TypeDef.YTMRateType;
 import com.quantosauros.common.currency.FxRate;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.AbstractRateCurve;
+import com.quantosauros.common.interestrate.BondRate;
+import com.quantosauros.common.interestrate.BondRateCurve;
+import com.quantosauros.common.interestrate.SwapRate;
+import com.quantosauros.common.interestrate.SwapRateCurve;
+import com.quantosauros.common.interestrate.ZeroRate;
 import com.quantosauros.common.volatility.Volatility;
 import com.quantosauros.common.volatility.VolatilityCurve;
 import com.quantosauros.common.volatility.VolatilitySurface;
@@ -169,26 +174,52 @@ public class AbstractMarketDataCreator {
 		return new double[]{0.0, 0.1};
 	}
 	
-	public static InterestRateCurve getIrCurve(Date asOfDate,
+	public static AbstractRateCurve getIrCurve(Date asOfDate,
 			List<IrCurveModel> irCurveModelList){
 		
-		InterestRate[] spotRates = new InterestRate[irCurveModelList.size()];
+		ArrayList<AbstractRate> ytmRates = new ArrayList<>();
 		DayCountFraction dcf = null;
 		Frequency compoundFreq = null;
-
+		boolean isBond = irCurveModelList.get(0).getIsBondCurve().equals("Y");
+		
 		for (int i = 0; i < irCurveModelList.size(); i++){
 			IrCurveModel irCurveModel = irCurveModelList.get(i);
+			
 			dcf = DayCountFraction.valueOf(irCurveModel.getDcf());
 			compoundFreq = Frequency.valueOf(irCurveModel.getCompoundFrequency());
-			String type = irCurveModel.getType();
-						
-			spotRates[i] = new InterestRate(
-					Vertex.valueOf(irCurveModel.getMrtyCd()),
-					Double.parseDouble(irCurveModel.getIrValue()), type);
+			YTMRateType ytmRateType = TypeDef.getYTMRateType(irCurveModel.getYTMRateType());
+			
+			if (isBond){
+				//BOND Curve
+				ytmRates.add(new BondRate(
+						Vertex.valueOf(irCurveModel.getMrtyCd()),
+						Double.parseDouble(irCurveModel.getIrValue()),
+						Frequency.valueOf(irCurveModel.getCouponFrequenc()),
+						Date.valueOf(irCurveModel.getMrtyDt()),
+						Date.valueOf(irCurveModel.getIssueDt()),
+						irCurveModel.getCoupon()));
+			} else {
+				//IRS Curve
+				ytmRates.add(new SwapRate(
+						Vertex.valueOf(irCurveModel.getMrtyCd()),
+						Double.parseDouble(irCurveModel.getIrValue()),
+						ytmRateType,
+						Frequency.valueOf(irCurveModel.getPayCouponFrequency()),
+						Frequency.valueOf(irCurveModel.getRcvCouponFrequency()),
+						DayCountFraction.valueOf(irCurveModel.getPayDayCountConvention()),
+						DayCountFraction.valueOf(irCurveModel.getRcvDayCountConvention()),
+						compoundFreq
+						));
+			}
 		}
-				
-		InterestRateCurve irCurve = 
-				new InterestRateCurve(asOfDate, spotRates, compoundFreq, dcf);
+
+		AbstractRateCurve irCurve = null;
+		
+		if (isBond){
+			irCurve = new BondRateCurve(asOfDate, ytmRates, compoundFreq, dcf);
+		} else {
+			irCurve = new SwapRateCurve(asOfDate, ytmRates, compoundFreq, dcf);
+		}				
 		
 		return irCurve;
 	}

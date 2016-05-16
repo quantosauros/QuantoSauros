@@ -14,7 +14,16 @@
 	    <result property="compoundFrequency" column="COMPOUND_FREQUENCY" />	  
 	    <result property="ccyCd" column="CCY_CD" />	  	    	  	    
 	    <result property="mrtyCd" column="MRTY_CD" />
-	    <result property="type" column="TYPE" />
+	    <result property="ytmRatetype" column="TYPE" />
+	    <result property="payCouponFrequency" column="PAY_COUPON_FREQUENCY" />
+	    <result property="rcvCouponFrequency" column="RCV_COUPON_FREQUENCY" />
+	    <result property="payDayCountConvention" column="PAY_DAY_COUNT_CONVENTION" />
+	    <result property="rcvDayCountConvention" column="RCV_DAY_COUNT_CONVENTION" />
+	    <result property="isBondCurve" column="ISBONDCURVE" />
+	    <result property="issueDt" column="ISSUE_DT" />
+	    <result property="mrtyDt" column="MRTY_DT" />
+	    <result property="couponFrequency" column="COUPON_FREQUENCY" />
+	    <result property="coupon" column="COUPON" />
 	</resultMap>
 
 	<resultMap id = "getVolSurface" type = "com.quantosauros.batch.model.VolSurfModel">
@@ -98,9 +107,13 @@
     <!-- use -->
 	<select id="getIrCurveFromIrcCd" resultMap="getIrCurve">
 		SELECT 
-			C.FACTOR_CD, C.IR, C.TYPE,
+			C.FACTOR_CD, C.IR, B.TYPE,
 			A.DAY_COUNT_CONVENTION, 
-			A.COMPOUND_FREQUENCY, A.CCY_CD, B.MRTY_CD 
+			A.COMPOUND_FREQUENCY, A.CCY_CD, B.MRTY_CD,
+			B.PAY_COUPON_FREQUENCY, B.RCV_COUPON_FREQUENCY,
+			B.PAY_DAY_COUNT_CONVENTION, B.RCV_DAY_COUNT_CONVENTION,
+			A.ISBONDCURVE,
+			C.ISSUE_DT, C.MRTY_DT, C.COUPON_FREQUENCY, C.COUPON
 		FROM 
 			IRC_INFO A,
 			IR_INFO B,
@@ -112,6 +125,7 @@
 		    AND A.IRC_CD = #{ircCd}
 		    AND C.DT = #{dt}
 			AND D.SRC_CD = B.MRTY_CD
+			AND B.SKIP = 'N'
 		ORDER BY D.CD
     </select>
     

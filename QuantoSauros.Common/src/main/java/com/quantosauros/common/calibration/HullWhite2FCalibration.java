@@ -25,7 +25,7 @@ import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.common.math.distribution.NormalDistribution;
 import com.quantosauros.common.math.solver.Solvable;
 import com.quantosauros.common.volatility.VolatilitySurface;
@@ -54,7 +54,7 @@ public class HullWhite2FCalibration implements Serializable {
 	public HullWhite2FCalibration(Date asOfDate,
 			String countryCode,
 			VolatilitySurface surface,
-			InterestRateCurve spotCurve){
+			ZeroRateCurve spotCurve){
 		
 		//초기값
 		double a = 0.3;
@@ -247,7 +247,7 @@ public class HullWhite2FCalibration implements Serializable {
 	    private List<Double> swaptionValue;
 	    
 		private Frequency _couponFrequency;
-		private InterestRateCurve _spotCurve;
+		private ZeroRateCurve _spotCurve;
 	    
         private double _range = 6.0;
         private int _intervals = 16;
@@ -256,7 +256,7 @@ public class HullWhite2FCalibration implements Serializable {
         private double _rho;
         
 		public Problem(double a, double b, double sigma1, double sigma2,
-				double rho, InterestRateCurve spotCurve,
+				double rho, ZeroRateCurve spotCurve,
 				Frequency couponFrequency) {
 			maturity = new ArrayList<Double>();
 			tenor = new ArrayList<Double>();
@@ -405,7 +405,7 @@ public class HullWhite2FCalibration implements Serializable {
 		private double _fixedRate;
 		
 		//raw Data
-		private InterestRateCurve _spotCurve;
+		private ZeroRateCurve _spotCurve;
 		private double _a;
 		private double _b;
 		private double _sigma1;
@@ -419,7 +419,7 @@ public class HullWhite2FCalibration implements Serializable {
 				double currentTime, double maturity, double[] payTimes,
 				double strikeRate,
 				double a, double sigma, double b, double eta, double rho,
-				InterestRateCurve spotCurve) {
+				ZeroRateCurve spotCurve) {
 			_w = type;
 			_payTimes = payTimes;
 			_size = payTimes.length;
@@ -575,8 +575,8 @@ public class HullWhite2FCalibration implements Serializable {
 			_paymentFrequency = paymentFrequency;
 		}
 		
-		public Money getPrice(Date date, InterestRateCurve swapCurve, double swaptionVol,
-				InterestRateCurve discountCurve){
+		public Money getPrice(Date date, ZeroRateCurve swapCurve, double swaptionVol,
+				ZeroRateCurve discountCurve){
 			double forwardSwapRate =
 					swapCurve.getForwardSwapRate(_terminationDate, _swapMaturity,
 							_paymentFrequency, _fixedNotionalPrincipal, 

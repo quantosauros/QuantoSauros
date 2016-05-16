@@ -1,17 +1,17 @@
 package com.quantosauros.jpl.dto.market;
 
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 
 public class EquityMarketInfo extends MarketInfo {
 
 	protected double _currEquityPrice;
 	protected double _equityVolatility;
 	protected double _equityDividend;
-	protected InterestRateCurve _riskFreeCurve;
+	protected ZeroRateCurve _riskFreeCurve;
 	
 	public EquityMarketInfo(double currEquityPrice,
 			double equityVolatility, double equityDividend,
-			InterestRateCurve riskFreeCurve) {
+			ZeroRateCurve riskFreeCurve) {
 		this._currEquityPrice = currEquityPrice;
 		this._equityDividend = equityDividend;
 		this._equityVolatility = equityVolatility;
@@ -27,7 +27,7 @@ public class EquityMarketInfo extends MarketInfo {
 	public double getEquityDividend(){
 		return _equityDividend;
 	}
-	public InterestRateCurve getRiskFreeCurve(){
+	public ZeroRateCurve getRiskFreeCurve(){
 		return _riskFreeCurve;
 	}
 	

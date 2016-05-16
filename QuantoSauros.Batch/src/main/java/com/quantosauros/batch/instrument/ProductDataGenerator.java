@@ -25,10 +25,13 @@ import com.quantosauros.common.TypeDef.UnderlyingType;
 import com.quantosauros.common.calendar.BusinessDayConvention;
 import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.CalendarFactory;
+import com.quantosauros.common.calibration.BootStrapper;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
+import com.quantosauros.common.math.interpolation.LinearInterpolation;
 
 public class ProductDataGenerator {
 
@@ -128,7 +131,7 @@ public class ProductDataGenerator {
 				}
 				
 				//get Rates
-				InterestRateCurve[] irCurves = new InterestRateCurve[undNum];
+				AbstractRateCurve[] irCurves = new AbstractRateCurve[undNum];
 				double[] rates = new double[undNum];
 				for (int ircIndex = 0; ircIndex < undNum; ircIndex++){						
 					irCurves[ircIndex] = getIrCurves(startDt, ircCds[ircIndex]);
@@ -318,7 +321,7 @@ public class ProductDataGenerator {
 		_session.commit();
 	}
 	
-	private InterestRateCurve getIrCurves(Date processDate, String ircCd){
+	private AbstractRateCurve getIrCurves(Date processDate, String ircCd){
 		HashMap<String, Object> paramMap = new HashMap<>();		
 		paramMap.put("dt", processDate.getDt());
 		paramMap.put("ircCd", ircCd);
@@ -329,13 +332,16 @@ public class ProductDataGenerator {
 		return AbstractMarketDataCreator.getIrCurve(processDate, irCurveDaoList);
 	}
 	
-	private double getRate(InterestRateCurve rateCurve, 
+	private double getRate(AbstractRateCurve ytmCurve, 
 			RateType rateType, Vertex maturity, Frequency frequency){
+		
+		ZeroRateCurve zeroRateCurve = new BootStrapper(ytmCurve, LinearInterpolation.getInstance()).calculate();
+		
 		if (rateType.equals(RateType.SPOT)){
-			return rateCurve.getSpotRate(maturity.getVertex(rateCurve.getDayCountFraction()));
+			return zeroRateCurve.getSpotRate(maturity.getVertex(zeroRateCurve.getDayCountFraction()));
 		} else if (rateType.equals(RateType.SWAP)){
-			return rateCurve.getForwardSwapRate(rateCurve.getDate(), 
-					maturity.getVertex(rateCurve.getDayCountFraction()), frequency);
+			return zeroRateCurve.getForwardSwapRate(zeroRateCurve.getDate(), 
+					maturity.getVertex(zeroRateCurve.getDayCountFraction()), frequency);
 		} else if (rateType.equals(RateType.RMS)){
 			return 0;
 		} else {

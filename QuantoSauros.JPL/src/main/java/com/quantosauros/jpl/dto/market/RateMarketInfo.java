@@ -3,12 +3,12 @@ package com.quantosauros.jpl.dto.market;
 import com.quantosauros.common.hullwhite.HWVolatilitySurface;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 
 
 public class RateMarketInfo extends MarketInfo {
 
-	protected InterestRateCurve _irCurve;
+	protected ZeroRateCurve _irCurve;
 	protected HullWhiteParameters _hwParams;
 	protected HWVolatilitySurface _hwVolSurface;	
 	protected HullWhiteVolatility[] _hwVolatilities;
@@ -16,7 +16,7 @@ public class RateMarketInfo extends MarketInfo {
 	//true : surface, false : curve
 	protected boolean _hwVolSurfaceOrCurve;
 	
-	public RateMarketInfo(InterestRateCurve irCurve,
+	public RateMarketInfo(ZeroRateCurve irCurve,
 			HullWhiteParameters hwParams, HWVolatilitySurface hwVolSurface,
 			double quantoCorrelation, double quantoVolatility) {		
 		this._irCurve = irCurve;
@@ -27,7 +27,7 @@ public class RateMarketInfo extends MarketInfo {
 		this._hwVolSurfaceOrCurve = true;
 	}
 	
-	public RateMarketInfo(InterestRateCurve irCurve,
+	public RateMarketInfo(ZeroRateCurve irCurve,
 			HullWhiteParameters hwParams, HullWhiteVolatility[] hwVolatilities,
 			double quantoCorrelation, double quantoVolatility) {		
 		this._irCurve = irCurve;
@@ -38,7 +38,7 @@ public class RateMarketInfo extends MarketInfo {
 		this._hwVolSurfaceOrCurve = false; 
 	}
 	
-	public RateMarketInfo(InterestRateCurve irCurve,
+	public RateMarketInfo(ZeroRateCurve irCurve,
 			HullWhiteParameters hwParams, HWVolatilitySurface hwVolSurface) {		
 		this._irCurve = irCurve;
 		this._hwParams = hwParams;
@@ -48,7 +48,7 @@ public class RateMarketInfo extends MarketInfo {
 		this._hwVolSurfaceOrCurve = true;
 	}
 	
-	public RateMarketInfo(InterestRateCurve irCurve,
+	public RateMarketInfo(ZeroRateCurve irCurve,
 			HullWhiteParameters hwParams, HullWhiteVolatility[] hwVolatilities) {		
 		this._irCurve = irCurve;
 		this._hwParams = hwParams;
@@ -58,7 +58,7 @@ public class RateMarketInfo extends MarketInfo {
 		this._hwVolSurfaceOrCurve = false; 
 	}
 	
-	public InterestRateCurve getInterestRateCurve(){
+	public ZeroRateCurve getInterestRateCurve(){
 		return _irCurve;
 	}
 	public HullWhiteParameters getHullWhiteParameters(){

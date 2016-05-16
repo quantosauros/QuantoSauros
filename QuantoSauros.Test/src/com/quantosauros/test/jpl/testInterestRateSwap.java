@@ -1,16 +1,19 @@
 package com.quantosauros.test.jpl;
 
+import java.util.ArrayList;
+
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.test.util.TestBase;
 
 public class testInterestRateSwap extends TestBase {
 
-	InterestRateCurve _discountCurve;
+	ZeroRateCurve _discountCurve;
 	
 	public void test(){
 		
@@ -26,12 +29,12 @@ public class testInterestRateSwap extends TestBase {
 		};
 		
 		
-		InterestRate[] discountRates = new InterestRate[discountRateValue.length];
+		ArrayList<AbstractRate> discountRates = new ArrayList<>();
 		for (int i = 0; i < discountRateValue.length; i++){
-			discountRates[i] = new InterestRate(discountRateVertex[i], discountRateValue[i]);			
+			discountRates.add(new ZeroRate(discountRateVertex[i], discountRateValue[i]));			
 		}
 		
-		_discountCurve = new InterestRateCurve(issueDt, discountRates,
+		_discountCurve = new ZeroRateCurve(issueDt, discountRates,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
 		
 		

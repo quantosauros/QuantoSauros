@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
-
 import com.quantosauros.aad.engine.AADEngine;
 import com.quantosauros.batch.instrument.marketDataCreator.AbstractMarketDataCreator;
 import com.quantosauros.batch.instrument.marketDataCreator.HullWhiteVolatilitySurfaceCreator;
@@ -18,7 +16,6 @@ import com.quantosauros.batch.model.ProductInfoModel;
 import com.quantosauros.batch.model.ProductLegDataModel;
 import com.quantosauros.batch.model.ProductLegModel;
 import com.quantosauros.batch.model.ProductScheduleModel;
-import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.RiskFactorType;
 import com.quantosauros.batch.types.RiskFactorType.RiskFactor;
 import com.quantosauros.common.TypeDef.ConditionType;
@@ -27,7 +24,7 @@ import com.quantosauros.common.TypeDef.PayRcv;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
@@ -245,7 +242,7 @@ public class AbstractCalculator {
 				double[][][] upperLimits = new double[legNum][][];
 				double[][][] coupon = new double[legNum][][];
 				double[][][][][] refRates = new double[legNum][][][][];
-				InterestRateCurve[][] legIrCurves = new InterestRateCurve[legNum][];
+				ZeroRateCurve[][] legIrCurves = new ZeroRateCurve[legNum][];
 				
 				for (int legIndex = 0; legIndex < legNum; legIndex++){
 					undNum[legIndex] = _legCouponInfos[legIndex].getUnderlyingNumber();
@@ -254,7 +251,7 @@ public class AbstractCalculator {
 					legIrTenors[legIndex] = new double[undNum[legIndex]];
 					legIrMeanReversions[legIndex] = new double[undNum[legIndex]];
 					refRates[legIndex] = new double[undNum[legIndex]][][][];
-					legIrCurves[legIndex] = new InterestRateCurve[undNum[legIndex]];
+					legIrCurves[legIndex] = new ZeroRateCurve[undNum[legIndex]];
 					
 					legPayoffs[legIndex] = _instance.getPayOffs(legIndex);
 					lowerLimits[legIndex] = _instance.getLowerLimits(legIndex);
@@ -313,7 +310,7 @@ public class AbstractCalculator {
 				double[][][] upperLimits = new double[legNum][][];
 				double[][][] coupon = new double[legNum][][];
 				double[][][][][] refRates = new double[legNum][][][][];
-				InterestRateCurve[][] legIrCurves = new InterestRateCurve[legNum][];
+				ZeroRateCurve[][] legIrCurves = new ZeroRateCurve[legNum][];
 				
 				for (int legIndex = 0; legIndex < legNum; legIndex++){
 					undNum[legIndex] = _legCouponInfos[legIndex].getUnderlyingNumber();
@@ -322,7 +319,7 @@ public class AbstractCalculator {
 					legIrTenors[legIndex] = new double[undNum[legIndex]];
 					legIrMeanReversions[legIndex] = new double[undNum[legIndex]];
 					refRates[legIndex] = new double[undNum[legIndex]][][][];
-					legIrCurves[legIndex] = new InterestRateCurve[undNum[legIndex]];
+					legIrCurves[legIndex] = new ZeroRateCurve[undNum[legIndex]];
 					
 					legPayoffs[legIndex] = _instance.getPayOffs(legIndex);
 					lowerLimits[legIndex] = _instance.getLowerLimits(legIndex);

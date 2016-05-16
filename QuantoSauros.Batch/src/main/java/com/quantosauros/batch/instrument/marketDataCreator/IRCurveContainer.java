@@ -1,22 +1,22 @@
 package com.quantosauros.batch.instrument.marketDataCreator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-
 import com.quantosauros.batch.dao.MarketDataDao;
 import com.quantosauros.batch.dao.MySqlMarketDataDao;
 import com.quantosauros.batch.model.IrCurveModel;
-import com.quantosauros.batch.mybatis.SqlMapClient;
-import com.quantosauros.common.Frequency;
-import com.quantosauros.common.calibration.SpotCurveCalculator;
+import com.quantosauros.common.calibration.BootStrapper;
 import com.quantosauros.common.date.Date;
-import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.AbstractRateCurve;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
+import com.quantosauros.common.math.interpolation.Interpolation;
+import com.quantosauros.common.math.interpolation.LinearInterpolation;
 
 public class IRCurveContainer {
 
@@ -49,9 +49,9 @@ public class IRCurveContainer {
 					String codeUp = str[0] + "_UP_" + str[2];
 					String codeDown = str[0] + "_DOWN_" + str[2];
 					
-					result.put(str[2], new InterestRateCurve[]{
-						(InterestRateCurve) _irCurveMap.get(codeUp),
-						(InterestRateCurve) _irCurveMap.get(codeDown)		
+					result.put(str[2], new AbstractRateCurve[]{
+						(AbstractRateCurve) _irCurveMap.get(codeUp),
+						(AbstractRateCurve) _irCurveMap.get(codeDown)		
 					});
 					
 				}
@@ -61,6 +61,8 @@ public class IRCurveContainer {
 	}
 	
 	public void storeIrCurve(String ircCd){
+		Interpolation interpolation = LinearInterpolation.getInstance();
+		
 		if (!_irCurveMap.containsKey(ircCd)){			
 			HashMap paramMap = new HashMap();  	
 			paramMap.put("dt", _processDate.getDt());
@@ -69,52 +71,48 @@ public class IRCurveContainer {
 			List<IrCurveModel> irCurveDaoList = 
 					marketDataDao.selectIrCurveModel(paramMap);
 			
-			InterestRateCurve ytmCurve = AbstractMarketDataCreator.getIrCurve(
+			AbstractRateCurve ytmCurve = AbstractMarketDataCreator.getIrCurve(
 					_processDate, irCurveDaoList);
 			
 			//original
-			_irCurveMap.put(ircCd, SpotCurveCalculator.calculate(ytmCurve));
+			_irCurveMap.put(ircCd, 
+					new BootStrapper(ytmCurve, interpolation).calculate());
 						
 			//updown
 			if (_calcScenario){
-				InterestRate[] spotRates = ytmCurve.getSpotRates();
-				for (int sensiIndex = 0; sensiIndex < spotRates.length; sensiIndex++){
-					Vertex vertex = spotRates[sensiIndex].getVertex();
-					
+				ArrayList<AbstractRate> spotRates = ytmCurve.getRates();
+				for (int sensiIndex = 0; sensiIndex < spotRates.size(); sensiIndex++){
+					Vertex vertex = spotRates.get(sensiIndex).getVertex();
 					//Up Curve
-					InterestRate[] upRates = (InterestRate[]) spotRates.clone();
-					upRates[sensiIndex] = upRates[sensiIndex].plusRate(_epsilon);
-					InterestRateCurve upIrCurve = new InterestRateCurve
-							(_processDate, upRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
+					AbstractRateCurve upCurve = ytmCurve.copy(sensiIndex, _epsilon);
 					String upIrcCd = ircCd + "_UP" + "_" + vertex.getCode();
-					_irCurveMap.put(upIrcCd, SpotCurveCalculator.calculate(upIrCurve));
+					_irCurveMap.put(upIrcCd,
+							new BootStrapper(upCurve, interpolation).calculate());
 					
-					//Down Curve
-					InterestRate[] downRates = (InterestRate[]) spotRates.clone();
-					downRates[sensiIndex] = downRates[sensiIndex].plusRate(-_epsilon);				
-					InterestRateCurve downIrCurve = new InterestRateCurve
-							(_processDate, downRates, Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
+					//DOWN Curve
+					AbstractRateCurve downCurve =ytmCurve.copy(sensiIndex, -_epsilon);
 					String downIrcCd = ircCd + "_DOWN" + "_" + vertex.getCode();
-					_irCurveMap.put(downIrcCd, SpotCurveCalculator.calculate(downIrCurve));				
+					_irCurveMap.put(downIrcCd,
+							new BootStrapper(downCurve, interpolation).calculate());
 				}				
 			}
 		}		
 	}
 
-	public InterestRateCurve getIrCurve(String ircCd){
+	public ZeroRateCurve getIrCurve(String ircCd){
 		Object irCurve = _irCurveMap.get(ircCd);
 		if (irCurve != null){
-			return (InterestRateCurve) irCurve;
+			return (ZeroRateCurve) irCurve;
 		} else {
 			return null;
 		}		
 	}	
 	
-	public InterestRateCurve getIrCurve(Object ircCd){		
+	public ZeroRateCurve getIrCurve(Object ircCd){		
 		return getIrCurve((String) ircCd);
 	}
 	
-	public InterestRateCurve getIrCurve(Object ircCd, String flag){		
+	public ZeroRateCurve getIrCurve(Object ircCd, String flag){		
 		if (ircCd == null){
 			return null;
 		} else {
@@ -128,25 +126,25 @@ public class IRCurveContainer {
 	}	
 	
 	public int getVertexLength(String ircCd){
-		InterestRate[] irs = ((InterestRateCurve)_irCurveMap.get(ircCd)).getSpotRates();
-		return irs.length;
+		ArrayList<AbstractRate> irs = ((AbstractRateCurve)_irCurveMap.get(ircCd)).getRates();
+		return irs.size();
 	}
 	
 	public Vertex[] getVertex(String ircCd){
-		InterestRateCurve irCurve = (InterestRateCurve)_irCurveMap.get(ircCd);		
-		InterestRate[] irs = irCurve.getSpotRates();
-		Vertex[] vertex = new Vertex[irs.length];
+		AbstractRateCurve irCurve = (AbstractRateCurve)_irCurveMap.get(ircCd);		
+		ArrayList<AbstractRate> irs = irCurve.getRates();
+		Vertex[] vertex = new Vertex[irs.size()];
 		for (int i =0 ; i < vertex.length; i++){
-			vertex[i] = irs[i].getVertex();
+			vertex[i] = irs.get(i).getVertex();
 		}
 		return vertex;		
 	}
 	public String[] getVertexStr(String ircCd){
-		InterestRateCurve irCurve = (InterestRateCurve)_irCurveMap.get(ircCd);		
-		InterestRate[] irs = irCurve.getSpotRates();
-		String[] vertex = new String[irs.length];
+		AbstractRateCurve irCurve = (AbstractRateCurve)_irCurveMap.get(ircCd);		
+		ArrayList<AbstractRate> irs = irCurve.getRates();
+		String[] vertex = new String[irs.size()];
 		for (int i =0 ; i < vertex.length; i++){
-			vertex[i] = irs[i].getVertex().toString();
+			vertex[i] = irs.get(i).getVertex().toString();
 		}
 		return vertex;	
 	}

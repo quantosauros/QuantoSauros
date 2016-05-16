@@ -11,7 +11,10 @@ import com.quantosauros.common.calendar.BusinessDayConvention;
 import com.quantosauros.common.calendar.Calendar;
 import com.quantosauros.common.calendar.CalendarFactory;
 import com.quantosauros.common.date.Date;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRateCurve;
+import com.quantosauros.common.interestrate.BondRateCurve;
+import com.quantosauros.common.interestrate.SwapRate;
+import com.quantosauros.common.interestrate.SwapRateCurve;
 import com.quantosauros.test.util.TestBase;
 
 public class testGetIRCurve extends TestBase {
@@ -19,12 +22,12 @@ public class testGetIRCurve extends TestBase {
 	
 	public void test(){
 	
-		Date processDate = Date.valueOf("20131202");
+		Date processDate = Date.valueOf("20160511");
 		Calendar calendar = CalendarFactory.getInstance("KR", 1);
 		Date maturityDate = calendar.adjustDate(
 				processDate.plusYears(1), BusinessDayConvention.MODIFIED_FOLLOWING);
 		
-		String ircCd = "KRWIRS";
+		String ircCd = "USDIRS";
 		
 		HashMap<String, Object> paramMap = new HashMap<>();
 		
@@ -34,38 +37,44 @@ public class testGetIRCurve extends TestBase {
 		List<IrCurveModel> irCurveDaoList = 
 				marketDataDao.selectIrCurveModel(paramMap);
 		
-		InterestRateCurve ytmCurve = AbstractMarketDataCreator.getIrCurve(
+		AbstractRateCurve ytmCurve = AbstractMarketDataCreator.getIrCurve(
 				processDate, irCurveDaoList);
 		log(ytmCurve);
 		
-		for (int i = 0; i < 5; i++){
-			InterestRateCurve upCurve = ytmCurve.copy(i, 0.0001);
-			InterestRateCurve downCurve = ytmCurve.copy(i, -0.0001);
+		if (ytmCurve instanceof SwapRateCurve){
+			log("SWAP RATE Curve");
+		} else if (ytmCurve instanceof BondRateCurve){
+			log("BOND RATE Curve");
+		}
 		
+//		for (int i = 0; i < 5; i++){
+//			SwapRateCurve upCurve = ytmCurve.copy(i, 0.0001);
+//			SwapRateCurve downCurve = ytmCurve.copy(i, -0.0001);
+//		
+////			log("UP");
+////			log(upCurve.getDiscountFactor(Date.valueOf("20140303")));
+////			log(upCurve.getDiscountFactor(Date.valueOf("20140602")));
+////			log(upCurve.getDiscountFactor(Date.valueOf("20140902")));
+////			log(upCurve.getDiscountFactor(Date.valueOf("20141202")));
+////			
+////			log("DOWN");
+////			log(downCurve.getDiscountFactor(Date.valueOf("20140303")));
+////			log(downCurve.getDiscountFactor(Date.valueOf("20140602")));
+////			log(downCurve.getDiscountFactor(Date.valueOf("20140902")));
+////			log(downCurve.getDiscountFactor(Date.valueOf("20141202")));
+//			
 //			log("UP");
-//			log(upCurve.getDiscountFactor(Date.valueOf("20140303")));
-//			log(upCurve.getDiscountFactor(Date.valueOf("20140602")));
-//			log(upCurve.getDiscountFactor(Date.valueOf("20140902")));
-//			log(upCurve.getDiscountFactor(Date.valueOf("20141202")));
+//			log(upCurve.getForwardRate(Date.valueOf("20140303"), Date.valueOf("20140602")));
+//			log(upCurve.getForwardRate(Date.valueOf("20140602"), Date.valueOf("20140902")));
+//			log(upCurve.getForwardRate(Date.valueOf("20140902"), Date.valueOf("20141202")));
 //			
 //			log("DOWN");
-//			log(downCurve.getDiscountFactor(Date.valueOf("20140303")));
-//			log(downCurve.getDiscountFactor(Date.valueOf("20140602")));
-//			log(downCurve.getDiscountFactor(Date.valueOf("20140902")));
-//			log(downCurve.getDiscountFactor(Date.valueOf("20141202")));
-			
-			log("UP");
-			log(upCurve.getForwardRate(Date.valueOf("20140303"), Date.valueOf("20140602")));
-			log(upCurve.getForwardRate(Date.valueOf("20140602"), Date.valueOf("20140902")));
-			log(upCurve.getForwardRate(Date.valueOf("20140902"), Date.valueOf("20141202")));
-			
-			log("DOWN");
-			log(downCurve.getForwardRate(Date.valueOf("20140303"), Date.valueOf("20140602")));
-			log(downCurve.getForwardRate(Date.valueOf("20140602"), Date.valueOf("20140902")));
-			log(downCurve.getForwardRate(Date.valueOf("20140902"), Date.valueOf("20141202")));
-			
-			
-		}
+//			log(downCurve.getForwardRate(Date.valueOf("20140303"), Date.valueOf("20140602")));
+//			log(downCurve.getForwardRate(Date.valueOf("20140602"), Date.valueOf("20140902")));
+//			log(downCurve.getForwardRate(Date.valueOf("20140902"), Date.valueOf("20141202")));
+//			
+//			
+//		}
 		
 		
 //		

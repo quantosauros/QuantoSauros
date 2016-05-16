@@ -442,6 +442,7 @@ public class Date implements Serializable, Cloneable, Comparable {
 		}
 		long days = (date._year - _year) * 360 + (date._month - _month) * 30
 				+ (d2 - d1);
+//		
 		return days;
 	}
 

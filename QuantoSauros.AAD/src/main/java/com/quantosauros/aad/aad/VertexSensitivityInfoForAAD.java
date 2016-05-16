@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 
 public class VertexSensitivityInfoForAAD{
 	//private InterestRateCurve _irCurve;
@@ -23,14 +23,14 @@ public class VertexSensitivityInfoForAAD{
 	
 	public VertexSensitivityInfoForAAD(
 			ArrayList<Double> stepTime,  
-			InterestRateCurve irCurve, 
+			ZeroRateCurve irCurve, 
 			DayCountFraction dcf) {
 
-		InterestRate[] spotRates = irCurve.getSpotRates();
-		_irVertex = new Vertex[spotRates.length];
-		for(int i = 0; i < spotRates.length; i++){
+		ArrayList<AbstractRate> spotRates = irCurve.getRates();
+		_irVertex = new Vertex[spotRates.size()];
+		for(int i = 0; i < spotRates.size(); i++){
 //			_irRates[i] = spotRates[i].getRate();
-			_irVertex[i] = spotRates[i].getVertex();
+			_irVertex[i] = spotRates.get(i).getVertex();
 		}
 		_stepTime = stepTime;
 		_nums = _stepTime.size();		

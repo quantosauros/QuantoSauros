@@ -7,13 +7,13 @@ import com.quantosauros.common.TypeDef.CouponType;
 import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 
 public class AbstractAAD {
 
 	//Leg IR Curves
 	//[legIndex][underlyingIndex]
-	protected InterestRateCurve[][] _legIrCurves;	
+	protected ZeroRateCurve[][] _legIrCurves;	
 	protected double[][] _legIrMeanReversions;
 	protected HullWhiteParameters[][] _legIrHWParams;
 	protected ModelType[][] _legModelTypes;
@@ -23,7 +23,7 @@ public class AbstractAAD {
 	protected double[][][] _legPayoffs;
 	
 	//Discount Information
-	protected InterestRateCurve _discountCurve;
+	protected ZeroRateCurve _discountCurve;
 	protected double _discountMeanReversion;
 	//[simIndex][periodIndex]
 	protected double[][] _discountFactor;
@@ -81,13 +81,13 @@ public class AbstractAAD {
 			double[] periodTenors,			
 			int simNum, int periodNum,
 			//FloatLeg Information
-			InterestRateCurve[][] legIrCurves,
+			ZeroRateCurve[][] legIrCurves,
 			double[][] legIrTenors,
 			double[][] legIrMeanReversions,
 			ModelType[][] legModelTypes,
 			double[][][] legPayoffs,			
 			//Discount Information
-			InterestRateCurve discountCurve,			
+			ZeroRateCurve discountCurve,			
 			double discountMeanReversion,
 			ModelType discModelType,
 			double[][] discountFactor,
@@ -641,7 +641,7 @@ public class AbstractAAD {
 	}
 		
 	//dShort/dSpot
-	protected double getShortDerBySpot(InterestRateCurve irCurve, 
+	protected double getShortDerBySpot(ZeroRateCurve irCurve, 
 			int sensiIndex, int timeIndex, double meanReversion){
 		if( timeIndex >= 1){
 			double tmpadt =  - meanReversion * 
@@ -656,7 +656,7 @@ public class AbstractAAD {
 	//dRef/dSpot
 	//Ref_i : timeIndex
 	//spot_j : sensiIndex
-	protected double getDRefDSpot(InterestRateCurve irCurve, 
+	protected double getDRefDSpot(ZeroRateCurve irCurve, 
 			double tenor, double meanRev, int sensiIndex, int timeIndex, ModelType modelType){
 		
 		double tmpSensi = 0;
@@ -704,7 +704,7 @@ public class AbstractAAD {
 		return tmpSensi;
 	}
 	
-	protected double getDRefDShortRate(InterestRateCurve irCurve,
+	protected double getDRefDShortRate(ZeroRateCurve irCurve,
 			double tenor, double meanRev, ModelType modelType){
 		if (modelType.equals(ModelType.HW1F)){
 			return getB(tenor, meanRev) / tenor;
@@ -714,7 +714,7 @@ public class AbstractAAD {
 	}
 	
 	//dForward/dSpot
-	protected double forwardSensi(InterestRateCurve irCurve, 
+	protected double forwardSensi(ZeroRateCurve irCurve, 
 			int forwardTime, int RefTime){
 				
 		if(RefTime > forwardTime + 1 || RefTime < forwardTime){

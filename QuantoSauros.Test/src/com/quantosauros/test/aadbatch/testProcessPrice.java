@@ -14,9 +14,9 @@ public class testProcessPrice extends TestBase {
 		//프로세스 ID
 		String procId = "0";		
 		//프로세스 시작일
-		Date startDate = Date.valueOf("20160415");
+		Date startDate = Date.valueOf("20160511");
 		//프로세스 마지막일
-		Date endDate = Date.valueOf("20160416");
+		Date endDate = Date.valueOf("20160513");
 		//시뮬레이션 횟수				
 		int simNum = 100;
 		//모니터링 간격(0: 모든구간 1일간격 시뮬레이션, 1: 조밀하게 셋팅, 10 : 10일간격 베이스 셋팅, 30: 30일간격 베이스 셋팅)
@@ -33,7 +33,7 @@ public class testProcessPrice extends TestBase {
 			process.setSimNum(simNum);
 			process.setMonitorFrequency(monitorFrequency);		
 			//상품코드입력(미입력시 모든상품 계산)
-			process.setSpecificInstrument("NEW004");
+			process.setSpecificInstrument("APSSWAP001");
 			//DB기록 여부 입력(true:기록, false:미기록)
 			process.setInsertResults(false);
 			process.execute();

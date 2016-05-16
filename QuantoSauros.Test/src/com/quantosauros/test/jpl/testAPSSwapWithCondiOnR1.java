@@ -18,8 +18,9 @@ import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.date.Vertex;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
@@ -56,10 +57,10 @@ public class testAPSSwapWithCondiOnR1 {
 	static DayCountFraction _dcf1;
 	static DayCountFraction _dcf2;
 	
-	static InterestRateCurve _structuredLegCurve1;
-	static InterestRateCurve _structuredLegCurve2;
-	static InterestRateCurve _swapLegCurve;
-	static InterestRateCurve _discountCurve;
+	static ZeroRateCurve _structuredLegCurve1;
+	static ZeroRateCurve _structuredLegCurve2;
+	static ZeroRateCurve _swapLegCurve;
+	static ZeroRateCurve _discountCurve;
 	
 	static HullWhiteParameters _structuredLegHWParam1;
 	static HullWhiteParameters _structuredLegHWParam2;
@@ -157,29 +158,29 @@ public class testAPSSwapWithCondiOnR1 {
 				Vertex.valueOf("Y15"),	Vertex.valueOf("Y20"),
 		};
 		
-		InterestRate[] spotRates1 = new InterestRate[spotRateValue1.length];
-		InterestRate[] spotRates2 = new InterestRate[spotRateValue2.length];
-		InterestRate[] swapLegRates = new InterestRate[swapLegRateValue.length];
-		InterestRate[] discountRates = new InterestRate[discountRateValue.length];
+		ArrayList<AbstractRate> spotRates1 = new ArrayList<>();
+		ArrayList<AbstractRate> spotRates2 = new ArrayList<>();
+		ArrayList<AbstractRate> swapLegRates = new ArrayList<>();
+		ArrayList<AbstractRate> discountRates = new ArrayList<>();
 		for (int i = 0; i < spotRateValue1.length; i++){
-			spotRates1[i] = new InterestRate(spotRateVertex1[i], spotRateValue1[i]);			
+			spotRates1.add(new ZeroRate(spotRateVertex1[i], spotRateValue1[i]));			
 		}
 		for (int i = 0; i < spotRateValue2.length; i++){
-			spotRates2[i] = new InterestRate(spotRateVertex2[i], spotRateValue2[i]);			
+			spotRates2.add(new ZeroRate(spotRateVertex2[i], spotRateValue2[i]));			
 		}
 		for (int i = 0; i < swapLegRateValue.length; i++){
-			swapLegRates[i] = new InterestRate(swapLegRateVertex[i], swapLegRateValue[i]);			
+			swapLegRates.add(new ZeroRate(swapLegRateVertex[i], swapLegRateValue[i]));			
 		}
 		for (int i = 0; i < discountRateValue.length; i++){
-			discountRates[i] = new InterestRate(discountRateVertex[i], discountRateValue[i]);			
+			discountRates.add(new ZeroRate(discountRateVertex[i], discountRateValue[i]));			
 		}
-		_structuredLegCurve1 = new InterestRateCurve(_asOfDate, spotRates1,
+		_structuredLegCurve1 = new ZeroRateCurve(_asOfDate, spotRates1,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-		_structuredLegCurve2 = new InterestRateCurve(_asOfDate, spotRates2,
+		_structuredLegCurve2 = new ZeroRateCurve(_asOfDate, spotRates2,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-		_swapLegCurve = new InterestRateCurve(_asOfDate, swapLegRates,
+		_swapLegCurve = new ZeroRateCurve(_asOfDate, swapLegRates,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-		_discountCurve = new InterestRateCurve(_asOfDate, discountRates,
+		_discountCurve = new ZeroRateCurve(_asOfDate, discountRates,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
 		
 		double meanReversion1_1F = 0.01;

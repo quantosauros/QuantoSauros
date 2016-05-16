@@ -2,21 +2,20 @@ package com.quantosauros.jpl.engine.method.model.hullwhite;
 
 import com.quantosauros.common.TypeDef.OptionType;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.engine.method.formula.GeneralizedBlackScholesMertonFormula;
 
 public class HullWhite1F extends AbstractHullWhite {
 	private double _meanReversion;
-	private double _sigma;
-	private InterestRateCurve _termStructure;
+	private double _sigma;	
 	private HullWhiteVolatility _vols;
 		
-	public HullWhite1F(double meanReversion, double sigma, InterestRateCurve termStructure) {
+	public HullWhite1F(double meanReversion, double sigma, ZeroRateCurve termStructure) {
 		this._meanReversion = meanReversion;
 		this._sigma = sigma;
 		this._termStructure = termStructure;
 	}
-	public HullWhite1F(double meanReversion, HullWhiteVolatility vols, InterestRateCurve termStructure) {
+	public HullWhite1F(double meanReversion, HullWhiteVolatility vols, ZeroRateCurve termStructure) {
 		this._meanReversion = meanReversion;
 		this._vols = vols;
 		this._termStructure = termStructure;
@@ -101,10 +100,10 @@ public class HullWhite1F extends AbstractHullWhite {
 	public void setMeanReversion(double meanReversion){
 		this._meanReversion = meanReversion;
 	}
-	public InterestRateCurve getTermStructure(){
+	public ZeroRateCurve getTermStructure(){
 		return this._termStructure;
 	}
-	public void setTermStructure(InterestRateCurve termStructure){
+	public void setTermStructure(ZeroRateCurve termStructure){
 		_termStructure = termStructure;
 	}
 	public HullWhiteVolatility getHullWhiteVolatility(){

@@ -25,7 +25,7 @@ import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.Vertex;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.common.math.distribution.NormalDistribution;
 import com.quantosauros.common.math.solver.Solvable;
 import com.quantosauros.common.volatility.VolatilitySurface;
@@ -51,7 +51,7 @@ public class HullWhiteCalibration implements Serializable {
 	public HullWhiteCalibration(Date asOfDate,
 			String countryCode,
 			VolatilitySurface surface,
-			InterestRateCurve spotCurve) {
+			ZeroRateCurve spotCurve) {
 		
 		//초기값
 		double initialMeanReversion = 0.05;
@@ -231,7 +231,7 @@ public class HullWhiteCalibration implements Serializable {
 	private static class hullWhiteProblem implements MultivariateVectorFunction, Serializable {
 		
 		private Frequency _couponFrequency;
-		private InterestRateCurve _spotCurve;
+		private ZeroRateCurve _spotCurve;
 		private HullWhite _model;
 		
 	    private List<Double> maturity;
@@ -239,7 +239,7 @@ public class HullWhiteCalibration implements Serializable {
 	    private List<Double> strike;
 	    private List<Double> swaptionValue;
 		
-	    public hullWhiteProblem(double meanReversion, double initialVol, InterestRateCurve spotCurve,
+	    public hullWhiteProblem(double meanReversion, double initialVol, ZeroRateCurve spotCurve,
 				Frequency couponFrequency) {
 			maturity = new ArrayList<Double>();
 			tenor = new ArrayList<Double>();
@@ -366,10 +366,10 @@ public class HullWhiteCalibration implements Serializable {
 			
 			private double _meanReversion;
 			private double _sigma;
-			private InterestRateCurve _termStructure;
+			private ZeroRateCurve _termStructure;
 //				private HullWhiteVolatility _vols;
 				
-			public HullWhite(double meanReversion, double sigma, InterestRateCurve termStructure) {
+			public HullWhite(double meanReversion, double sigma, ZeroRateCurve termStructure) {
 				this._meanReversion = meanReversion;
 				this._sigma = sigma;
 				this._termStructure = termStructure;
@@ -453,7 +453,7 @@ public class HullWhiteCalibration implements Serializable {
 			public double getVol(){
 				return _sigma;
 			}
-			public InterestRateCurve getTermStructure(){
+			public ZeroRateCurve getTermStructure(){
 				return _termStructure;
 			}
 		}
@@ -591,8 +591,8 @@ public class HullWhiteCalibration implements Serializable {
 			_paymentFrequency = paymentFrequency;
 		}
 		
-		public Money getPrice(Date date, InterestRateCurve swapCurve, double swaptionVol,
-				InterestRateCurve discountCurve){
+		public Money getPrice(Date date, ZeroRateCurve swapCurve, double swaptionVol,
+				ZeroRateCurve discountCurve){
 			double forwardSwapRate =
 					swapCurve.getForwardSwapRate(_terminationDate, _swapMaturity,
 							_paymentFrequency, _fixedNotionalPrincipal, 
@@ -642,7 +642,7 @@ public class HullWhiteCalibration implements Serializable {
 	public double[][] testCalibration(Date asOfDate,
 			String countryCode,
 			VolatilitySurface surface,
-			InterestRateCurve spotCurve){
+			ZeroRateCurve spotCurve){
 		
 		int totalNumVol = 10;
 		int totalNumMeanReversion = 10;
@@ -714,7 +714,7 @@ public class HullWhiteCalibration implements Serializable {
 	public double[][] testCalibration2(Date asOfDate,
 			String countryCode,
 			VolatilitySurface surface,
-			InterestRateCurve spotCurve){
+			ZeroRateCurve spotCurve){
 		int totalNumVol = 50;
 		int totalNumMeanReversion = 50;
 		double volIncremental = 0.0001;

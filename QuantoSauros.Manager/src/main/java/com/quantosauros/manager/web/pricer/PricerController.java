@@ -1,6 +1,7 @@
 package com.quantosauros.manager.web.pricer;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.quantosauros.batch.process.ProcessPricer;
+import com.quantosauros.common.TypeDef;
 import com.quantosauros.common.TypeDef.CouponType;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
@@ -233,22 +236,22 @@ public class PricerController {
 					MarketInfo legMarketInfo = _processPricer.getLegMarketInfo(legIndex, undIndex);					
 					if (legMarketInfo instanceof RateMarketInfo){
 						//InterestRateCurveModel
-						InterestRateCurve irCurve = ((RateMarketInfo)legMarketInfo).getInterestRateCurve();
+						ZeroRateCurve irCurve = ((RateMarketInfo)legMarketInfo).getInterestRateCurve();
 						
 						legIrCurveModel[undIndex] = new InterestRateCurveModel();
 						legIrCurveModel[undIndex].setCompoundFreq(
 								irCurve.getCompoundingFrequency().toString());
 						legIrCurveModel[undIndex].setDate(irCurve.getDate().toString());
 						legIrCurveModel[undIndex].setDcf(irCurve.getDayCountFraction().toString());
-						InterestRate[] discountIrRates = irCurve.getSpotRates();
-						int irNum = discountIrRates.length;
+						ArrayList<AbstractRate> discountIrRates = irCurve.getRates();
+						int irNum = discountIrRates.size();
 						String[] rateTypes = new String[irNum];
 						double[] rates = new double[irNum];
 						String[] vertex = new String[irNum];
 						for (int irIndex = 0; irIndex < irNum; irIndex++){
-							rates[irIndex] = discountIrRates[irIndex].getRate();
-							vertex[irIndex] = discountIrRates[irIndex].getVertex().toString();
-							rateTypes[irIndex] = discountIrRates[irIndex].getFactorCode();
+							rates[irIndex] = discountIrRates.get(irIndex).getRate();
+							vertex[irIndex] = discountIrRates.get(irIndex).getVertex().toString();
+							rateTypes[irIndex] = TypeDef.getYTMRateTypeStr(discountIrRates.get(irIndex).getRateType());
 						}			
 						legIrCurveModel[undIndex].setRateType(rateTypes);
 						legIrCurveModel[undIndex].setRate(rates);
@@ -321,7 +324,7 @@ public class PricerController {
 			MarketInfoPricerModel discMarketInfoPricerModel = new MarketInfoPricerModel();
 			RateMarketInfo discountMarketInfo = _processPricer.getDiscountMarketInfo();
 			//IR Curve
-			InterestRateCurve discountRateCurve = discountMarketInfo.getInterestRateCurve();			
+			ZeroRateCurve discountRateCurve = discountMarketInfo.getInterestRateCurve();			
 			
 			InterestRateCurveModel[] discountRateCurveModel = new InterestRateCurveModel[]{
 					new InterestRateCurveModel(),
@@ -329,15 +332,15 @@ public class PricerController {
 			discountRateCurveModel[0].setCompoundFreq(discountRateCurve.getCompoundingFrequency().toString());
 			discountRateCurveModel[0].setDate(discountRateCurve.getDate().toString());
 			discountRateCurveModel[0].setDcf(discountRateCurve.getDayCountFraction().toString());
-			InterestRate[] discountIrRates = discountRateCurve.getSpotRates();
-			int irNum = discountIrRates.length;
+			ArrayList<AbstractRate> discountIrRates = discountRateCurve.getRates();
+			int irNum = discountIrRates.size();
 			String[] rateTypes = new String[irNum];
 			double[] rates = new double[irNum];
 			String[] vertex = new String[irNum];
 			for (int irIndex = 0; irIndex < irNum; irIndex++){
-				rates[irIndex] = discountIrRates[irIndex].getRate();
-				vertex[irIndex] = discountIrRates[irIndex].getVertex().toString();
-				rateTypes[irIndex] = discountIrRates[irIndex].getFactorCode();
+				rates[irIndex] = discountIrRates.get(irIndex).getRate();
+				vertex[irIndex] = discountIrRates.get(irIndex).getVertex().toString();
+				rateTypes[irIndex] = TypeDef.getYTMRateTypeStr(discountIrRates.get(irIndex).getRateType());				
 			}			
 			discountRateCurveModel[0].setRateType(rateTypes);
 			discountRateCurveModel[0].setRate(rates);

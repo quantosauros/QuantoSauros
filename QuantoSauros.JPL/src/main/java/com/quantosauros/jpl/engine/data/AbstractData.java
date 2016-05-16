@@ -1,6 +1,7 @@
 package com.quantosauros.jpl.engine.data;
 
 import java.util.ArrayList;
+
 import com.quantosauros.common.Frequency;
 import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.TypeDef.OptionType;
@@ -10,7 +11,7 @@ import com.quantosauros.common.date.DayCountFraction;
 import com.quantosauros.common.date.PaymentPeriod;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
 import com.quantosauros.jpl.dto.market.MarketInfo;
@@ -222,7 +223,7 @@ public abstract class AbstractData {
 			
 			HullWhiteVolatility[] hwVols = marketInfo.getHWVolatilities();			
 			HullWhiteParameters hwParams = marketInfo.getHullWhiteParameters();
-			InterestRateCurve irCurve = marketInfo.getInterestRateCurve();
+			ZeroRateCurve irCurve = marketInfo.getInterestRateCurve();
 
 			endDt = startDt + tenor;
 			
@@ -303,7 +304,7 @@ public abstract class AbstractData {
 			
 			HullWhiteVolatility[] hwVols = marketInfo.getHWVolatilities();			
 			HullWhiteParameters hwParams = marketInfo.getHullWhiteParameters();
-			InterestRateCurve irCurve = marketInfo.getInterestRateCurve();
+			ZeroRateCurve irCurve = marketInfo.getInterestRateCurve();
 			//2F			
 			endDt = startDt + tenor;
 				

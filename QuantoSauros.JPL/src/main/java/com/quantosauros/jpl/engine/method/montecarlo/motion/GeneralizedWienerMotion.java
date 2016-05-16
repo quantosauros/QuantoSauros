@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.date.DayCountFraction;
-import com.quantosauros.common.interestrate.InterestRateCurve;
 import com.quantosauros.common.math.distribution.NormalDistributionRandomGenerator;
 
 public abstract class GeneralizedWienerMotion {

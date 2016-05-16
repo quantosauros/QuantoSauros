@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import com.quantosauros.common.TypeDef.ModelType;
 import com.quantosauros.common.currency.Money;
 import com.quantosauros.common.date.Date;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.jpl.dto.LegAmortizationInfo;
 import com.quantosauros.jpl.dto.LegCouponInfo;
 import com.quantosauros.jpl.dto.LegDataInfo;
@@ -73,16 +74,16 @@ public class StructuredProduct extends AbstractProduct {
 		if (marketInfo instanceof RateMarketInfo){
 			//Interest Rate Curve Delta
 			RateMarketInfo rateMarketInfo = (RateMarketInfo) marketInfo;
-			InterestRateCurve interestRateCurve = rateMarketInfo.getInterestRateCurve();
+			ZeroRateCurve interestRateCurve = rateMarketInfo.getInterestRateCurve();
 			
-			InterestRate[] interestRates = interestRateCurve.getSpotRates().clone();
+			ArrayList<AbstractRate> interestRates = interestRateCurve.getRates();
 			
-			for (int vertexIndex = 0; vertexIndex < interestRates.length; vertexIndex++){
+			for (int vertexIndex = 0; vertexIndex < interestRates.size(); vertexIndex++){
 				//UP
-				InterestRate[] upRates = interestRateCurve.getSpotRates().clone();
-				double upSpot = interestRates[vertexIndex].getRate() + epsilon;
-				upRates[vertexIndex] = new InterestRate(interestRates[vertexIndex].getVertex(), upSpot);
-				InterestRateCurve upCurve = new InterestRateCurve(
+				ArrayList<AbstractRate> upRates = interestRateCurve.getRates();
+				double upSpot = interestRates.get(vertexIndex).getRate() + epsilon;
+				upRates.set(vertexIndex, new ZeroRate(interestRates.get(vertexIndex).getVertex(), upSpot)); 
+				ZeroRateCurve upCurve = new ZeroRateCurve(
 						interestRateCurve.getDate(),
 						upRates, 
 						interestRateCurve.getCompoundingFrequency(),
@@ -94,10 +95,10 @@ public class StructuredProduct extends AbstractProduct {
 				Money upPrice = this.getPrice(legMarketInfos, discountMarketInfo, correlations);
 				
 				//DOWN
-				InterestRate[] downRates = interestRateCurve.getSpotRates().clone();
-				double downSpot = interestRates[vertexIndex].getRate() - epsilon;				
-				downRates[vertexIndex] = new InterestRate(interestRates[vertexIndex].getVertex(), downSpot);
-				InterestRateCurve downCurve = new InterestRateCurve(
+				ArrayList<AbstractRate> downRates = interestRateCurve.getRates();
+				double downSpot = interestRates.get(vertexIndex).getRate() - epsilon;			
+				downRates.set(vertexIndex, new ZeroRate(interestRates.get(vertexIndex).getVertex(), downSpot));
+				ZeroRateCurve downCurve = new ZeroRateCurve(
 						interestRateCurve.getDate(),
 						downRates, 
 						interestRateCurve.getCompoundingFrequency(),
@@ -146,15 +147,15 @@ public class StructuredProduct extends AbstractProduct {
 		ArrayList<Double> delta = new ArrayList<>();
 		
 		//Interest Rate Curve Delta		
-		InterestRateCurve interestRateCurve = discountMarketInfo.getInterestRateCurve();		
-		InterestRate[] interestRates = interestRateCurve.getSpotRates().clone();
+		ZeroRateCurve interestRateCurve = discountMarketInfo.getInterestRateCurve();		
+		ArrayList<AbstractRate> interestRates = interestRateCurve.getRates();
 		
-		for (int vertexIndex = 0; vertexIndex < interestRates.length; vertexIndex++){
+		for (int vertexIndex = 0; vertexIndex < interestRates.size(); vertexIndex++){
 			//UP
-			InterestRate[] upRates = interestRateCurve.getSpotRates().clone();			
-			double upSpot = interestRates[vertexIndex].getRate() + epsilon;
-			upRates[vertexIndex] = new InterestRate(interestRates[vertexIndex].getVertex(), upSpot);
-			InterestRateCurve upCurve = new InterestRateCurve(
+			ArrayList<AbstractRate> upRates = interestRateCurve.getRates();			
+			double upSpot = interestRates.get(vertexIndex).getRate() + epsilon;
+			upRates.set(vertexIndex, new ZeroRate(interestRates.get(vertexIndex).getVertex(), upSpot));
+			ZeroRateCurve upCurve = new ZeroRateCurve(
 					interestRateCurve.getDate(),
 					upRates, 
 					interestRateCurve.getCompoundingFrequency(),
@@ -166,10 +167,10 @@ public class StructuredProduct extends AbstractProduct {
 			Money upPrice = this.getPrice(legMarketInfos, discountMarketInfo, correlations);
 			
 			//DOWN
-			InterestRate[] downRates = interestRateCurve.getSpotRates().clone();
-			double downSpot = interestRates[vertexIndex].getRate() - epsilon;				
-			downRates[vertexIndex] = new InterestRate(interestRates[vertexIndex].getVertex(), downSpot);
-			InterestRateCurve downCurve = new InterestRateCurve(
+			ArrayList<AbstractRate> downRates = interestRateCurve.getRates();
+			double downSpot = interestRates.get(vertexIndex).getRate() - epsilon;				
+			downRates.set(vertexIndex, new ZeroRate(interestRates.get(vertexIndex).getVertex(), downSpot));
+			ZeroRateCurve downCurve = new ZeroRateCurve(
 					interestRateCurve.getDate(),
 					downRates, 
 					interestRateCurve.getCompoundingFrequency(),

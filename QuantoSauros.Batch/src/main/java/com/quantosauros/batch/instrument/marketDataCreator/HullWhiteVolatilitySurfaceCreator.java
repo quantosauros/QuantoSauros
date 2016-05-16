@@ -2,22 +2,21 @@ package com.quantosauros.batch.instrument.marketDataCreator;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
 
 import com.quantosauros.batch.dao.MarketDataDao;
 import com.quantosauros.batch.dao.MySqlMarketDataDao;
 import com.quantosauros.batch.model.IrCurveModel;
 import com.quantosauros.batch.model.VolSurfModel;
-import com.quantosauros.batch.mybatis.SqlMapClient;
 import com.quantosauros.batch.types.CcyType;
+import com.quantosauros.common.calibration.BootStrapper;
 import com.quantosauros.common.calibration.HWVolatilityCalibration;
 import com.quantosauros.common.date.Date;
 import com.quantosauros.common.hullwhite.HWVolatilitySurface;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRateCurve;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
+import com.quantosauros.common.math.interpolation.LinearInterpolation;
 import com.quantosauros.common.volatility.VolatilitySurface;
 
 public class HullWhiteVolatilitySurfaceCreator {
@@ -54,11 +53,13 @@ public class HullWhiteVolatilitySurfaceCreator {
 			paramMap.put("ircCd", rfIrcCd);
 			List<IrCurveModel> irCurveDaoList = marketDataDao.selectIrCurveModel(paramMap);					
 			
-			InterestRateCurve spotCurve = AbstractMarketDataCreator.getIrCurve(
+			AbstractRateCurve ytmCurve = AbstractMarketDataCreator.getIrCurve(
 					_processDate, irCurveDaoList);
 			
+			ZeroRateCurve zeroRateCurve = new BootStrapper(ytmCurve, LinearInterpolation.getInstance()).calculate();
+			
 			HWVolatilityCalibration cali = new HWVolatilityCalibration(
-					ccyCd, _processDate, spotCurve, surface, HWParams);
+					ccyCd, _processDate, zeroRateCurve, surface, HWParams);
 						
 			_container.put(CcyType.valueof(ccyCd), cali.calculate());	
 			

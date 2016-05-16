@@ -1,5 +1,6 @@
 package com.quantosauros.test.jpl;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.quantosauros.common.Frequency;
@@ -20,8 +21,9 @@ import com.quantosauros.common.date.Vertex;
 import com.quantosauros.common.hullwhite.HWVolatilitySurface;
 import com.quantosauros.common.hullwhite.HullWhiteParameters;
 import com.quantosauros.common.hullwhite.HullWhiteVolatility;
-import com.quantosauros.common.interestrate.InterestRate;
-import com.quantosauros.common.interestrate.InterestRateCurve;
+import com.quantosauros.common.interestrate.AbstractRate;
+import com.quantosauros.common.interestrate.ZeroRate;
+import com.quantosauros.common.interestrate.ZeroRateCurve;
 import com.quantosauros.common.volatility.Volatility;
 import com.quantosauros.common.volatility.VolatilityCurve;
 import com.quantosauros.common.volatility.VolatilitySurface;
@@ -64,8 +66,8 @@ public class testRANote01 extends TestBase {
 	
 	DayCountFraction _dcf1;	
 	
-	InterestRateCurve _structuredLegCurve1;	
-	InterestRateCurve _discountCurve;
+	ZeroRateCurve _structuredLegCurve1;	
+	ZeroRateCurve _discountCurve;
 	
 	HullWhiteParameters _structuredLegHWParam1;	
 	HullWhiteParameters _discountHWParam;
@@ -91,17 +93,17 @@ public class testRANote01 extends TestBase {
 		Vertex[] discountRateVertex = new Vertex[] {
 				Vertex.valueOf("M3"),	Vertex.valueOf("M6"),	Vertex.valueOf("M9"),	Vertex.valueOf("Y1"),	Vertex.valueOf("Y1H"),	Vertex.valueOf("Y2"),	Vertex.valueOf("Y2H"),	Vertex.valueOf("Y3"),	Vertex.valueOf("Y4"),	Vertex.valueOf("Y5"),	Vertex.valueOf("Y7"),	Vertex.valueOf("Y10"),	Vertex.valueOf("Y20"),		};
 		
-		InterestRate[] spotRates1 = new InterestRate[spotRateValue1.length];
-		InterestRate[] discountRates = new InterestRate[discountRateValue.length];
+		ArrayList<AbstractRate> spotRates1 = new ArrayList<>();
+		ArrayList<AbstractRate> discountRates = new ArrayList<>();
 		for (int i = 0; i < spotRateValue1.length; i++){
-			spotRates1[i] = new InterestRate(spotRateVertex1[i], spotRateValue1[i]);			
+			spotRates1.add(new ZeroRate(spotRateVertex1[i], spotRateValue1[i]));			
 		}
 		for (int i = 0; i < discountRateValue.length; i++){
-			discountRates[i] = new InterestRate(discountRateVertex[i], discountRateValue[i]);			
+			discountRates.add(new ZeroRate(discountRateVertex[i], discountRateValue[i]));			
 		}
-		_structuredLegCurve1 = new InterestRateCurve(_asOfDate, spotRates1,
+		_structuredLegCurve1 = new ZeroRateCurve(_asOfDate, spotRates1,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
-		_discountCurve = new InterestRateCurve(_asOfDate, discountRates,
+		_discountCurve = new ZeroRateCurve(_asOfDate, discountRates,
 				Frequency.valueOf("C"), DayCountFraction.ACTUAL_365);
 		
 		double meanReversion1_1F = 0.024;
